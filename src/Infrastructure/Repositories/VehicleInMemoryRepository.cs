@@ -16,7 +16,7 @@ public class VehicleInMemoryRepository : IVehicleRepository
         throw new NotImplementedException();
     }
 
-    public Task<Result<IEnumerable<Vehicle>>> ListVehiclesAsync(Func<Vehicle, bool> filter)
+    public Task<Result<IEnumerable<Vehicle>>> ListVehiclesAsync(Func<Vehicle, bool> filter = null)
     {
         throw new NotImplementedException();
     }
