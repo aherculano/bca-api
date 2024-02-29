@@ -10,7 +10,7 @@ using FluentAssertions;
 using FluentResults;
 using NSubstitute;
 
-namespace UnitTests.Application.Features;
+namespace UnitTests.Application.Features.CreateVehicle;
 
 [ExcludeFromCodeCoverage]
 public class CreateVehicleCommandHandlerTests : TestsBase

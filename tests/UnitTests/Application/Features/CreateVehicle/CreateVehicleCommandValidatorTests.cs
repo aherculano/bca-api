@@ -1,12 +1,10 @@
-﻿
-
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using Application.Features.CreateVehicle;
 using Application.Requests.VehicleRequests;
 using AutoFixture;
 using FluentAssertions;
 
-namespace UnitTests.Application.Features;
+namespace UnitTests.Application.Features.CreateVehicle;
 
 [ExcludeFromCodeCoverage]
 public class CreateVehicleCommandValidatorTests : TestsBase
