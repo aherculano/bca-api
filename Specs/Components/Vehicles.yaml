@@ -2,6 +2,13 @@ components:
   schemas:
     Suv:
       type: object
+      required:
+        - UniqueIdentifier
+        - Manufacturer
+        - Model
+        - Year
+        - StartingBid
+        - NumberOfSeats
       properties:
         UniqueIdentifier:
           type: string
@@ -10,17 +17,14 @@ components:
           example: e1a7d7c5-b693-4f39-b4b7-13e42e7d32a4
         Manufacturer:
           type: string
-          required: true
           description: The Vehicle Manufacturer
           example: Range Rover
         Model:
           type: string
-          required: true
           description: The Vehicle Model
           example: Evoque
         Year:
           type: integer
-          required: true
           description: The Manufacturing Year
           format: int32
           minimum: 1900
@@ -28,18 +32,23 @@ components:
           example: 2012
         StartingBid:
           type: number
-          required: true
           description: The StartingBid Of The Vehicle
           format: double
           example: 10000
         NumberOfSeats:
           type: integer
-          required: true
           description: The Number of Seats
           format: int32
           example: 5
     Truck:
       type: object
+      required:
+        - UniqueIdentifier
+        - Manufacturer
+        - Model
+        - Year
+        - StartingBid
+        - LoadCapacity
       properties:
         UniqueIdentifier:
           type: string
@@ -48,56 +57,54 @@ components:
           example: 245e1d54-e925-4a96-9ee3-1c9b738d7d49
         Manufacturer:
           type: string
-          required: true
           description: The Vehicle Manufacturer
           example: Scania
         Model:
           type: string
-          required: true
           description: The Vehicle Model
           example: R580
         Year:
           type: integer
           description: The Manufacturing Year
           format: int32
-          required: true
           minimum: 1900
           maximum: 2024
           example: 2000
         StartingBid:
           type: number
-          required: true
           description: The StartingBid Of The Vehicle
           format: double
           example: 60000
         LoadCapacity:
           type: number
-          required: true
           description: The Truck Load Capacity
           format: double
           example: 555.5
     Sedan:
       type: object
+      required:
+        - UniqueIdentifier
+        - Manufacturer
+        - Model
+        - Year
+        - StartingBid
+        - NumberOfDoors
       properties:
         UniqueIdentifier:
           type: string
-          required: true
           description: The Vehicle Unique Identifier
           format: uuid
           example: 2410deb4-ac67-4171-95a7-3296663823f4
         Manufacturer:
           type: string
-          required: true
           description: The Vehicle Manufacturer
           example: Renault
         Model:
           type: string
-          required: true
           description: The Vehicle Model
           example: Megane
         Year:
           type: integer
-          required: true
           description: The Manufacturing Year
           format: int32
           minimum: 1900
@@ -105,13 +112,11 @@ components:
           example: 2017
         StartingBid:
           type: number
-          required: true
           description: The Starting Bid Of The Vehicle
           format: double
           example: 9000
         NumberOfDoors:
           type: integer
-          required: true
           description: The Number Of Doors
           format: int32
           example: 5
