@@ -1,4 +1,5 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using Application;
+using Microsoft.OpenApi.Models;
 
 namespace Api;
 
@@ -19,6 +20,7 @@ public class Startup
         {
             c.SwaggerDoc("v1", new OpenApiInfo { Title = "BCA-Auction-API", Version = "v1" });
         });
+        services.ConfigureApplication();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

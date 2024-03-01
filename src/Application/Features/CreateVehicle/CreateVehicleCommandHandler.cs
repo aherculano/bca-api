@@ -25,7 +25,7 @@ public class CreateVehicleCommandHandler: IRequestHandler<CreateVehicleCommand, 
 
         if (existingVehicle.ThrowExceptionIfHasFailedResult().Value is not null)
         {
-            return Result.Fail(new VehicleAlreadyExistsError());
+            return Result.Fail(new AlreadyExistsError("Vehicle Already Exists", $"One Vehicle Is Already Registered With That ${request.Request.UniqueIdentifier}"));
         }
 
         var domainVehicle = request.Request.MapToDomain();

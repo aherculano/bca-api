@@ -1,4 +1,8 @@
-﻿using Application.Requests.ListVehicleRequests;
+﻿using Api.FluentResultExtensions;
+using Api.Requests;
+using Application.Features.GetVehicleByUniqueIdentifier;
+using Application.Features.ListVehicles;
+using Application.Requests.ListVehicleRequests;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,20 +21,42 @@ public class VehiclesController: ControllerBase
 
     [HttpGet]
     [Route("{vehicleUniqueIdentifier}")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(404)]
     public async Task<IActionResult> GetVehicleByVehicleIdAsync(Guid vehicleUniqueIdentifier)
     {
-        throw new NotImplementedException();
+        var query = new GetVehicleByUniqueIdentifierQuery(vehicleUniqueIdentifier);
+        var result = await _mediator.Send(query);
+        return result.IsSuccess
+            ? Ok(result.Value)
+            : result.ToFailedActionResult();
     }
 
     [HttpGet]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(404)]
+    [ProducesResponseType(409)]
     public async Task<IActionResult> ListVehiclesAsync([FromQuery] ListVehicleRequest request)
     {
-        throw new NotImplementedException();
+        var query = new ListVehiclesQuery(request);
+        var result = await _mediator.Send(query);
+        return result.IsSuccess
+            ? Ok(result.Value)
+            : result.ToFailedActionResult();
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateVehicleAsync()
+    [ProducesResponseType(201)]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(409)]
+    public async Task<IActionResult> CreateVehicleAsync([FromBody] CreateVehicleRequest request)
     {
-        throw new NotImplementedException();
+        var command = request.MapToCommand();
+        var result = await _mediator.Send(command);
+        return result.IsSuccess
+            ? CreatedAtAction("GetVehicleByVehicleId",
+                new { vehicleUniqueIdentifier = result.Value.UniqueIdentifier }, result.Value)
+            : result.ToFailedActionResult();
     }
 }

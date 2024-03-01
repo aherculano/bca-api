@@ -51,7 +51,7 @@ public class GetVehicleByUniqueIdentifierQueryHandlerTests : TestsBase
         
         //Assert
         result.IsFailed.Should().BeTrue();
-        result.Errors.Any(x => x is VehicleNotFoundError).Should().BeTrue();
+        result.Errors.Any(x => x is NotFoundError).Should().BeTrue();
         await _repository.Received(1).GetVehicleByUniqueIdentifierAsync(query.UniqueIdentifier);
     }
 

@@ -53,7 +53,7 @@ public class ListVehiclesQueryHandlerTests : TestsBase
         
         //Assert
         result.IsFailed.Should().BeTrue();
-        result.Errors.Any(x => x is VehicleNotFoundError);
+        result.Errors.Any(x => x is NotFoundError);
         await _repository.Received(1).ListVehiclesAsync(Arg.Any<Func<Vehicle, bool>>());
     }
 

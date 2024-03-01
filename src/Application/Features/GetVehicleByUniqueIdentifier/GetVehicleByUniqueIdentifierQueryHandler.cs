@@ -24,6 +24,6 @@ public class GetVehicleByUniqueIdentifierQueryHandler : IRequestHandler<GetVehic
 
         return vehicleResult.Value is not null
             ? Result.Ok(vehicleResult.Value.MapToResponse())
-            : Result.Fail(new VehicleNotFoundError());
+            : Result.Fail(new NotFoundError("Vehicle Not Found", $"There Is No Vehicle Registered With That ${request.UniqueIdentifier}"));
     }
 }

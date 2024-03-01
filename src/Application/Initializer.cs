@@ -2,6 +2,7 @@
 using System.Reflection;
 using Application.PipelineBehaviors;
 using FluentValidation;
+using Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Application;
@@ -11,6 +12,7 @@ public static class Initializer
 {
     public static IServiceCollection ConfigureApplication(this IServiceCollection services)
     {
+        services.ConfigureInfrastructure();
         services.AddMediatR(cfg => { cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()); });
 
         services.ConfigurePipelineBehavior()

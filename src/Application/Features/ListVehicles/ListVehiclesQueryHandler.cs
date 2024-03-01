@@ -25,7 +25,7 @@ public class ListVehiclesQueryHandler : IRequestHandler<ListVehiclesQuery, Resul
 
         if (result.Value is null || result.Value?.Count() == 0)
         {
-            return Result.Fail(new VehicleNotFoundError());
+            return Result.Fail(new NotFoundError("No Vehicles Were Found", $"There Are No Vehicles With The Specified Search Criteria"));
         }
 
         return Result.Ok(result.Value.Select(x => x.MapToResponse()));

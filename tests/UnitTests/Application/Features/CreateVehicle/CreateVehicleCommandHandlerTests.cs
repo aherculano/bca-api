@@ -58,7 +58,7 @@ public class CreateVehicleCommandHandlerTests : TestsBase
         
         //Assert
         result.IsFailed.Should().BeTrue();
-        result.Errors.Any(x => x is VehicleAlreadyExistsError);
+        result.Errors.Any(x => x is AlreadyExistsError);
         await _repository.Received(1).GetVehicleByUniqueIdentifierAsync(command.Request.UniqueIdentifier);
         await _repository.Received(0).CreateVheicleAsync(Arg.Any<Vehicle>());
     }
