@@ -1,9 +1,9 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using Application.Errors;
 using Application.Features.CreateVehicle;
 using Application.Requests.VehicleRequests;
 using Application.Responses.VehicleResponses;
 using AutoFixture;
+using Domain.Errors;
 using Domain.Models.Vehicle;
 using Domain.Repositories;
 using FluentAssertions;

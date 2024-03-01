@@ -1,8 +1,7 @@
-﻿using Application.Errors;
-using Application.FluentResults;
-using Application.Requests.VehicleRequests;
+﻿using Application.Requests.VehicleRequests;
 using Application.Responses.VehicleResponses;
-using Domain.Models.Vehicle;
+using Domain.Errors;
+using Domain.FluentResults;
 using Domain.Repositories;
 using FluentResults;
 using MediatR;

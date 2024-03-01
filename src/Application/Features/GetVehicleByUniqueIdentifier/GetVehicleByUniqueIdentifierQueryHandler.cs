@@ -1,6 +1,6 @@
-﻿using Application.Errors;
-using Application.FluentResults;
-using Application.Responses.VehicleResponses;
+﻿using Application.Responses.VehicleResponses;
+using Domain.Errors;
+using Domain.FluentResults;
 using Domain.Repositories;
 using FluentResults;
 using MediatR;

@@ -1,5 +1,5 @@
 ﻿using System.Net;
-using Application.Errors;
+using Domain.Errors;
 
 namespace Api.Responses;
 

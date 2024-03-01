@@ -1,6 +1,4 @@
-﻿using FluentResults;
-
-namespace Application.Errors;
+﻿namespace Domain.Errors;
 
 public class NotFoundError : ApplicationError
 {

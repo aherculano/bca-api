@@ -1,6 +1,6 @@
 ﻿using FluentResults;
 
-namespace Application.Errors;
+namespace Domain.Errors;
 
 public abstract class ApplicationError : Error
 {

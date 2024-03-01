@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using Api.Responses;
 using Application.Errors;
+using Domain.Errors;
 using FluentResults;
 using Microsoft.AspNetCore.Mvc;
 

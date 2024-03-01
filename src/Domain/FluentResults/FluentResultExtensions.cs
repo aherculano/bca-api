@@ -1,8 +1,8 @@
 ﻿using FluentResults;
 
-namespace Application.FluentResults;
+namespace Domain.FluentResults;
 
-internal static class FluentResultExtensions
+public static class FluentResultExtensions
 {
     public static Result<T> ThrowExceptionIfHasFailedResult<T>(this Result<T> result)
     {
