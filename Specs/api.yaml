@@ -1,0 +1,263 @@
+openapi: 3.0.0
+info:
+  title: BCA Auction API
+  description: A simple API to catalog vehicles and to manage auctions
+  version: '1.0'
+servers:
+  - url: http://localhost:5000/v1
+    description: Docker
+paths:
+  /vehicles:
+    post:
+      summary: Creates A Vehicle
+      tags:
+        - vehicles
+      requestBody:
+        required: true
+        content: 
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#components/schemas/Suv'
+                - $ref: '#components/schemas/Truck'
+                - $ref: '#components/schemas/Sedan'
+      responses:
+        '201':
+          description: The Vehicle Was Created With Success
+          headers:
+            Location:
+              description: The URI Where The Book Can Be Found
+              schema:
+                type: string
+                format: uri
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#components/schemas/Suv'
+                  - $ref: '#components/schemas/Truck'
+                  - $ref: '#components/schemas/Sedan'
+        '400':
+          description: Vehicle Was Not Created Due To Bad Schema
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Error'
+        '409':
+          description: The Vehicle Already Exists
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Error'
+    get:
+      summary: Lists Vehicles By The Specified Parameters
+      tags:
+        - vehicles
+      parameters:
+        - name: Type
+          in: query
+          description: The Type Of Vehicle To Search For
+          schema:
+            type: string
+            enum:
+              - Suv
+              - Truck
+              - Sedan
+        - name: Manufacturer
+          in: query
+          description: The Manufacturer Of The Vehicle To Search For
+          schema:
+            type: string
+            example: Renault
+        - name: Model
+          in: query
+          description: The Model Of The Vehicle To Search For
+          schema:
+            type: string
+            example: Megane
+        - name: Year
+          in: query
+          description: The Manufacturer Of The Vehicle To Search For
+          schema:
+            type: integer
+            format: int32
+            minimum: 1900
+            maximum: 2024
+            example: 2017
+      responses:
+        '200':
+          description: There Were Vehicles Found Matching The Criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  anyOf:
+                    - $ref: '#/components/schemas/Suv'
+                    - $ref: '#/components/schemas/Truck'
+                    - $ref: '#/components/schemas/Sedan'        
+        '204':
+          description: No Vehicles Were Found Matching The Criteria
+        '400':
+          description: Invalid Input QueryParameters
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Error'
+  /vehicles/{vehicleUniqueIdentifier}:
+    parameters:
+      - name: vehicleUniqueIdentifier
+        in: path
+        description: Unique Identifier Of A Vehicle
+        required: true
+        schema:
+          type: string
+          format: uuid
+          example: 34cfd015-9b0f-4450-bcdd-dcdacb1f2998
+    get:
+      summary: Gets A Vehicle By Its Unique Identifier
+      tags:
+        - vehicles
+      responses:
+        '200':
+          description: Got the Vehicle With Success
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#components/schemas/Suv'
+                  - $ref: '#components/schemas/Truck'
+                  - $ref: '#components/schemas/Sedan'
+        '404':
+          description: The Vehicle Was Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Error'
+  /auctions:
+    post:
+      summary: Creates An Auction For A Vehicle
+      tags:
+        - auctions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#components/schemas/AuctionRequest'
+      responses:
+        '201':
+          description: The Vehicle Was Created With Success
+          headers:
+            Location:
+              description: The URI Where The Auction Can Be Found
+              schema:
+                type: string
+                format: uri
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Auction'
+        '400':
+          description: Invalid Input For Creating An Auction
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: The Vehicle Referecenced To The Auction Does Not Exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: The Vehicle Referecenced To The Auction Already has an Ongoing Auction
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /auctions/{auctionUniqueIdentifier}:
+    parameters:
+      - name: auctionUniqueIdentifier
+        in: path
+        description: Unique Identifier Of An Auction
+        required: true
+        schema:
+          type: string
+          format: uuid
+          example: 4a3e6750-6625-4367-8adc-46c1bfa6ca22
+    get:
+      summary: Gets The Specified Auction By Auction Unique Identifier
+      tags:
+        - auctions
+      responses:
+        '200':
+          description: The Auction Was Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Auction'
+        '400':
+          description: Invalid Inputs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: The Auction Was Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /auctions/{auctionUniqueIdentifier}/bid:
+    parameters:
+      - name: auctionUniqueIdentifier
+        in: path
+        description: Unique Identifier Of An Auction
+        required: true
+        schema:
+          type: string
+          format: uuid
+          example: 4a3e6750-6625-4367-8adc-46c1bfa6ca22
+    post:
+      summary: Place A Bid On An Auction
+      tags:
+        - auctions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Bid'
+      responses:
+        '204':
+          description: The Bid Was Placed With Success
+        '400':
+          description: The Bid Details Were Incorrect
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: The Auction Was Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+
+components:
+  schemas:
+    Suv:
+      $ref: 'Components/Vehicles.yaml#/components/schemas/Suv'
+    Truck:
+      $ref: 'Components/Vehicles.yaml#/components/schemas/Truck'
+    Sedan:
+      $ref: 'Components/Vehicles.yaml#/components/schemas/Sedan'
+    Auction:
+      $ref: 'Components/Auctions.yaml#/components/schemas/Auction'
+    AuctionRequest:
+      $ref: 'Components/Auctions.yaml#/components/schemas/AuctionRequest'
+    Bid:
+      $ref: 'Components/Auctions.yaml#/components/schemas/Bid'
+    Error:
+      $ref: 'Components/Error.yaml#/components/schemas/Error'

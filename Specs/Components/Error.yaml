@@ -1,0 +1,14 @@
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Short Title Referencing the Problem
+        status:
+          type: integer
+          description: The HTTP Status Code Of The Error
+        detail:
+          type: string
+          description: The Details Of What Caused The Problem

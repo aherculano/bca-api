@@ -1,0 +1,53 @@
+components:
+  schemas:
+    Auction:
+      type: object
+      properties:
+        UniqueIdentifier:
+          description: The Auction Unique Identifier
+          required: true
+          type: string
+          format: uuid
+          example: c7c33114-9f89-403e-9961-11cf8bed78c4
+        VehicleUniqueIdentifier:
+          description: The Vehicle Unique Identifier
+          required: true
+          type: string
+          format: uuid
+          example: 4500f1af-fa26-46cf-a2d8-ec1ed3c98f3a
+        Status:
+          description: The Auction Status
+          required: true
+          type: string
+          enum:
+            - Open
+            - Closed
+        Bids:
+          description: The Bids Of The Auction
+          required: true
+          type: array
+          items:
+            $ref : '#components/schemas/Bid'
+    AuctionRequest:
+      type: object
+      properties:
+        VehicleUniqueIdentifier:
+          description: The Vehicle Unique Identifier
+          required: true
+          type: string
+          format: uuid
+          example: 4500f1af-fa26-46cf-a2d8-ec1ed3c98f3a
+    Bid:
+      type: object
+      properties:
+        Bidder:
+          description: The Name Of The Bidder
+          required: true
+          type: string
+          example: Jon Doe
+        BidValue:
+          description: The Value Of The Bid
+          required: true
+          type: number
+          format: double
+          example: 12000
