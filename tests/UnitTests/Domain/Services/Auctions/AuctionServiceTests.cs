@@ -8,6 +8,7 @@ using Domain.Services.Auctions;
 using FluentAssertions;
 using FluentResults;
 using NSubstitute;
+using NSubstitute.ReceivedExtensions;
 
 namespace UnitTests.Domain.Services.Auctions;
 
@@ -361,6 +362,102 @@ public class AuctionServiceTests : TestsBase
         result.Value.Should().Be(AuctionStatus.Closed);
         await _auctionRepository.Received(1).GetAuctionByUniqueIdentifier(auctionId);
         await _auctionRepository.Received(0).GetAuctionsByVehicleUniqueIdentifier(auction.VehicleUniqueIdentifier);
+        await _auctionRepository.Received(1).UpdateAuction(Arg.Any<Auction>());
+    }
+
+    [Fact]
+    public async void AddBid_AuctionDoesNotExists_ReturnsFail()
+    {
+        //Arrange
+        var auctionUniqueIdentifier = Fixture.Create<Guid>();
+        var bid = Fixture.Create<Bid>();
+
+        _auctionRepository.GetAuctionByUniqueIdentifier(Arg.Any<Guid>())
+            .Returns(Result.Ok(null as Auction));
+        
+        //Act
+        var result = await _auctionService.AddBid(auctionUniqueIdentifier, bid);
+
+        //Assert
+        result.IsFailed.Should().BeTrue();
+        result.Errors.Any(x => x is NotFoundError).Should().BeTrue();
+        await _auctionRepository.Received(1).GetAuctionByUniqueIdentifier(auctionUniqueIdentifier);
+        await _auctionRepository.Received(0).UpdateAuction(Arg.Any<Auction>());
+    }
+
+    [Fact]
+    public async void AddBid_InvalidBid_ReturnsFail()
+    {
+        //Arrange
+        var auctionUniqueIdentifier = Fixture.Create<Guid>();
+        var auction = Fixture.Build<Auction>()
+            .With(x => x.UniqueIdentifier)
+            .With(x => x.Bids, new List<Bid>())
+            .Create();
+        var bid = new Bid(Fixture.Create<string>(), auction.StartBid - 10);
+        
+        _auctionRepository.GetAuctionByUniqueIdentifier(Arg.Any<Guid>())
+            .Returns(Result.Ok(auction));
+        
+        //Act
+        var result = await _auctionService.AddBid(auctionUniqueIdentifier, bid);
+
+        //Assert
+        result.IsFailed.Should().BeTrue();
+        result.Errors.Any(x => x is InvalidBidError).Should().BeTrue();
+        await _auctionRepository.Received(1).GetAuctionByUniqueIdentifier(auctionUniqueIdentifier);
+        await _auctionRepository.Received(0).UpdateAuction(Arg.Any<Auction>());
+    }
+
+    [Fact]
+    public async void AddBid_ClosedAuction_ReturnsFail()
+    {
+        //Arrange
+        var auctionUniqueIdentifier = Fixture.Create<Guid>();
+        var auction = Fixture.Build<Auction>()
+            .With(x => x.Status, AuctionStatus.Closed)
+            .With(x => x.UniqueIdentifier, auctionUniqueIdentifier)
+            .Create();
+        
+        var bid = Fixture.Create<Bid>();
+
+        _auctionRepository.GetAuctionByUniqueIdentifier(Arg.Any<Guid>())
+            .Returns(Result.Ok(auction));
+        
+        //Act
+        var result = await _auctionService.AddBid(auctionUniqueIdentifier, bid);
+
+        //Assert
+        result.IsFailed.Should().BeTrue();
+        result.Errors.Any(x => x is ClosedAuctionError).Should().BeTrue();
+        await _auctionRepository.Received(1).GetAuctionByUniqueIdentifier(auctionUniqueIdentifier);
+        await _auctionRepository.Received(0).UpdateAuction(Arg.Any<Auction>());
+    }
+    [Fact]
+    public async void AddBid_BidIsValid_ReturnsOk()
+    {
+        //Arrange
+        var auctionUniqueIdentifier = Fixture.Create<Guid>();
+        var bid = Fixture.Create<Bid>();
+        var auction = Fixture
+            .Build<Auction>()
+            .With(x => x.StartBid, bid.BidValue - 100)
+            .With(x => x.UniqueIdentifier, auctionUniqueIdentifier)
+            .With(x => x.Bids, new List<Bid>())
+            .Create();
+
+        _auctionRepository.GetAuctionByUniqueIdentifier(Arg.Any<Guid>())
+            .Returns(Result.Ok(auction));
+        
+        _auctionRepository.UpdateAuction(Arg.Any<Auction>())
+            .Returns(Result.Ok());
+        
+        //Act
+        var result = await _auctionService.AddBid(auctionUniqueIdentifier, bid);
+
+        //Assert
+        result.IsSuccess.Should().BeTrue();
+        await _auctionRepository.Received(1).GetAuctionByUniqueIdentifier(auctionUniqueIdentifier);
         await _auctionRepository.Received(1).UpdateAuction(Arg.Any<Auction>());
     }
 }

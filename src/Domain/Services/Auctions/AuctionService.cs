@@ -43,6 +43,37 @@ public class AuctionService : IAuctionService
         return Result.Ok(createResult.Value);
     }
 
+    public async Task<Result<Bid>> AddBid(Guid auctionUniqueIdentifier, Bid bid)
+    {
+        var currentAuctionResult = await _auctionRepository.GetAuctionByUniqueIdentifier(auctionUniqueIdentifier);
+
+        var currentAuction = currentAuctionResult.ThrowExceptionIfHasFailedResult().Value;
+
+        if (currentAuction is null)
+        {
+            return Result.Fail(new NotFoundError("Not Found", "Auction Was Not Found"));
+        }
+
+        if (currentAuction.Status is AuctionStatus.Closed)
+        {
+            return Result.Fail(new ClosedAuctionError("Auction Closed",
+                "The Bid Was Not Placed Because The Auction Is Closed"));
+        }
+
+        if (currentAuction.Bids.Any(x => x.BidValue > bid.BidValue) || currentAuction.StartBid > bid.BidValue)
+        {
+            return Result.Fail(new InvalidBidError("Bad Request", "Invalid Bid Value"));
+        }
+        
+        currentAuction.Bids.Add(bid);
+        
+        var updateResult = await _auctionRepository.UpdateAuction(currentAuction);
+
+        updateResult.ThrowExceptionIfHasFailedResult();
+        
+        return Result.Ok(bid);
+    }
+
     public async Task<Result<AuctionStatus>> UpdateAuctionStatus(Guid auctionUniqueIdentifier, AuctionStatus status)
     {
         var currentAuctionResult = await _auctionRepository.GetAuctionByUniqueIdentifier(auctionUniqueIdentifier);
