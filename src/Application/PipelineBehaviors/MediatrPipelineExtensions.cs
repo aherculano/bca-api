@@ -1,8 +1,10 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Application.Features.CreateAuction;
+using Application.Features.CreateBid;
 using Application.Features.CreateVehicle;
 using Application.Features.GetAuctionByUniqueIdentifier;
 using Application.Features.GetVehicleByUniqueIdentifier;
+using Application.Features.ListVehicles;
 using Application.Features.UpdateAuctionStatus;
 using Application.Responses.AuctionResponses;
 using Application.Responses.VehicleResponses;
@@ -26,9 +28,11 @@ public static class MediatrPipelineExtensions
                 ValidationBehavior<GetVehicleByUniqueIdentifierQuery, VehicleResponse>>()
             .AddTransient<IPipelineBehavior<GetAuctionByUniqueIdentifierQuery, Result<AuctionResponse>>,
                 ValidationBehavior<GetAuctionByUniqueIdentifierQuery, AuctionResponse>>()
+            .AddTransient<IPipelineBehavior<ListVehiclesQuery, Result<VehicleListResponse>>,
+                ValidationBehavior<ListVehiclesQuery, VehicleListResponse>>()
+            .AddTransient<IPipelineBehavior<CreateBidCommand, Result<BidResponse>>,
+                ValidationBehavior<CreateBidCommand, BidResponse>>()
             .AddTransient<IPipelineBehavior<UpdateAuctionStatusCommand, Result<string>>,
                 ValidationBehavior<UpdateAuctionStatusCommand, string>>();
-
-        //TODO: Validator cannot be added for return Result<IEnumerable<T>>, this has to be fixed
     }
 }
