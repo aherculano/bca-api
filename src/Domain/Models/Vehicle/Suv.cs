@@ -1,6 +1,6 @@
 ﻿namespace Domain.Models.Vehicle;
 
-public class Suv:Vehicle
+public class Suv : Vehicle
 {
     public const string SuvType = "SUV";
 

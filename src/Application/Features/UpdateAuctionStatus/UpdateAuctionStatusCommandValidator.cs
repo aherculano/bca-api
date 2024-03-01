@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace Application.Features.UpdateAuctionStatus;
 
-public class UpdateAuctionStatusCommandValidator: AbstractValidator<UpdateAuctionStatusCommand>
+public class UpdateAuctionStatusCommandValidator : AbstractValidator<UpdateAuctionStatusCommand>
 {
     public UpdateAuctionStatusCommandValidator()
     {
@@ -25,7 +25,8 @@ public class UpdateAuctionStatusCommandValidator: AbstractValidator<UpdateAuctio
         switch (status)
         {
             case var _ when status.Equals(AuctionStatus.Open.ToString(), StringComparison.InvariantCultureIgnoreCase)
-                || status.Equals(AuctionStatus.Closed.ToString(), StringComparison.InvariantCultureIgnoreCase):
+                            || status.Equals(AuctionStatus.Closed.ToString(),
+                                StringComparison.InvariantCultureIgnoreCase):
                 return true;
             default:
                 return false;

@@ -6,10 +6,7 @@ internal static class AuctionResponseMapper
 {
     public static AuctionResponse MapToResponse(this Auction source)
     {
-        if (source is null)
-        {
-            return null;
-        }
+        if (source is null) return null;
 
         return new AuctionResponse(
             source.UniqueIdentifier,

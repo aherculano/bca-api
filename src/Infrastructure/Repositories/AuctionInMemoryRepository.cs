@@ -6,23 +6,40 @@ namespace Infrastructure.Repositories;
 
 public class AuctionInMemoryRepository : IAuctionRepository
 {
-    public Task<Result<Auction>> CreateAuction(Auction auction)
+    private readonly IList<Auction> _auctions;
+
+    public AuctionInMemoryRepository()
     {
-        throw new NotImplementedException();
+        _auctions = new List<Auction>();
     }
 
-    public Task<Result<bool>> UpdateAuction(Auction auction)
+    public async Task<Result<Auction>> CreateAuction(Auction auction)
     {
-        throw new NotImplementedException();
+        _auctions.Add(auction);
+        return Result.Ok(auction);
     }
 
-    public Task<Result<IEnumerable<Auction>>> GetAuctionsByVehicleUniqueIdentifier(Guid vehicleUniqueIdentifer)
+    public async Task<Result<bool>> UpdateAuction(Auction auction)
     {
-        throw new NotImplementedException();
+        var currentAuction = _auctions.FirstOrDefault(x => x.UniqueIdentifier == auction.UniqueIdentifier);
+
+        currentAuction.Bids = auction.Bids;
+        currentAuction.Status = auction.Status;
+
+        return Result.Ok(true);
     }
 
-    public Task<Result<Auction>> GetAuctionByUniqueIdentifier(Guid uniqueIdentifier)
+    public async Task<Result<IEnumerable<Auction>>> GetAuctionsByVehicleUniqueIdentifier(Guid vehicleUniqueIdentifer)
     {
-        throw new NotImplementedException();
+        var auctions = _auctions.Where(x => x.VehicleUniqueIdentifier == vehicleUniqueIdentifer);
+
+        return Result.Ok(auctions);
+    }
+
+    public async Task<Result<Auction>> GetAuctionByUniqueIdentifier(Guid uniqueIdentifier)
+    {
+        var auction = _auctions.FirstOrDefault(x => x.UniqueIdentifier == uniqueIdentifier);
+
+        return Result.Ok(auction);
     }
 }

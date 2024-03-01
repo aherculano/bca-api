@@ -22,38 +22,38 @@ public class ListVehiclesQueryValidatorTests : TestsBase
         //Arrange
         var request = new ListVehicleRequest(Suv.SuvType, "Toyota", "Corolla", 1995);
         var query = new ListVehiclesQuery(request);
-        
+
         //Act
         var validationResult = _validator.Validate(query);
-        
+
         //Assert
         validationResult.IsValid.Should().BeTrue();
     }
-    
+
     [Fact]
     public void Validate_NullParamenters_ReturnsValid()
     {
         //Arrange
         var request = new ListVehicleRequest(null, null, null, null);
         var query = new ListVehiclesQuery(request);
-        
+
         //Act
         var validationResult = _validator.Validate(query);
-        
+
         //Assert
         validationResult.IsValid.Should().BeTrue();
     }
-    
+
     [Fact]
     public void Validate_InvalidParameters_ReturnsInvalid()
     {
         //Arrange
         var request = new ListVehicleRequest("Plane", "", "", 1750);
         var query = new ListVehiclesQuery(request);
-        
+
         //Act
         var validationResult = _validator.Validate(query);
-        
+
         //Assert
         validationResult.IsValid.Should().BeFalse();
         validationResult.Errors.Count.Should().Be(4);

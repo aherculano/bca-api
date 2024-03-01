@@ -14,8 +14,8 @@ namespace UnitTests.Application.Features.GetVehicleByUniqueIdentifier;
 [ExcludeFromCodeCoverage]
 public class GetVehicleByUniqueIdentifierQueryHandlerTests : TestsBase
 {
-    private readonly IVehicleRepository _repository;
     private readonly GetVehicleByUniqueIdentifierQueryHandler _handler;
+    private readonly IVehicleRepository _repository;
 
     public GetVehicleByUniqueIdentifierQueryHandlerTests()
     {
@@ -33,7 +33,7 @@ public class GetVehicleByUniqueIdentifierQueryHandlerTests : TestsBase
 
         //Act
         Func<Task<Result<VehicleResponse>>> call = async () => await _handler.Handle(query, CancellationToken.None);
-        
+
         //Assert
         await call.Should().ThrowAsync<Exception>();
         await _repository.Received(1).GetVehicleByUniqueIdentifierAsync(query.UniqueIdentifier);
@@ -45,10 +45,10 @@ public class GetVehicleByUniqueIdentifierQueryHandlerTests : TestsBase
         //Arrange
         var query = Fixture.Create<GetVehicleByUniqueIdentifierQuery>();
         _repository.GetVehicleByUniqueIdentifierAsync(query.UniqueIdentifier).Returns(Result.Ok(null as Vehicle));
-        
+
         //Act
         var result = await _handler.Handle(query, CancellationToken.None);
-        
+
         //Assert
         result.IsFailed.Should().BeTrue();
         result.Errors.Any(x => x is NotFoundError).Should().BeTrue();
@@ -65,7 +65,7 @@ public class GetVehicleByUniqueIdentifierQueryHandlerTests : TestsBase
             .Create();
 
         _repository.GetVehicleByUniqueIdentifierAsync(query.UniqueIdentifier).Returns(Result.Ok(suv as Vehicle));
-        
+
         //Act
         var result = await _handler.Handle(query, CancellationToken.None);
 

@@ -11,12 +11,12 @@ public class ListVehiclesQueryValidator : AbstractValidator<ListVehiclesQuery>
             .Must(BeValidType)
             .When(x => x.Request.Type is not null)
             .WithMessage("Invalid Vehicle Type");
-        
+
         RuleFor(x => x.Request.Manufacturer)
             .NotEmpty()
             .When(x => x.Request.Manufacturer is not null)
             .WithMessage("Invalid Vehicle Manufacturer");
-        
+
         RuleFor(x => x.Request.Model)
             .NotEmpty()
             .When(x => x.Request.Type is not null)
@@ -33,8 +33,8 @@ public class ListVehiclesQueryValidator : AbstractValidator<ListVehiclesQuery>
         switch (type)
         {
             case var _ when type.Equals(Suv.SuvType, StringComparison.InvariantCultureIgnoreCase)
-                || type.Equals(Truck.TruckType, StringComparison.InvariantCultureIgnoreCase)
-                || type.Equals(Sedan.SedanType, StringComparison.InvariantCultureIgnoreCase):
+                            || type.Equals(Truck.TruckType, StringComparison.InvariantCultureIgnoreCase)
+                            || type.Equals(Sedan.SedanType, StringComparison.InvariantCultureIgnoreCase):
                 return true;
             default:
                 return false;

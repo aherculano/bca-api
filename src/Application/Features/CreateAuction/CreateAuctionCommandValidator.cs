@@ -1,5 +1,4 @@
-﻿using Domain.Models.Auction;
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace Application.Features.CreateAuction;
 

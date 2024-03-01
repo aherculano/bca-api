@@ -10,7 +10,7 @@ namespace UnitTests.Application.Features.CreateVehicle;
 public class CreateVehicleCommandValidatorTests : TestsBase
 {
     private readonly CreateVehicleCommandValidator _validator;
-    
+
     public CreateVehicleCommandValidatorTests()
     {
         _validator = new CreateVehicleCommandValidator();

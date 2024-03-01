@@ -2,16 +2,6 @@
 
 public class Auction
 {
-    public Guid UniqueIdentifier { get; set; }
-    
-    public Guid VehicleUniqueIdentifier { get; set; }
-    
-    public AuctionStatus Status { get; set; }
-    
-    public decimal StartBid { get; set; }
-    
-    public IList<Bid> Bids { get; set; }
-
     public Auction(
         Guid vehicleUniqueIdentifier,
         decimal startBid)
@@ -22,4 +12,14 @@ public class Auction
         StartBid = startBid;
         Bids = new List<Bid>();
     }
+
+    public Guid UniqueIdentifier { get; set; }
+
+    public Guid VehicleUniqueIdentifier { get; set; }
+
+    public AuctionStatus Status { get; set; }
+
+    public decimal StartBid { get; set; }
+
+    public IList<Bid> Bids { get; set; }
 }

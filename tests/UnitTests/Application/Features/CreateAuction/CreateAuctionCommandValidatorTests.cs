@@ -6,7 +6,7 @@ using FluentAssertions;
 namespace UnitTests.Application.Features.CreateAuction;
 
 [ExcludeFromCodeCoverage]
-public class CreateAuctionCommandValidatorTests: TestsBase
+public class CreateAuctionCommandValidatorTests : TestsBase
 {
     private readonly CreateAuctionCommandValidator _validator;
 
@@ -20,10 +20,10 @@ public class CreateAuctionCommandValidatorTests: TestsBase
     {
         //Arrange
         var command = Fixture.Create<CreateAuctionCommand>();
-        
+
         //Act
         var validationResult = _validator.Validate(command);
-        
+
         //Assert
         validationResult.IsValid.Should().BeTrue();
     }
@@ -35,11 +35,10 @@ public class CreateAuctionCommandValidatorTests: TestsBase
         var command = new CreateAuctionCommand(Guid.Empty);
         //Act
         var validationResult = _validator.Validate(command);
-        
+
         //Assert
         validationResult.IsValid.Should().BeFalse();
-        validationResult.Errors.
-            Any(x => x.ErrorMessage == "Invalid Vehicle Unique Identifier")
+        validationResult.Errors.Any(x => x.ErrorMessage == "Invalid Vehicle Unique Identifier")
             .Should().BeTrue();
     }
 }

@@ -14,17 +14,17 @@ public class GetAuctionByUniqueIdentifierQueryValidatorTests : TestsBase
     {
         _validator = new GetAuctionByUniqueIdentifierQueryValidator();
     }
-    
+
     [Fact]
     public void Validate_EmtpyGuid_ReturnsFail()
     {
         //Arrange
         var uniqueIdentifier = Guid.Empty;
         var query = new GetAuctionByUniqueIdentifierQuery(uniqueIdentifier);
-        
+
         //Act
         var validationResult = _validator.Validate(query);
-        
+
         //Assert
         validationResult.IsValid.Should().BeFalse();
         validationResult.Errors.Count.Should().Be(1);
@@ -37,10 +37,10 @@ public class GetAuctionByUniqueIdentifierQueryValidatorTests : TestsBase
         //Arrange
         var uniqueIdentifier = Fixture.Create<Guid>();
         var query = new GetAuctionByUniqueIdentifierQuery(uniqueIdentifier);
-        
+
         //Act
         var validationResult = _validator.Validate(query);
-        
+
         //Assert
         validationResult.IsValid.Should().BeTrue();
     }

@@ -9,7 +9,7 @@ public class GetVehicleByUniqueIdentifierQueryValidator : AbstractValidator<GetV
         RuleFor(x => x.UniqueIdentifier)
             .NotNull()
             .WithMessage("Vehicle Unique Identifier Cannot Be Null");
-        
+
         RuleFor(x => x.UniqueIdentifier)
             .Must(x => x != Guid.Empty)
             .When(x => x is not null)

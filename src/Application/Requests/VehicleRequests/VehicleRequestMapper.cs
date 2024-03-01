@@ -2,7 +2,6 @@
 
 namespace Application.Requests.VehicleRequests;
 
-
 internal static class VehicleRequestMapper
 {
     public static Vehicle MapToDomain(this VehicleRequest request)

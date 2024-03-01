@@ -13,7 +13,7 @@ internal static class FluentResultExtensions
     {
         return HandleErrorResult(result.ToResult());
     }
-    
+
     public static IActionResult ToFailedActionResult<T>(this Result<T> result)
     {
         return HandleErrorResult(result);
@@ -24,15 +24,20 @@ internal static class FluentResultExtensions
         var errors = result.Errors;
         switch (errors)
         {
-            //TODO: Implement logic for Validation Error
             case var _ when errors.Any(x => x is ValidationError):
-                return new BadRequestObjectResult(new ErrorResponse("Validation Error", HttpStatusCode.BadRequest.ToString(), string.Join("; ", errors.Select(x => x.Reasons.Select(x => x.Message.ToString())))));
+                return new BadRequestObjectResult(new ErrorResponse("Validation Error",
+                    HttpStatusCode.BadRequest.ToString(),
+                    string.Join("; ",
+                        (errors.FirstOrDefault() as ValidationError).Failures.Select(x => x.ErrorMessage))));
             case var _ when errors.Any(x => x is NotFoundError):
                 return new NotFoundObjectResult((errors.FirstOrDefault() as ApplicationError)?.MapToErrorResponse());
             case var _ when errors.Any(x => x is AlreadyExistsError):
                 return new ConflictObjectResult((errors.FirstOrDefault() as ApplicationError)?.MapToErrorResponse());
+            case var _ when errors.Any(x => x is ConflictAuctionError):
+                return new ConflictObjectResult((errors.FirstOrDefault() as ApplicationError)?.MapToErrorResponse());
             default:
-                return new BadRequestObjectResult(new ErrorResponse("Bad Request", HttpStatusCode.BadRequest.ToString(), "Bad Request"));
+                return new BadRequestObjectResult(new ErrorResponse("Bad Request", HttpStatusCode.BadRequest.ToString(),
+                    "Bad Request"));
         }
     }
 }

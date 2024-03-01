@@ -10,8 +10,8 @@ public interface IVehicleRepository
     Task<Result<Vehicle>> GetVehicleByUniqueIdentifierAsync(Guid uniqueIdentifier);
 
     Task<Result<IEnumerable<Vehicle>>> ListVehiclesAsync(
-        string? type, 
-        string? manufacturer, 
-        string? model, 
+        string? type,
+        string? manufacturer,
+        string? model,
         int? year);
 }

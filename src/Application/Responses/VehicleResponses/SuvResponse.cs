@@ -3,9 +3,9 @@
 namespace Application.Responses.VehicleResponses;
 
 public record SuvResponse(
-    Guid UniqueIdentifier, 
+    Guid UniqueIdentifier,
     string Manufacturer,
-    string Model, 
-    int Year, 
+    string Model,
+    int Year,
     decimal StartingBid,
-    int NumberOfSeats) :VehicleResponse(UniqueIdentifier, Suv.SuvType, Manufacturer, Model, Year, StartingBid);
+    int NumberOfSeats) : VehicleResponse(UniqueIdentifier, Suv.SuvType, Manufacturer, Model, Year, StartingBid);

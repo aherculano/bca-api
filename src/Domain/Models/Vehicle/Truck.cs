@@ -1,6 +1,6 @@
 ﻿namespace Domain.Models.Vehicle;
 
-public class Truck: Vehicle
+public class Truck : Vehicle
 {
     public const string TruckType = "Truck";
 

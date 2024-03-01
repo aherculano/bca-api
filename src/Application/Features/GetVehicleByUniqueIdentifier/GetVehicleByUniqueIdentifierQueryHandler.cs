@@ -7,16 +7,19 @@ using MediatR;
 
 namespace Application.Features.GetVehicleByUniqueIdentifier;
 
-public class GetVehicleByUniqueIdentifierQueryHandler : IRequestHandler<GetVehicleByUniqueIdentifierQuery, Result<VehicleResponse>>
+public class
+    GetVehicleByUniqueIdentifierQueryHandler : IRequestHandler<GetVehicleByUniqueIdentifierQuery,
+    Result<VehicleResponse>>
 {
     private readonly IVehicleRepository _repository;
-    
+
     public GetVehicleByUniqueIdentifierQueryHandler(IVehicleRepository repository)
     {
         _repository = repository;
     }
-    
-    public async Task<Result<VehicleResponse>> Handle(GetVehicleByUniqueIdentifierQuery request, CancellationToken cancellationToken)
+
+    public async Task<Result<VehicleResponse>> Handle(GetVehicleByUniqueIdentifierQuery request,
+        CancellationToken cancellationToken)
     {
         var vehicleResult = await _repository.GetVehicleByUniqueIdentifierAsync(request.UniqueIdentifier);
 
@@ -24,6 +27,7 @@ public class GetVehicleByUniqueIdentifierQueryHandler : IRequestHandler<GetVehic
 
         return vehicleResult.Value is not null
             ? Result.Ok(vehicleResult.Value.MapToResponse())
-            : Result.Fail(new NotFoundError("Vehicle Not Found", $"There Is No Vehicle Registered With That ${request.UniqueIdentifier}"));
+            : Result.Fail(new NotFoundError("Vehicle Not Found",
+                $"There Is No Vehicle Registered With That ${request.UniqueIdentifier}"));
     }
 }

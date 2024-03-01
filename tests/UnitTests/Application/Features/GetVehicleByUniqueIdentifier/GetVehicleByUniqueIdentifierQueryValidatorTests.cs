@@ -21,10 +21,10 @@ public class GetVehicleByUniqueIdentifierQueryValidatorTests : TestsBase
         //Arrange
         var uniqueIdentifier = Guid.Empty;
         var query = new GetVehicleByUniqueIdentifierQuery(uniqueIdentifier);
-        
+
         //Act
         var validationResult = _validator.Validate(query);
-        
+
         //Assert
         validationResult.IsValid.Should().BeFalse();
         validationResult.Errors.Count.Should().Be(1);
@@ -37,10 +37,10 @@ public class GetVehicleByUniqueIdentifierQueryValidatorTests : TestsBase
         //Arrange
         var uniqueIdentifier = Fixture.Create<Guid>();
         var query = new GetVehicleByUniqueIdentifierQuery(uniqueIdentifier);
-        
+
         //Act
         var validationResult = _validator.Validate(query);
-        
+
         //Assert
         validationResult.IsValid.Should().BeTrue();
     }

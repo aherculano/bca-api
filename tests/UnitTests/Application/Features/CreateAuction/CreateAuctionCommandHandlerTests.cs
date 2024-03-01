@@ -31,10 +31,10 @@ public class CreateAuctionCommandHandlerTests : TestsBase
             .Create();
         _auctionService.CreateAuction(command.VehicleUniqueIdentifier)
             .Returns(Result.Ok(auction));
-        
+
         //Act
         var result = await _handler.Handle(command, CancellationToken.None);
-        
+
         //Assert
         result.IsSuccess.Should().BeTrue();
         result.Value.UniqueIdentifier.Should().Be(auction.UniqueIdentifier);
@@ -42,7 +42,7 @@ public class CreateAuctionCommandHandlerTests : TestsBase
         result.Value.StartingBid.Should().Be(auction.StartBid);
         result.Value.Status.Should().Be(auction.Status.ToString());
     }
-    
+
     [Fact]
     public async void Handle_ServiceReturnsFail_ReturnsFail()
     {
@@ -51,10 +51,10 @@ public class CreateAuctionCommandHandlerTests : TestsBase
         var failedResult = Result.Fail(Fixture.Create<Error>());
         _auctionService.CreateAuction(command.VehicleUniqueIdentifier)
             .Returns(failedResult);
-        
+
         //Act
         var result = await _handler.Handle(command, CancellationToken.None);
-        
+
         //Assert
         result.IsFailed.Should().BeTrue();
         result.Errors.Should().BeEquivalentTo(failedResult.Errors);

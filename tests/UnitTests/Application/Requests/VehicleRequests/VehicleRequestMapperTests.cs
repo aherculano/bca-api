@@ -6,7 +6,6 @@ using FluentAssertions;
 
 namespace UnitTests.Application.Requests.VehicleRequests;
 
-
 [ExcludeFromCodeCoverage]
 public class VehicleRequestMapperTests : TestsBase
 {

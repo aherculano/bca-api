@@ -14,8 +14,8 @@ namespace UnitTests.Application.Features.GetAuctionByUniqueIdentifier;
 [ExcludeFromCodeCoverage]
 public class GetAuctionByUniqueIdentifierQueryHandlerTests : TestsBase
 {
-    private readonly IAuctionRepository _repository;
     private readonly GetAuctionByUniqueIdentifierQueryHandler _handler;
+    private readonly IAuctionRepository _repository;
 
     public GetAuctionByUniqueIdentifierQueryHandlerTests()
     {
@@ -30,7 +30,7 @@ public class GetAuctionByUniqueIdentifierQueryHandlerTests : TestsBase
         var query = Fixture.Create<GetAuctionByUniqueIdentifierQuery>();
         _repository.GetAuctionByUniqueIdentifier(Arg.Any<Guid>())
             .Returns(Result.Fail(Fixture.Create<Error>()));
-        
+
         //Act
         var call = async () => await _handler.Handle(query, CancellationToken.None);
 
@@ -46,7 +46,7 @@ public class GetAuctionByUniqueIdentifierQueryHandlerTests : TestsBase
         var query = Fixture.Create<GetAuctionByUniqueIdentifierQuery>();
         _repository.GetAuctionByUniqueIdentifier(Arg.Any<Guid>())
             .Returns(Result.Ok(null as Auction));
-        
+
         //Act
         var result = await _handler.Handle(query, CancellationToken.None);
 
@@ -61,14 +61,14 @@ public class GetAuctionByUniqueIdentifierQueryHandlerTests : TestsBase
     {
         //Arrange
         var query = Fixture.Create<GetAuctionByUniqueIdentifierQuery>();
-        
+
         var auction = Fixture.Build<Auction>()
             .With(x => x.UniqueIdentifier, query.UniqueIdentifier)
             .Create();
-        
+
         _repository.GetAuctionByUniqueIdentifier(Arg.Any<Guid>())
             .Returns(Result.Ok(auction));
-        
+
         //Act
         var result = await _handler.Handle(query, CancellationToken.None);
 

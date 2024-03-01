@@ -14,8 +14,8 @@ namespace UnitTests.Application.Features.ListVehicles;
 [ExcludeFromCodeCoverage]
 public class ListVehiclesQueryHandlerTests : TestsBase
 {
-    private readonly IVehicleRepository _repository;
     private readonly ListVehiclesQueryHandler _handler;
+    private readonly IVehicleRepository _repository;
 
     public ListVehiclesQueryHandlerTests()
     {
@@ -33,12 +33,13 @@ public class ListVehiclesQueryHandlerTests : TestsBase
             .Returns(Result.Fail(Fixture.Create<Error>()));
 
         //Act
-        Func<Task<Result<IEnumerable<VehicleResponse>>>> call = async 
+        Func<Task<Result<IEnumerable<VehicleResponse>>>> call = async
             () => await _handler.Handle(query, CancellationToken.None);
-        
+
         //Assert
         await call.Should().ThrowAsync<Exception>();
-        await _repository.Received(1).ListVehiclesAsync(Arg.Any<string?>(), Arg.Any<string?>(), Arg.Any<string?>(), Arg.Any<int?>());
+        await _repository.Received(1)
+            .ListVehiclesAsync(Arg.Any<string?>(), Arg.Any<string?>(), Arg.Any<string?>(), Arg.Any<int?>());
     }
 
     [Fact]
@@ -51,11 +52,12 @@ public class ListVehiclesQueryHandlerTests : TestsBase
 
         //Act
         var result = await _handler.Handle(query, CancellationToken.None);
-        
+
         //Assert
         result.IsFailed.Should().BeTrue();
         result.Errors.Any(x => x is NotFoundError);
-        await _repository.Received(1).ListVehiclesAsync(Arg.Any<string?>(), Arg.Any<string?>(), Arg.Any<string?>(), Arg.Any<int?>());
+        await _repository.Received(1)
+            .ListVehiclesAsync(Arg.Any<string?>(), Arg.Any<string?>(), Arg.Any<string?>(), Arg.Any<int?>());
     }
 
     [Fact]

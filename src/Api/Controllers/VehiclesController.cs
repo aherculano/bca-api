@@ -10,7 +10,7 @@ namespace Api.Controllers;
 
 [Route("v1/vehicles")]
 [ApiController]
-public class VehiclesController: ControllerBase
+public class VehiclesController : ControllerBase
 {
     private readonly IMediator _mediator;
 

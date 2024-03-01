@@ -12,7 +12,7 @@ public class VehicleInMemoryRepository : IVehicleRepository
     {
         _vehicles = new List<Vehicle>();
     }
-    
+
     public async Task<Result<Vehicle>> CreateVheicleAsync(Vehicle vehicle)
     {
         _vehicles.Add(vehicle);
@@ -26,29 +26,22 @@ public class VehicleInMemoryRepository : IVehicleRepository
         return Result.Ok(vehicle);
     }
 
-    public async Task<Result<IEnumerable<Vehicle>>> ListVehiclesAsync(string? type, string? manufacturer, string? model, int? year)
+    public async Task<Result<IEnumerable<Vehicle>>> ListVehiclesAsync(string? type, string? manufacturer, string? model,
+        int? year)
     {
         var vehicles = _vehicles;
         if (type is not null)
-        {
             vehicles = vehicles.Where(x => x.Type.Equals(type, StringComparison.InvariantCultureIgnoreCase)).ToList();
-        }
 
         if (manufacturer is not null)
-        {
-            vehicles = vehicles.Where(x => x.Manufacturer.Equals(manufacturer, StringComparison.InvariantCultureIgnoreCase)).ToList();
-        }
+            vehicles = vehicles
+                .Where(x => x.Manufacturer.Equals(manufacturer, StringComparison.InvariantCultureIgnoreCase)).ToList();
 
         if (model is not null)
-        {
             vehicles = vehicles.Where(x => x.Model.Equals(model, StringComparison.InvariantCultureIgnoreCase)).ToList();
-        }
 
-        if (year is not null)
-        {
-            vehicles = vehicles.Where(x => x.Year == year).ToList();
-        }
-        
+        if (year is not null) vehicles = vehicles.Where(x => x.Year == year).ToList();
+
         return Result.Ok(vehicles.AsEnumerable());
     }
 }

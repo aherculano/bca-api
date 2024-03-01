@@ -27,6 +27,6 @@ public abstract class Vehicle
     public string Model { get; set; }
 
     public int Year { get; set; }
-    
+
     public decimal StartingBid { get; set; }
 }

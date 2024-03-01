@@ -7,7 +7,9 @@ using MediatR;
 
 namespace Application.Features.GetAuctionByUniqueIdentifier;
 
-public class GetAuctionByUniqueIdentifierQueryHandler : IRequestHandler<GetAuctionByUniqueIdentifierQuery, Result<AuctionResponse>>
+public class
+    GetAuctionByUniqueIdentifierQueryHandler : IRequestHandler<GetAuctionByUniqueIdentifierQuery,
+    Result<AuctionResponse>>
 {
     private readonly IAuctionRepository _auctionRepository;
 
@@ -15,8 +17,9 @@ public class GetAuctionByUniqueIdentifierQueryHandler : IRequestHandler<GetAucti
     {
         _auctionRepository = auctionRepository;
     }
-    
-    public async Task<Result<AuctionResponse>> Handle(GetAuctionByUniqueIdentifierQuery request, CancellationToken cancellationToken)
+
+    public async Task<Result<AuctionResponse>> Handle(GetAuctionByUniqueIdentifierQuery request,
+        CancellationToken cancellationToken)
     {
         var auctionResult = await _auctionRepository.GetAuctionByUniqueIdentifier(request.UniqueIdentifier);
 

@@ -6,10 +6,10 @@ namespace Application.Features.GetVehicleByUniqueIdentifier;
 
 public class GetVehicleByUniqueIdentifierQuery : IRequest<Result<VehicleResponse>>
 {
-    public Guid UniqueIdentifier { get; }
-
     public GetVehicleByUniqueIdentifierQuery(Guid uniqueIdentifier)
     {
         UniqueIdentifier = uniqueIdentifier;
     }
+
+    public Guid UniqueIdentifier { get; }
 }

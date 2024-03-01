@@ -14,13 +14,12 @@ public record CreateVehicleRequest(
     decimal? LoadCapacity,
     int? NumberOfDoors,
     int? NumberOfSeats);
-    
+
 internal static class CreateVehicleToCommandMapper
 {
     public static CreateVehicleCommand MapToCommand(this CreateVehicleRequest request)
     {
         if (request.Type.Equals(Suv.SuvType, StringComparison.InvariantCultureIgnoreCase))
-        {
             return new CreateVehicleCommand(new SuvRequest(
                 request.UniqueIdentifier,
                 request.Manufacturer,
@@ -28,10 +27,8 @@ internal static class CreateVehicleToCommandMapper
                 request.Year,
                 request.StartingBid,
                 request.NumberOfSeats.GetValueOrDefault()));
-        }
-        
+
         if (request.Type.Equals(Sedan.SedanType, StringComparison.InvariantCultureIgnoreCase))
-        {
             return new CreateVehicleCommand(new SedanRequest(
                 request.UniqueIdentifier,
                 request.Manufacturer,
@@ -39,10 +36,8 @@ internal static class CreateVehicleToCommandMapper
                 request.Year,
                 request.StartingBid,
                 request.NumberOfDoors.GetValueOrDefault()));
-        }
-        
+
         if (request.Type.Equals(Truck.TruckType, StringComparison.InvariantCultureIgnoreCase))
-        {
             return new CreateVehicleCommand(new TruckRequest(
                 request.UniqueIdentifier,
                 request.Manufacturer,
@@ -50,7 +45,6 @@ internal static class CreateVehicleToCommandMapper
                 request.Year,
                 request.StartingBid,
                 request.LoadCapacity.GetValueOrDefault()));
-        }
 
         return null;
     }
