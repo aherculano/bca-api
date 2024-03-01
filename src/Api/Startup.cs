@@ -1,4 +1,5 @@
-﻿using Application;
+﻿using System.Text.Json.Serialization;
+using Application;
 using Microsoft.OpenApi.Models;
 
 namespace Api;
@@ -14,7 +15,11 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddControllers();
+        services.AddControllers()
+            .AddJsonOptions(opt =>
+            {
+                opt.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+            });
         services.AddRouting();
         services.AddSwaggerGen(c =>
         {

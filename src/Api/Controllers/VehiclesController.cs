@@ -1,5 +1,6 @@
 ﻿using Api.FluentResultExtensions;
 using Api.Requests;
+using Api.Responses;
 using Application.Features.GetVehicleByUniqueIdentifier;
 using Application.Features.ListVehicles;
 using Application.Requests.ListVehicleRequests;
@@ -42,7 +43,7 @@ public class VehiclesController : ControllerBase
         var query = new ListVehiclesQuery(request);
         var result = await _mediator.Send(query);
         return result.IsSuccess
-            ? Ok(result.Value.Vehicles)
+            ? Ok(result.Value.Vehicles.Select(x => x.MapToApiResponse()))
             : result.ToFailedActionResult();
     }
 
