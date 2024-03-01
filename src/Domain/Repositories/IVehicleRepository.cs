@@ -9,5 +9,9 @@ public interface IVehicleRepository
 
     Task<Result<Vehicle>> GetVehicleByUniqueIdentifierAsync(Guid uniqueIdentifier);
 
-    Task<Result<IEnumerable<Vehicle>>> ListVehiclesAsync(Func<Vehicle, bool> filter = null);
+    Task<Result<IEnumerable<Vehicle>>> ListVehiclesAsync(
+        string? type, 
+        string? manufacturer, 
+        string? model, 
+        int? year);
 }

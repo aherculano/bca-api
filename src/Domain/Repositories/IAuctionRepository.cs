@@ -9,7 +9,7 @@ public interface IAuctionRepository
 
     Task<Result<bool>> UpdateAuction(Auction auction);
 
-    Task<Result<Auction>> GetAuctionByVehicleUniqueIdentifier(Guid vehicleUniqueIdentifer);
+    Task<Result<IEnumerable<Auction>>> GetAuctionsByVehicleUniqueIdentifier(Guid vehicleUniqueIdentifer);
 
     Task<Result<Auction>> GetAuctionByUniqueIdentifier(Guid uniqueIdentifier);
 }

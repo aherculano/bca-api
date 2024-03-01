@@ -20,7 +20,11 @@ public class ListVehiclesQueryHandler : IRequestHandler<ListVehiclesQuery, Resul
     
     public async Task<Result<IEnumerable<VehicleResponse>>> Handle(ListVehiclesQuery request, CancellationToken cancellationToken)
     {
-        var result = await _repository.ListVehiclesAsync(BuildFilter(request.Request));
+        var result = await _repository.ListVehiclesAsync(
+            request.Request.Type,
+            request.Request.Manufacturer,
+            request.Request.Model,
+            request.Request.Year);
         result.ThrowExceptionIfHasFailedResult();
 
         if (result.Value is null || result.Value?.Count() == 0)
@@ -29,13 +33,5 @@ public class ListVehiclesQueryHandler : IRequestHandler<ListVehiclesQuery, Resul
         }
 
         return Result.Ok(result.Value.Select(x => x.MapToResponse()));
-    }
-
-    private Func<Vehicle, bool> BuildFilter(ListVehicleRequest request)
-    {
-        return (x => (request.Type == null || x.Type.Equals(request.Type, StringComparison.InvariantCultureIgnoreCase))
-            && (request.Manufacturer == null || x.Manufacturer.Equals(request.Manufacturer, StringComparison.InvariantCultureIgnoreCase)
-            && (request.Model == null || x.Model.Equals(request.Model, StringComparison.InvariantCultureIgnoreCase))
-            && (request.Year == null || x.Year == request.Year)));
     }
 }

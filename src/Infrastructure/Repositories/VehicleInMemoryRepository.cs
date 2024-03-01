@@ -6,18 +6,49 @@ namespace Infrastructure.Repositories;
 
 public class VehicleInMemoryRepository : IVehicleRepository
 {
-    public Task<Result<Vehicle>> CreateVheicleAsync(Vehicle vehicle)
+    private readonly IList<Vehicle> _vehicles;
+
+    public VehicleInMemoryRepository()
     {
-        throw new NotImplementedException();
+        _vehicles = new List<Vehicle>();
+    }
+    
+    public async Task<Result<Vehicle>> CreateVheicleAsync(Vehicle vehicle)
+    {
+        _vehicles.Add(vehicle);
+        return Result.Ok(vehicle);
     }
 
-    public Task<Result<Vehicle>> GetVehicleByUniqueIdentifierAsync(Guid uniqueIdentifier)
+    public async Task<Result<Vehicle>> GetVehicleByUniqueIdentifierAsync(Guid uniqueIdentifier)
     {
-        throw new NotImplementedException();
+        var vehicle = _vehicles.FirstOrDefault(x => x.UniqueIdentifier == uniqueIdentifier);
+
+        return Result.Ok(vehicle);
     }
 
-    public Task<Result<IEnumerable<Vehicle>>> ListVehiclesAsync(Func<Vehicle, bool> filter = null)
+    public async Task<Result<IEnumerable<Vehicle>>> ListVehiclesAsync(string? type, string? manufacturer, string? model, int? year)
     {
-        throw new NotImplementedException();
+        var vehicles = _vehicles;
+        if (type is not null)
+        {
+            vehicles = vehicles.Where(x => x.Type.Equals(type, StringComparison.InvariantCultureIgnoreCase)).ToList();
+        }
+
+        if (manufacturer is not null)
+        {
+            vehicles = vehicles.Where(x => x.Manufacturer.Equals(manufacturer, StringComparison.InvariantCultureIgnoreCase)).ToList();
+        }
+
+        if (model is not null)
+        {
+            vehicles = vehicles.Where(x => x.Model.Equals(model, StringComparison.InvariantCultureIgnoreCase)).ToList();
+        }
+
+        if (year is not null)
+        {
+            vehicles = vehicles.Where(x => x.Year == year).ToList();
+        }
+        
+        return Result.Ok(vehicles.AsEnumerable());
     }
 }

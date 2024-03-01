@@ -16,7 +16,7 @@ public class AuctionInMemoryRepository : IAuctionRepository
         throw new NotImplementedException();
     }
 
-    public Task<Result<Auction>> GetAuctionByVehicleUniqueIdentifier(Guid vehicleUniqueIdentifer)
+    public Task<Result<IEnumerable<Auction>>> GetAuctionsByVehicleUniqueIdentifier(Guid vehicleUniqueIdentifer)
     {
         throw new NotImplementedException();
     }
