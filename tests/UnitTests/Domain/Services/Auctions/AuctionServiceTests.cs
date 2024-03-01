@@ -8,6 +8,7 @@ using Domain.Services.Auctions;
 using FluentAssertions;
 using FluentResults;
 using NSubstitute;
+using NSubstitute.ReceivedExtensions;
 
 namespace UnitTests.Domain.Services.Auctions;
 
@@ -192,5 +193,175 @@ public class AuctionServiceTests : TestsBase
          await _vehicleRepository.Received(1).GetVehicleByUniqueIdentifierAsync(vehicleUniqueIdentifier);
          await _auctionRepository.Received(1).GetAuctionsByVehicleUniqueIdentifier(vehicleUniqueIdentifier);
          await _auctionRepository.Received(1).CreateAuction(Arg.Any<Auction>());
+     }
+
+     [Fact]
+     public async void UpdateAuctionStatus_AuctionDoesNotExist_ReturnsFail()
+     {
+         //Arrange
+         var auctionId = Fixture.Create<Guid>();
+         _auctionRepository.GetAuctionByUniqueIdentifier(auctionId)
+             .Returns(Result.Ok(null as Auction));
+         
+         //Act
+         var result = await _auctionService.UpdateAuctionStatus(auctionId, AuctionStatus.Open);
+         
+         //Assert
+         result.IsFailed.Should().BeTrue();
+         result.Errors.Any(x => x is NotFoundError).Should().BeTrue();
+         await _auctionRepository.Received(1).GetAuctionByUniqueIdentifier(auctionId);
+         await _auctionRepository.Received(0).GetAuctionsByVehicleUniqueIdentifier(Arg.Any<Guid>());
+         await _auctionRepository.Received(0).UpdateAuction(Arg.Any<Auction>());
+     }
+
+     [Fact]
+     public async void UpdateAuctionStatus_AuctionAlreadyOpen_ReturnsFail()
+     {
+         //Arrange
+         var auctionId = Fixture.Create<Guid>();
+         var openAuction = Fixture
+             .Build<Auction>()
+             .With(x => x.UniqueIdentifier, auctionId)
+             .With(x => x.Status, AuctionStatus.Open)
+             .With(x => x.Bids, new List<Bid>())
+             .Create();
+
+         _auctionRepository.GetAuctionByUniqueIdentifier(auctionId)
+             .Returns(Result.Ok(openAuction));
+         
+         //Act
+         var result = await _auctionService.UpdateAuctionStatus(auctionId, AuctionStatus.Open);
+         
+         //Assert
+         result.IsFailed.Should().BeTrue();
+         result.Errors.Any(x => x is ConflictAuctionError).Should().BeTrue();
+         await _auctionRepository.Received(1).GetAuctionByUniqueIdentifier(auctionId);
+         await _auctionRepository.Received(0).GetAuctionsByVehicleUniqueIdentifier(Arg.Any<Guid>());
+         await _auctionRepository.Received(0).UpdateAuction(Arg.Any<Auction>());
+     }
+
+     [Fact]
+     public async void UpdateAuctionStatus_AuctionAlreadyClosed_ReturnsFail()
+     {
+         //Arrange
+         var auctionId = Fixture.Create<Guid>();
+         var closedAuction = Fixture
+             .Build<Auction>()
+             .With(x => x.UniqueIdentifier, auctionId)
+             .With(x => x.Status, AuctionStatus.Closed)
+             .With(x => x.Bids, new List<Bid>())
+             .Create();
+
+         _auctionRepository.GetAuctionByUniqueIdentifier(auctionId)
+             .Returns(Result.Ok(closedAuction));
+         
+         //Act
+         var result = await _auctionService.UpdateAuctionStatus(auctionId, AuctionStatus.Closed);
+         
+         //Assert
+         result.IsFailed.Should().BeTrue();
+         result.Errors.Any(x => x is ConflictAuctionError).Should().BeTrue();
+         await _auctionRepository.Received(1).GetAuctionByUniqueIdentifier(auctionId);
+         await _auctionRepository.Received(0).GetAuctionsByVehicleUniqueIdentifier(Arg.Any<Guid>());
+         await _auctionRepository.Received(0).UpdateAuction(Arg.Any<Auction>());
+     }
+
+     [Fact]
+     public async void UpdateAuctionStatus_AnotherAuctionForTheVehicleIsOpen_ReturnsFail()
+     {
+         //Arrange
+         var auctionId = Fixture.Create<Guid>();
+         var vehicleUniqueId = Fixture.Create<Guid>();
+         var closedAuction = Fixture
+             .Build<Auction>()
+             .With(x => x.UniqueIdentifier, auctionId)
+             .With(x => x.Status, AuctionStatus.Closed)
+             .With(x => x.Bids, new List<Bid>())
+             .With(x => x.VehicleUniqueIdentifier, vehicleUniqueId)
+             .Create();
+         
+         var openAuction = Fixture
+             .Build<Auction>()
+             .With(x => x.Status, AuctionStatus.Open)
+             .With(x => x.Bids, new List<Bid>())
+             .With(x => x.VehicleUniqueIdentifier, vehicleUniqueId)
+             .Create();
+
+         _auctionRepository.GetAuctionByUniqueIdentifier(auctionId)
+             .Returns(Result.Ok(closedAuction));
+
+         _auctionRepository.GetAuctionsByVehicleUniqueIdentifier(vehicleUniqueId)
+             .Returns(Result.Ok(new List<Auction>() { openAuction, closedAuction}.AsEnumerable()));
+         
+         //Act
+         var result = await _auctionService.UpdateAuctionStatus(auctionId, AuctionStatus.Open);
+         
+         //Assert
+         result.IsFailed.Should().BeTrue();
+         result.Errors.Any(x => x is ConflictAuctionError).Should().BeTrue();
+         await _auctionRepository.Received(1).GetAuctionByUniqueIdentifier(auctionId);
+         await _auctionRepository.Received(1).GetAuctionsByVehicleUniqueIdentifier(vehicleUniqueId);
+         await _auctionRepository.Received(0).UpdateAuction(Arg.Any<Auction>());
+     }
+
+     [Fact]
+     public async void UpdateAuctionStatus_OpenAuctionWorks_ReturnsOk()
+     {
+         //Arrange
+         var auctionId = Fixture.Create<Guid>();
+         var auction = Fixture
+             .Build<Auction>()
+             .With(x => x.UniqueIdentifier, auctionId)
+             .With(x => x.Status, AuctionStatus.Closed)
+             .With(x => x.Bids, new List<Bid>())
+             .Create();
+
+         _auctionRepository.GetAuctionByUniqueIdentifier(auctionId)
+             .Returns(Result.Ok(auction));
+
+         _auctionRepository.GetAuctionsByVehicleUniqueIdentifier(auction.VehicleUniqueIdentifier)
+             .Returns(Result.Ok(new List<Auction>() { auction }.AsEnumerable()));
+
+         _auctionRepository.UpdateAuction(Arg.Any<Auction>()).Returns(Result.Ok(true));
+         
+         //Act
+         var result = await _auctionService.UpdateAuctionStatus(auctionId, AuctionStatus.Open);
+         
+         //Assert
+         result.IsSuccess.Should().BeTrue();
+         result.Value.Should().Be(AuctionStatus.Open);
+         await _auctionRepository.Received(1).GetAuctionByUniqueIdentifier(auctionId);
+         await _auctionRepository.Received(1).GetAuctionsByVehicleUniqueIdentifier(auction.VehicleUniqueIdentifier);
+         await _auctionRepository.Received(1).UpdateAuction(Arg.Any<Auction>());
+     }
+
+     [Fact]
+     public async void UpdateAuctionStatus_CloseAuctionWorks_ReturnsOk()
+     {
+         //Arrange
+         var auctionId = Fixture.Create<Guid>();
+         var auction = Fixture
+             .Build<Auction>()
+             .With(x => x.UniqueIdentifier, auctionId)
+             .With(x => x.Status, AuctionStatus.Open)
+             .Create();
+
+         _auctionRepository.GetAuctionByUniqueIdentifier(auctionId)
+             .Returns(Result.Ok(auction));
+
+         _auctionRepository.GetAuctionsByVehicleUniqueIdentifier(auction.VehicleUniqueIdentifier)
+             .Returns(Result.Ok(new List<Auction>() { auction }.AsEnumerable()));
+
+         _auctionRepository.UpdateAuction(Arg.Any<Auction>()).Returns(Result.Ok(true));
+         
+         //Act
+         var result = await _auctionService.UpdateAuctionStatus(auctionId, AuctionStatus.Closed);
+         
+         //Assert
+         result.IsSuccess.Should().BeTrue();
+         result.Value.Should().Be(AuctionStatus.Closed);
+         await _auctionRepository.Received(1).GetAuctionByUniqueIdentifier(auctionId);
+         await _auctionRepository.Received(0).GetAuctionsByVehicleUniqueIdentifier(auction.VehicleUniqueIdentifier);
+         await _auctionRepository.Received(1).UpdateAuction(Arg.Any<Auction>());
      }
 }

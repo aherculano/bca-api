@@ -17,17 +17,7 @@ public class AuctionService : IAuctionService
         _vehicleRepository = vehicleRepository;
         _auctionRepository = auctionRepository;
     }
-
-    public Task<Result<Auction>> OpenAuction(Guid auctionUniqueIdentifier)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<Result<Auction>> CloseAuction(Guid auctionUniqueIdentifier)
-    {
-        throw new NotImplementedException();
-    }
-
+    
     public async Task<Result<Auction>> CreateAuction(Guid vehicleUniqueIdentifier)
     {
         var vehicleResult = await _vehicleRepository
@@ -56,5 +46,51 @@ public class AuctionService : IAuctionService
         createResult.ThrowExceptionIfHasFailedResult();
 
         return Result.Ok(createResult.Value);
+    }
+
+    public async Task<Result<AuctionStatus>> UpdateAuctionStatus(Guid auctionUniqueIdentifier, AuctionStatus status)
+    {
+        var currentAuctionResult = await _auctionRepository.GetAuctionByUniqueIdentifier(auctionUniqueIdentifier);
+        var currentAuction = currentAuctionResult.ThrowExceptionIfHasFailedResult().Value;
+
+        if (currentAuction is null)
+        {
+            return Result.Fail(new NotFoundError("Not Found", "Auction Does Not Exist"));
+        }
+
+        if (currentAuction.Status == status)
+        {
+            return Result.Fail(new ConflictAuctionError("Conflict", "Auction Is Already With The Specified Status"));
+        }
+
+        return status == AuctionStatus.Closed ? await CloseAuction(currentAuction) : await OpenAuction(currentAuction);
+    }
+
+    private async Task<Result<AuctionStatus>> CloseAuction(Auction currentAuction)
+    {
+        currentAuction.Status = AuctionStatus.Closed;
+
+        (await _auctionRepository.UpdateAuction(currentAuction)).ThrowExceptionIfHasFailedResult();
+
+        return Result.Ok(AuctionStatus.Closed);
+    }
+
+    private async Task<Result<AuctionStatus>> OpenAuction(Auction currentAuction)
+    {
+        var availableAuctionsResult =
+            await _auctionRepository.GetAuctionsByVehicleUniqueIdentifier(currentAuction.VehicleUniqueIdentifier);
+
+        var availableAuctions = availableAuctionsResult.ThrowExceptionIfHasFailedResult().Value;
+
+        if (availableAuctions.Any(x => x.Status == AuctionStatus.Open))
+        {
+            return Result.Fail(new ConflictAuctionError("Conflict", "There Is An Ongoing Auction For The Vehicle"));
+        }
+
+        currentAuction.Status = AuctionStatus.Open;
+
+        (await _auctionRepository.UpdateAuction(currentAuction)).ThrowExceptionIfHasFailedResult();
+
+        return Result.Ok(AuctionStatus.Open);
     }
 }
