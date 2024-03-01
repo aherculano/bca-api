@@ -51,3 +51,13 @@ components:
           type: number
           format: double
           example: 12000
+    AuctionStatus:
+      type: object
+      properties:
+        AuctionStatus:
+          description: The New Auction Status
+          required: true
+          type: string
+          enum:
+            - "Open"
+            - "Closed"

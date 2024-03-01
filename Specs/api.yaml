@@ -96,10 +96,14 @@ paths:
                     - $ref: '#/components/schemas/Suv'
                     - $ref: '#/components/schemas/Truck'
                     - $ref: '#/components/schemas/Sedan'        
-        '204':
-          description: No Vehicles Were Found Matching The Criteria
         '400':
           description: Invalid Input QueryParameters
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Error'
+        '404':
+          description: No Vehicles Were Found Matching The Criteria
           content:
             application/json:
               schema:
@@ -208,7 +212,52 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /auctions/{auctionUniqueIdentifier}/bid:
+  /auctions/{auctionUniqueIdentifier}/status:
+    parameters:
+      - name: auctionUniqueIdentifier
+        in: path
+        description: Unique Identifier Of An Auction
+        required: true
+        schema:
+          type: string
+          format: uuid
+          example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+    put:
+      summary: Changes The Status Of An Auction
+      tags:
+        - auctions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuctionStatus'
+      responses:
+        '200':
+          description: The Auction Status Was Updated With Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuctionStatus'
+        '400':
+          description: The Auction Status Details Were Incorrect
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: The Auction To Update Was Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: The Vehicle Already Has An Open Auction
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /auctions/{auctionUniqueIdentifier}/bids:
     parameters:
       - name: auctionUniqueIdentifier
         in: path
@@ -257,6 +306,8 @@ components:
       $ref: 'Components/Auctions.yaml#/components/schemas/Auction'
     AuctionRequest:
       $ref: 'Components/Auctions.yaml#/components/schemas/AuctionRequest'
+    AuctionStatus:
+      $ref: 'Components/Auctions.yaml#/components/schemas/AuctionStatus'
     Bid:
       $ref: 'Components/Auctions.yaml#/components/schemas/Bid'
     Error:
