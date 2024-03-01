@@ -36,7 +36,6 @@ components:
       properties:
         VehicleUniqueIdentifier:
           description: The Vehicle Unique Identifier
-          required: true
           type: string
           format: uuid
           example: 4500f1af-fa26-46cf-a2d8-ec1ed3c98f3a
@@ -48,12 +47,10 @@ components:
       properties:
         Bidder:
           description: The Name Of The Bidder
-          required: true
           type: string
           example: Jon Doe
         BidValue:
           description: The Value Of The Bid
-          required: true
           type: number
           format: double
           example: 12000
@@ -64,7 +61,6 @@ components:
       properties:
         AuctionStatus:
           description: The New Auction Status
-          required: true
           type: string
           enum:
             - "Open"
