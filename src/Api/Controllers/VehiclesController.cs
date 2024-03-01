@@ -42,7 +42,7 @@ public class VehiclesController : ControllerBase
         var query = new ListVehiclesQuery(request);
         var result = await _mediator.Send(query);
         return result.IsSuccess
-            ? Ok(result.Value)
+            ? Ok(result.Value.Vehicles)
             : result.ToFailedActionResult();
     }
 

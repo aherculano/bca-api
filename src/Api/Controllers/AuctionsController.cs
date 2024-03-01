@@ -2,8 +2,10 @@
 using Api.Requests;
 using Api.Responses;
 using Application.Features.CreateAuction;
+using Application.Features.CreateBid;
 using Application.Features.GetAuctionByUniqueIdentifier;
 using Application.Features.UpdateAuctionStatus;
+using Application.Requests.BidRequests;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -50,6 +52,18 @@ public class AuctionsController : ControllerBase
         var result = await _mediator.Send(command);
         return result.IsSuccess
             ? Ok(new AuctionStatusResponse(result.Value))
+            : result.ToFailedActionResult();
+    }
+
+    [HttpPost]
+    [Route("{auctionUniqueIdentifier}/bids")]
+    public async Task<IActionResult> CreateBidAsync([FromRoute] Guid auctionUniqueIdentifier,
+        [FromBody] BidRequest request)
+    {
+        var command = new CreateBidCommand(auctionUniqueIdentifier, request);
+        var result = await _mediator.Send(command);
+        return result.IsSuccess
+            ? Ok(result.Value)
             : result.ToFailedActionResult();
     }
 }

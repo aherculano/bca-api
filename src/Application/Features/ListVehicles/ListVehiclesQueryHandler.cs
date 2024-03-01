@@ -7,7 +7,7 @@ using MediatR;
 
 namespace Application.Features.ListVehicles;
 
-public class ListVehiclesQueryHandler : IRequestHandler<ListVehiclesQuery, Result<IEnumerable<VehicleResponse>>>
+public class ListVehiclesQueryHandler : IRequestHandler<ListVehiclesQuery, Result<VehicleListResponse>>
 {
     private readonly IVehicleRepository _repository;
 
@@ -16,7 +16,7 @@ public class ListVehiclesQueryHandler : IRequestHandler<ListVehiclesQuery, Resul
         _repository = repository;
     }
 
-    public async Task<Result<IEnumerable<VehicleResponse>>> Handle(ListVehiclesQuery request,
+    public async Task<Result<VehicleListResponse>> Handle(ListVehiclesQuery request,
         CancellationToken cancellationToken)
     {
         var result = await _repository.ListVehiclesAsync(
@@ -30,6 +30,6 @@ public class ListVehiclesQueryHandler : IRequestHandler<ListVehiclesQuery, Resul
             return Result.Fail(new NotFoundError("No Vehicles Were Found",
                 "There Are No Vehicles With The Specified Search Criteria"));
 
-        return Result.Ok(result.Value.Select(x => x.MapToResponse()));
+        return Result.Ok(new VehicleListResponse(result.Value.Select(x => x.MapToResponse())));
     }
 }

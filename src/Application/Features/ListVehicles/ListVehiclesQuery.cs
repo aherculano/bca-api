@@ -5,7 +5,7 @@ using MediatR;
 
 namespace Application.Features.ListVehicles;
 
-public class ListVehiclesQuery : IRequest<Result<IEnumerable<VehicleResponse>>>
+public class ListVehiclesQuery : IRequest<Result<VehicleListResponse>>
 {
     public ListVehiclesQuery(ListVehicleRequest request)
     {

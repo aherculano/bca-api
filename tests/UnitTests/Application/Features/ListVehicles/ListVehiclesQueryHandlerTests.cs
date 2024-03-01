@@ -33,7 +33,7 @@ public class ListVehiclesQueryHandlerTests : TestsBase
             .Returns(Result.Fail(Fixture.Create<Error>()));
 
         //Act
-        Func<Task<Result<IEnumerable<VehicleResponse>>>> call = async
+        var call = async
             () => await _handler.Handle(query, CancellationToken.None);
 
         //Assert
@@ -80,6 +80,6 @@ public class ListVehiclesQueryHandlerTests : TestsBase
 
         //Assert
         result.IsSuccess.Should().BeTrue();
-        result.Value.Should().BeEquivalentTo(vehicles.Select(x => x.MapToResponse()));
+        result.Value.Should().BeEquivalentTo(new VehicleListResponse(vehicles.Select(x => x.MapToResponse())));
     }
 }
