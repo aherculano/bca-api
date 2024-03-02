@@ -13,12 +13,12 @@ public class VehicleDefinitionValidator : AbstractValidator<VehicleDefinition>
         RuleFor(x => x.Manufacturer)
             .NotEmpty()
             .When(x => x is not null)
-            .WithMessage("Manufacturer Cannot Be Null");
+            .WithMessage("Manufacturer Cannot Be Empty");
 
         RuleFor(x => x.Model)
             .NotEmpty()
             .When(x => x is not null)
-            .WithMessage("Model Cannot Be Null");
+            .WithMessage("Model Cannot Be Empty");
 
         RuleFor(x => x.Year)
             .InclusiveBetween(1900, 2024)
