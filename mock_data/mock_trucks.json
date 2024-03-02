@@ -1,0 +1,92 @@
+[
+	{
+		"UniqueIdentifier": "7f059253-321c-4c40-90b9-0eb44091d6b4",
+		"Type": "Truck",
+		"Manufacturer": "Mercedes-Benz",
+		"Model": "Eurostrar",
+		"Year": 1924,
+		"StartingBid": 11584,
+		"LoadCapacity": 3030.76
+	},
+	{
+		"UniqueIdentifier": "636cb914-0947-4747-a260-60eacdd3c5d3",
+		"Type": "Truck",
+		"Manufacturer": "Mercedes-Benz",
+		"Model": "Interstellar",
+		"Year": 1909,
+		"StartingBid": 9139,
+		"LoadCapacity": 1069.73
+	},
+	{
+		"UniqueIdentifier": "50e34005-aa21-43ed-b887-ddfcea25e0d3",
+		"Type": "Truck",
+		"Manufacturer": "Renault",
+		"Model": "R560",
+		"Year": 1981,
+		"StartingBid": 11854,
+		"LoadCapacity": 1051.14
+	},
+	{
+		"UniqueIdentifier": "7d55a348-03ae-4e69-bd7d-508427108a38",
+		"Type": "Truck",
+		"Manufacturer": "Mercedes-Benz",
+		"Model": "Eurostrar",
+		"Year": 1964,
+		"StartingBid": 11140,
+		"LoadCapacity": 2565.28
+	},
+	{
+		"UniqueIdentifier": "3121f4e2-c620-49ee-a6b6-7335419109e6",
+		"Type": "Truck",
+		"Manufacturer": "Scania",
+		"Model": "Eurostrar",
+		"Year": 1916,
+		"StartingBid": 7586,
+		"LoadCapacity": 870.9
+	},
+	{
+		"UniqueIdentifier": "4ad73cd3-26a8-4a54-a906-ff69396ebd40",
+		"Type": "Truck",
+		"Manufacturer": "Mercedes-Benz",
+		"Model": "R560",
+		"Year": 1939,
+		"StartingBid": 8968,
+		"LoadCapacity": 918.6
+	},
+	{
+		"UniqueIdentifier": "4776e8ee-604e-4691-a2e7-0f1b1668a184",
+		"Type": "Truck",
+		"Manufacturer": "Scania",
+		"Model": "R560",
+		"Year": 1980,
+		"StartingBid": 9862,
+		"LoadCapacity": 3441.12
+	},
+	{
+		"UniqueIdentifier": "01f42295-791b-4aa1-ad52-0fa9e51af206",
+		"Type": "Truck",
+		"Manufacturer": "Scania",
+		"Model": "Interstellar",
+		"Year": 1997,
+		"StartingBid": 10680,
+		"LoadCapacity": 2032.49
+	},
+	{
+		"UniqueIdentifier": "f60917be-4de0-41b9-98bf-95228bf35af7",
+		"Type": "Truck",
+		"Manufacturer": "Renault",
+		"Model": "R560",
+		"Year": 1946,
+		"StartingBid": 4644,
+		"LoadCapacity": 700.63
+	},
+	{
+		"UniqueIdentifier": "1a847250-7c93-412a-936b-98c1a41bf4df",
+		"Type": "Truck",
+		"Manufacturer": "Renault",
+		"Model": "Interstellar",
+		"Year": 1912,
+		"StartingBid": 6307,
+		"LoadCapacity": 3337.81
+	}
+]

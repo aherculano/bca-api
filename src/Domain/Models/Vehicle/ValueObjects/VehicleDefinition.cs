@@ -12,9 +12,9 @@ public class VehicleDefinition
         Year = year;
     }
 
-    public string Manufacturer { get; }
+    public string Manufacturer { get; protected set; }
 
-    public string Model { get; }
+    public string Model { get; protected set; }
 
-    public int Year { get; }
+    public int Year { get; protected set; }
 }

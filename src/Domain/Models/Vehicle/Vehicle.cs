@@ -4,6 +4,10 @@ namespace Domain.Models.Vehicle;
 
 public abstract class Vehicle : Entity
 {
+    public Vehicle()
+    {
+        
+    }
     public Vehicle(
         Guid uniqueIdentifier,
         VehicleDefinition definition,

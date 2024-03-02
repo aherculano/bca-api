@@ -28,7 +28,7 @@ public class GetAuctionByUniqueIdentifierQueryHandlerTests : TestsBase
     {
         //Arrange
         var query = Fixture.Create<GetAuctionByUniqueIdentifierQuery>();
-        _repository.GetAuctionByUniqueIdentifier(Arg.Any<Guid>())
+        _repository.GetAuctionByUniqueIdentifierAsync(Arg.Any<Guid>())
             .Returns(Result.Fail(Fixture.Create<Error>()));
 
         //Act
@@ -36,7 +36,7 @@ public class GetAuctionByUniqueIdentifierQueryHandlerTests : TestsBase
 
         //Assert
         await call.Should().ThrowAsync<Exception>();
-        await _repository.Received(1).GetAuctionByUniqueIdentifier(query.UniqueIdentifier);
+        await _repository.Received(1).GetAuctionByUniqueIdentifierAsync(query.UniqueIdentifier);
     }
 
     [Fact]
@@ -44,7 +44,7 @@ public class GetAuctionByUniqueIdentifierQueryHandlerTests : TestsBase
     {
         //Arrange
         var query = Fixture.Create<GetAuctionByUniqueIdentifierQuery>();
-        _repository.GetAuctionByUniqueIdentifier(Arg.Any<Guid>())
+        _repository.GetAuctionByUniqueIdentifierAsync(Arg.Any<Guid>())
             .Returns(Result.Ok(null as Auction));
 
         //Act
@@ -53,7 +53,7 @@ public class GetAuctionByUniqueIdentifierQueryHandlerTests : TestsBase
         //Assert
         result.IsFailed.Should().BeTrue();
         result.Errors.Any(x => x is NotFoundError).Should().BeTrue();
-        await _repository.Received(1).GetAuctionByUniqueIdentifier(query.UniqueIdentifier);
+        await _repository.Received(1).GetAuctionByUniqueIdentifierAsync(query.UniqueIdentifier);
     }
 
     [Fact]
@@ -66,7 +66,7 @@ public class GetAuctionByUniqueIdentifierQueryHandlerTests : TestsBase
             .With(x => x.UniqueIdentifier, query.UniqueIdentifier)
             .Create();
 
-        _repository.GetAuctionByUniqueIdentifier(Arg.Any<Guid>())
+        _repository.GetAuctionByUniqueIdentifierAsync(Arg.Any<Guid>())
             .Returns(Result.Ok(auction));
 
         //Act
@@ -75,6 +75,6 @@ public class GetAuctionByUniqueIdentifierQueryHandlerTests : TestsBase
         //Assert
         result.IsSuccess.Should().BeTrue();
         result.Value.Should().BeEquivalentTo(auction.MapToResponse());
-        await _repository.Received(1).GetAuctionByUniqueIdentifier(query.UniqueIdentifier);
+        await _repository.Received(1).GetAuctionByUniqueIdentifierAsync(query.UniqueIdentifier);
     }
 }

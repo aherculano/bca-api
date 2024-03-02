@@ -40,8 +40,8 @@ public class AuctionServiceTests : TestsBase
         //Assert
         await call.Should().ThrowAsync<Exception>();
         await _vehicleRepository.Received(1).GetVehicleByUniqueIdentifierAsync(vehicleUniqueIdentifier);
-        await _auctionRepository.Received(0).GetAuctionsByVehicleUniqueIdentifier(Arg.Any<Guid>());
-        await _auctionRepository.Received(0).CreateAuction(Arg.Any<Auction>());
+        await _auctionRepository.Received(0).GetAuctionsByVehicleUniqueIdentifierAsync(Arg.Any<Guid>());
+        await _auctionRepository.Received(0).CreateAuctionAsync(Arg.Any<Auction>());
     }
 
     [Fact]
@@ -60,8 +60,8 @@ public class AuctionServiceTests : TestsBase
         result.IsFailed.Should().BeTrue();
         result.Errors.Any(x => x is NotFoundError).Should().BeTrue();
         await _vehicleRepository.Received(1).GetVehicleByUniqueIdentifierAsync(vehicleUniqueIdentifier);
-        await _auctionRepository.Received(0).GetAuctionsByVehicleUniqueIdentifier(Arg.Any<Guid>());
-        await _auctionRepository.Received(0).CreateAuction(Arg.Any<Auction>());
+        await _auctionRepository.Received(0).GetAuctionsByVehicleUniqueIdentifierAsync(Arg.Any<Guid>());
+        await _auctionRepository.Received(0).CreateAuctionAsync(Arg.Any<Auction>());
     }
 
     [Fact]
@@ -82,7 +82,7 @@ public class AuctionServiceTests : TestsBase
             .Returns(Result.Ok(suv as Vehicle));
 
         _auctionRepository
-            .GetAuctionsByVehicleUniqueIdentifier(vehicleUniqueIdentifier)
+            .GetAuctionsByVehicleUniqueIdentifierAsync(vehicleUniqueIdentifier)
             .Returns(Result.Ok(auction));
 
         //Act
@@ -92,8 +92,8 @@ public class AuctionServiceTests : TestsBase
         result.IsFailed.Should().BeTrue();
         result.Errors.Any(x => x is AlreadyExistsError).Should().BeTrue();
         await _vehicleRepository.Received(1).GetVehicleByUniqueIdentifierAsync(vehicleUniqueIdentifier);
-        await _auctionRepository.Received(1).GetAuctionsByVehicleUniqueIdentifier(vehicleUniqueIdentifier);
-        await _auctionRepository.Received(0).CreateAuction(Arg.Any<Auction>());
+        await _auctionRepository.Received(1).GetAuctionsByVehicleUniqueIdentifierAsync(vehicleUniqueIdentifier);
+        await _auctionRepository.Received(0).CreateAuctionAsync(Arg.Any<Auction>());
     }
 
     [Fact]
@@ -110,7 +110,7 @@ public class AuctionServiceTests : TestsBase
             .Returns(Result.Ok(suv as Vehicle));
 
         _auctionRepository
-            .GetAuctionsByVehicleUniqueIdentifier(vehicleUniqueIdentifier)
+            .GetAuctionsByVehicleUniqueIdentifierAsync(vehicleUniqueIdentifier)
             .Returns(Result.Fail(Fixture.Create<Error>()));
 
         //Act
@@ -119,8 +119,8 @@ public class AuctionServiceTests : TestsBase
         //Assert
         await call.Should().ThrowAsync<Exception>();
         await _vehicleRepository.Received(1).GetVehicleByUniqueIdentifierAsync(vehicleUniqueIdentifier);
-        await _auctionRepository.Received(1).GetAuctionsByVehicleUniqueIdentifier(vehicleUniqueIdentifier);
-        await _auctionRepository.Received(0).CreateAuction(Arg.Any<Auction>());
+        await _auctionRepository.Received(1).GetAuctionsByVehicleUniqueIdentifierAsync(vehicleUniqueIdentifier);
+        await _auctionRepository.Received(0).CreateAuctionAsync(Arg.Any<Auction>());
     }
 
     [Fact]
@@ -140,7 +140,7 @@ public class AuctionServiceTests : TestsBase
             .Returns(Result.Ok(suv as Vehicle));
 
         _auctionRepository
-            .GetAuctionsByVehicleUniqueIdentifier(vehicleUniqueIdentifier)
+            .GetAuctionsByVehicleUniqueIdentifierAsync(vehicleUniqueIdentifier)
             .Returns(Result.Ok(auctions));
         
         //Act
@@ -150,8 +150,8 @@ public class AuctionServiceTests : TestsBase
         result.IsFailed.Should().BeTrue();
         result.Errors.Any(x => x is ValidationError).Should().BeTrue();
         await _vehicleRepository.Received(1).GetVehicleByUniqueIdentifierAsync(vehicleUniqueIdentifier);
-        await _auctionRepository.Received(1).GetAuctionsByVehicleUniqueIdentifier(vehicleUniqueIdentifier);
-        await _auctionRepository.Received(0).CreateAuction(Arg.Any<Auction>());
+        await _auctionRepository.Received(1).GetAuctionsByVehicleUniqueIdentifierAsync(vehicleUniqueIdentifier);
+        await _auctionRepository.Received(0).CreateAuctionAsync(Arg.Any<Auction>());
     }
     
     [Fact]
@@ -170,10 +170,10 @@ public class AuctionServiceTests : TestsBase
             .Returns(Result.Ok(suv as Vehicle));
 
         _auctionRepository
-            .GetAuctionsByVehicleUniqueIdentifier(vehicleUniqueIdentifier)
+            .GetAuctionsByVehicleUniqueIdentifierAsync(vehicleUniqueIdentifier)
             .Returns(Result.Ok(auctions));
 
-        _auctionRepository.CreateAuction(Arg.Any<Auction>())
+        _auctionRepository.CreateAuctionAsync(Arg.Any<Auction>())
             .Returns(Result.Fail(Fixture.Create<Error>()));
 
         //Act
@@ -182,8 +182,8 @@ public class AuctionServiceTests : TestsBase
         //Assert
         await call.Should().ThrowAsync<Exception>();
         await _vehicleRepository.Received(1).GetVehicleByUniqueIdentifierAsync(vehicleUniqueIdentifier);
-        await _auctionRepository.Received(1).GetAuctionsByVehicleUniqueIdentifier(vehicleUniqueIdentifier);
-        await _auctionRepository.Received(1).CreateAuction(Arg.Any<Auction>());
+        await _auctionRepository.Received(1).GetAuctionsByVehicleUniqueIdentifierAsync(vehicleUniqueIdentifier);
+        await _auctionRepository.Received(1).CreateAuctionAsync(Arg.Any<Auction>());
     }
 
     [Fact]
@@ -205,10 +205,10 @@ public class AuctionServiceTests : TestsBase
             .Returns(Result.Ok(suv as Vehicle));
 
         _auctionRepository
-            .GetAuctionsByVehicleUniqueIdentifier(vehicleUniqueIdentifier)
+            .GetAuctionsByVehicleUniqueIdentifierAsync(vehicleUniqueIdentifier)
             .Returns(Result.Ok(auctions));
 
-        _auctionRepository.CreateAuction(Arg.Any<Auction>())
+        _auctionRepository.CreateAuctionAsync(Arg.Any<Auction>())
             .Returns(Result.Ok(createdAuction));
 
         //Act
@@ -222,8 +222,8 @@ public class AuctionServiceTests : TestsBase
         result.Value.StartingBid.Should().Be(suv.StartingBid);
         result.Value.Status.Should().Be(AuctionStatus.Closed);
         await _vehicleRepository.Received(1).GetVehicleByUniqueIdentifierAsync(vehicleUniqueIdentifier);
-        await _auctionRepository.Received(1).GetAuctionsByVehicleUniqueIdentifier(vehicleUniqueIdentifier);
-        await _auctionRepository.Received(1).CreateAuction(Arg.Any<Auction>());
+        await _auctionRepository.Received(1).GetAuctionsByVehicleUniqueIdentifierAsync(vehicleUniqueIdentifier);
+        await _auctionRepository.Received(1).CreateAuctionAsync(Arg.Any<Auction>());
     }
 
     [Fact]
@@ -231,7 +231,7 @@ public class AuctionServiceTests : TestsBase
     {
         //Arrange
         var auctionId = Fixture.Create<Guid>();
-        _auctionRepository.GetAuctionByUniqueIdentifier(auctionId)
+        _auctionRepository.GetAuctionByUniqueIdentifierAsync(auctionId)
             .Returns(Result.Ok(null as Auction));
 
         //Act
@@ -240,9 +240,9 @@ public class AuctionServiceTests : TestsBase
         //Assert
         result.IsFailed.Should().BeTrue();
         result.Errors.Any(x => x is NotFoundError).Should().BeTrue();
-        await _auctionRepository.Received(1).GetAuctionByUniqueIdentifier(auctionId);
-        await _auctionRepository.Received(0).GetAuctionsByVehicleUniqueIdentifier(Arg.Any<Guid>());
-        await _auctionRepository.Received(0).UpdateAuction(Arg.Any<Auction>());
+        await _auctionRepository.Received(1).GetAuctionByUniqueIdentifierAsync(auctionId);
+        await _auctionRepository.Received(0).GetAuctionsByVehicleUniqueIdentifierAsync(Arg.Any<Guid>());
+        await _auctionRepository.Received(0).UpdateAuctionAsync(Arg.Any<Auction>());
     }
 
     [Fact]
@@ -257,7 +257,7 @@ public class AuctionServiceTests : TestsBase
             .With(x => x.Bids, new List<Bid>())
             .Create();
 
-        _auctionRepository.GetAuctionByUniqueIdentifier(auctionId)
+        _auctionRepository.GetAuctionByUniqueIdentifierAsync(auctionId)
             .Returns(Result.Ok(openAuction));
 
         //Act
@@ -266,9 +266,9 @@ public class AuctionServiceTests : TestsBase
         //Assert
         result.IsFailed.Should().BeTrue();
         result.Errors.Any(x => x is ConflictAuctionError).Should().BeTrue();
-        await _auctionRepository.Received(1).GetAuctionByUniqueIdentifier(auctionId);
-        await _auctionRepository.Received(0).GetAuctionsByVehicleUniqueIdentifier(Arg.Any<Guid>());
-        await _auctionRepository.Received(0).UpdateAuction(Arg.Any<Auction>());
+        await _auctionRepository.Received(1).GetAuctionByUniqueIdentifierAsync(auctionId);
+        await _auctionRepository.Received(0).GetAuctionsByVehicleUniqueIdentifierAsync(Arg.Any<Guid>());
+        await _auctionRepository.Received(0).UpdateAuctionAsync(Arg.Any<Auction>());
     }
 
     [Fact]
@@ -283,7 +283,7 @@ public class AuctionServiceTests : TestsBase
             .With(x => x.Bids, new List<Bid>())
             .Create();
 
-        _auctionRepository.GetAuctionByUniqueIdentifier(auctionId)
+        _auctionRepository.GetAuctionByUniqueIdentifierAsync(auctionId)
             .Returns(Result.Ok(closedAuction));
 
         //Act
@@ -292,9 +292,9 @@ public class AuctionServiceTests : TestsBase
         //Assert
         result.IsFailed.Should().BeTrue();
         result.Errors.Any(x => x is ConflictAuctionError).Should().BeTrue();
-        await _auctionRepository.Received(1).GetAuctionByUniqueIdentifier(auctionId);
-        await _auctionRepository.Received(0).GetAuctionsByVehicleUniqueIdentifier(Arg.Any<Guid>());
-        await _auctionRepository.Received(0).UpdateAuction(Arg.Any<Auction>());
+        await _auctionRepository.Received(1).GetAuctionByUniqueIdentifierAsync(auctionId);
+        await _auctionRepository.Received(0).GetAuctionsByVehicleUniqueIdentifierAsync(Arg.Any<Guid>());
+        await _auctionRepository.Received(0).UpdateAuctionAsync(Arg.Any<Auction>());
     }
 
     [Fact]
@@ -318,10 +318,10 @@ public class AuctionServiceTests : TestsBase
             .With(x => x.VehicleUniqueIdentifier, vehicleUniqueId)
             .Create();
 
-        _auctionRepository.GetAuctionByUniqueIdentifier(auctionId)
+        _auctionRepository.GetAuctionByUniqueIdentifierAsync(auctionId)
             .Returns(Result.Ok(closedAuction));
 
-        _auctionRepository.GetAuctionsByVehicleUniqueIdentifier(vehicleUniqueId)
+        _auctionRepository.GetAuctionsByVehicleUniqueIdentifierAsync(vehicleUniqueId)
             .Returns(Result.Ok(new List<Auction> { openAuction, closedAuction }.AsEnumerable()));
 
         //Act
@@ -330,9 +330,9 @@ public class AuctionServiceTests : TestsBase
         //Assert
         result.IsFailed.Should().BeTrue();
         result.Errors.Any(x => x is ConflictAuctionError).Should().BeTrue();
-        await _auctionRepository.Received(1).GetAuctionByUniqueIdentifier(auctionId);
-        await _auctionRepository.Received(1).GetAuctionsByVehicleUniqueIdentifier(vehicleUniqueId);
-        await _auctionRepository.Received(0).UpdateAuction(Arg.Any<Auction>());
+        await _auctionRepository.Received(1).GetAuctionByUniqueIdentifierAsync(auctionId);
+        await _auctionRepository.Received(1).GetAuctionsByVehicleUniqueIdentifierAsync(vehicleUniqueId);
+        await _auctionRepository.Received(0).UpdateAuctionAsync(Arg.Any<Auction>());
     }
 
     [Fact]
@@ -347,13 +347,13 @@ public class AuctionServiceTests : TestsBase
             .With(x => x.Bids, new List<Bid>())
             .Create();
 
-        _auctionRepository.GetAuctionByUniqueIdentifier(auctionId)
+        _auctionRepository.GetAuctionByUniqueIdentifierAsync(auctionId)
             .Returns(Result.Ok(auction));
 
-        _auctionRepository.GetAuctionsByVehicleUniqueIdentifier(auction.VehicleUniqueIdentifier)
+        _auctionRepository.GetAuctionsByVehicleUniqueIdentifierAsync(auction.VehicleUniqueIdentifier)
             .Returns(Result.Ok(new List<Auction> { auction }.AsEnumerable()));
 
-        _auctionRepository.UpdateAuction(Arg.Any<Auction>()).Returns(Result.Ok(true));
+        _auctionRepository.UpdateAuctionAsync(Arg.Any<Auction>()).Returns(Result.Ok(true));
 
         //Act
         var result = await _auctionService.UpdateAuctionStatus(auctionId, AuctionStatus.Open);
@@ -361,9 +361,9 @@ public class AuctionServiceTests : TestsBase
         //Assert
         result.IsSuccess.Should().BeTrue();
         result.Value.Should().Be(AuctionStatus.Open);
-        await _auctionRepository.Received(1).GetAuctionByUniqueIdentifier(auctionId);
-        await _auctionRepository.Received(1).GetAuctionsByVehicleUniqueIdentifier(auction.VehicleUniqueIdentifier);
-        await _auctionRepository.Received(1).UpdateAuction(Arg.Any<Auction>());
+        await _auctionRepository.Received(1).GetAuctionByUniqueIdentifierAsync(auctionId);
+        await _auctionRepository.Received(1).GetAuctionsByVehicleUniqueIdentifierAsync(auction.VehicleUniqueIdentifier);
+        await _auctionRepository.Received(1).UpdateAuctionAsync(Arg.Any<Auction>());
     }
 
     [Fact]
@@ -377,13 +377,13 @@ public class AuctionServiceTests : TestsBase
             .With(x => x.Status, AuctionStatus.Open)
             .Create();
 
-        _auctionRepository.GetAuctionByUniqueIdentifier(auctionId)
+        _auctionRepository.GetAuctionByUniqueIdentifierAsync(auctionId)
             .Returns(Result.Ok(auction));
 
-        _auctionRepository.GetAuctionsByVehicleUniqueIdentifier(auction.VehicleUniqueIdentifier)
+        _auctionRepository.GetAuctionsByVehicleUniqueIdentifierAsync(auction.VehicleUniqueIdentifier)
             .Returns(Result.Ok(new List<Auction> { auction }.AsEnumerable()));
 
-        _auctionRepository.UpdateAuction(Arg.Any<Auction>()).Returns(Result.Ok(true));
+        _auctionRepository.UpdateAuctionAsync(Arg.Any<Auction>()).Returns(Result.Ok(true));
 
         //Act
         var result = await _auctionService.UpdateAuctionStatus(auctionId, AuctionStatus.Closed);
@@ -391,9 +391,9 @@ public class AuctionServiceTests : TestsBase
         //Assert
         result.IsSuccess.Should().BeTrue();
         result.Value.Should().Be(AuctionStatus.Closed);
-        await _auctionRepository.Received(1).GetAuctionByUniqueIdentifier(auctionId);
-        await _auctionRepository.Received(0).GetAuctionsByVehicleUniqueIdentifier(auction.VehicleUniqueIdentifier);
-        await _auctionRepository.Received(1).UpdateAuction(Arg.Any<Auction>());
+        await _auctionRepository.Received(1).GetAuctionByUniqueIdentifierAsync(auctionId);
+        await _auctionRepository.Received(0).GetAuctionsByVehicleUniqueIdentifierAsync(auction.VehicleUniqueIdentifier);
+        await _auctionRepository.Received(1).UpdateAuctionAsync(Arg.Any<Auction>());
     }
 
     [Fact]
@@ -409,8 +409,8 @@ public class AuctionServiceTests : TestsBase
         //Assert
         result.IsFailed.Should().BeTrue();
         result.Errors.Any(x => x is ValidationError).Should().BeTrue();
-        await _auctionRepository.Received(0).GetAuctionByUniqueIdentifier(auctionUniqueIdentifier);
-        await _auctionRepository.Received(0).UpdateAuction(Arg.Any<Auction>());
+        await _auctionRepository.Received(0).GetAuctionByUniqueIdentifierAsync(auctionUniqueIdentifier);
+        await _auctionRepository.Received(0).UpdateAuctionAsync(Arg.Any<Auction>());
     }
 
     [Fact]
@@ -420,7 +420,7 @@ public class AuctionServiceTests : TestsBase
         var auctionUniqueIdentifier = Fixture.Create<Guid>();
         var bid = Fixture.Create<Bid>();
 
-        _auctionRepository.GetAuctionByUniqueIdentifier(Arg.Any<Guid>())
+        _auctionRepository.GetAuctionByUniqueIdentifierAsync(Arg.Any<Guid>())
             .Returns(Result.Ok(null as Auction));
 
         //Act
@@ -429,8 +429,8 @@ public class AuctionServiceTests : TestsBase
         //Assert
         result.IsFailed.Should().BeTrue();
         result.Errors.Any(x => x is NotFoundError).Should().BeTrue();
-        await _auctionRepository.Received(1).GetAuctionByUniqueIdentifier(auctionUniqueIdentifier);
-        await _auctionRepository.Received(0).UpdateAuction(Arg.Any<Auction>());
+        await _auctionRepository.Received(1).GetAuctionByUniqueIdentifierAsync(auctionUniqueIdentifier);
+        await _auctionRepository.Received(0).UpdateAuctionAsync(Arg.Any<Auction>());
     }
 
     [Fact]
@@ -444,7 +444,7 @@ public class AuctionServiceTests : TestsBase
             .Create();
         var bid = new Bid(Fixture.Create<string>(), auction.StartingBid - 10);
 
-        _auctionRepository.GetAuctionByUniqueIdentifier(Arg.Any<Guid>())
+        _auctionRepository.GetAuctionByUniqueIdentifierAsync(Arg.Any<Guid>())
             .Returns(Result.Ok(auction));
 
         //Act
@@ -453,8 +453,8 @@ public class AuctionServiceTests : TestsBase
         //Assert
         result.IsFailed.Should().BeTrue();
         result.Errors.Any(x => x is InvalidBidError).Should().BeTrue();
-        await _auctionRepository.Received(1).GetAuctionByUniqueIdentifier(auctionUniqueIdentifier);
-        await _auctionRepository.Received(0).UpdateAuction(Arg.Any<Auction>());
+        await _auctionRepository.Received(1).GetAuctionByUniqueIdentifierAsync(auctionUniqueIdentifier);
+        await _auctionRepository.Received(0).UpdateAuctionAsync(Arg.Any<Auction>());
     }
     [Fact]
     public async void AddBid_BidLowerThenHighestBid_ReturnsFail()
@@ -471,7 +471,7 @@ public class AuctionServiceTests : TestsBase
         
         var bid = new Bid(Fixture.Create<string>(), auction.StartingBid + 1);
 
-        _auctionRepository.GetAuctionByUniqueIdentifier(Arg.Any<Guid>())
+        _auctionRepository.GetAuctionByUniqueIdentifierAsync(Arg.Any<Guid>())
             .Returns(Result.Ok(auction));
 
         //Act
@@ -480,8 +480,8 @@ public class AuctionServiceTests : TestsBase
         //Assert
         result.IsFailed.Should().BeTrue();
         result.Errors.Any(x => x is InvalidBidError).Should().BeTrue();
-        await _auctionRepository.Received(1).GetAuctionByUniqueIdentifier(auctionUniqueIdentifier);
-        await _auctionRepository.Received(0).UpdateAuction(Arg.Any<Auction>());
+        await _auctionRepository.Received(1).GetAuctionByUniqueIdentifierAsync(auctionUniqueIdentifier);
+        await _auctionRepository.Received(0).UpdateAuctionAsync(Arg.Any<Auction>());
     }
 
     [Fact]
@@ -496,7 +496,7 @@ public class AuctionServiceTests : TestsBase
 
         var bid = Fixture.Create<Bid>();
 
-        _auctionRepository.GetAuctionByUniqueIdentifier(Arg.Any<Guid>())
+        _auctionRepository.GetAuctionByUniqueIdentifierAsync(Arg.Any<Guid>())
             .Returns(Result.Ok(auction));
 
         //Act
@@ -505,8 +505,8 @@ public class AuctionServiceTests : TestsBase
         //Assert
         result.IsFailed.Should().BeTrue();
         result.Errors.Any(x => x is ClosedAuctionError).Should().BeTrue();
-        await _auctionRepository.Received(1).GetAuctionByUniqueIdentifier(auctionUniqueIdentifier);
-        await _auctionRepository.Received(0).UpdateAuction(Arg.Any<Auction>());
+        await _auctionRepository.Received(1).GetAuctionByUniqueIdentifierAsync(auctionUniqueIdentifier);
+        await _auctionRepository.Received(0).UpdateAuctionAsync(Arg.Any<Auction>());
     }
 
     [Fact]
@@ -522,10 +522,10 @@ public class AuctionServiceTests : TestsBase
             .With(x => x.Bids, new List<Bid>())
             .Create();
 
-        _auctionRepository.GetAuctionByUniqueIdentifier(Arg.Any<Guid>())
+        _auctionRepository.GetAuctionByUniqueIdentifierAsync(Arg.Any<Guid>())
             .Returns(Result.Ok(auction));
 
-        _auctionRepository.UpdateAuction(Arg.Any<Auction>())
+        _auctionRepository.UpdateAuctionAsync(Arg.Any<Auction>())
             .Returns(Result.Ok());
 
         //Act
@@ -533,7 +533,7 @@ public class AuctionServiceTests : TestsBase
 
         //Assert
         result.IsSuccess.Should().BeTrue();
-        await _auctionRepository.Received(1).GetAuctionByUniqueIdentifier(auctionUniqueIdentifier);
-        await _auctionRepository.Received(1).UpdateAuction(Arg.Any<Auction>());
+        await _auctionRepository.Received(1).GetAuctionByUniqueIdentifierAsync(auctionUniqueIdentifier);
+        await _auctionRepository.Received(1).UpdateAuctionAsync(Arg.Any<Auction>());
     }
 }

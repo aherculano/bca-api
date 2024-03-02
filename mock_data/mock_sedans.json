@@ -1,0 +1,92 @@
+[
+	{
+		"UniqueIdentifier": "6f8c814b-36e9-48ac-8750-75590b88f6ba",
+		"Type": "Suv",
+		"Manufacturer": "Toyota",
+		"Model": "F150",
+		"Year": 1975,
+		"StartingBid": 10766,
+		"NumberOfSeats": 3
+	},
+	{
+		"UniqueIdentifier": "b5577d91-c572-463e-a61f-fbe830967108",
+		"Type": "Suv",
+		"Manufacturer": "Ford",
+		"Model": "F150",
+		"Year": 2018,
+		"StartingBid": 11925,
+		"NumberOfSeats": 6
+	},
+	{
+		"UniqueIdentifier": "150fd8e4-bd4d-478f-82ef-1cf9d7ac318b",
+		"Type": "Suv",
+		"Manufacturer": "Toyota",
+		"Model": "X5",
+		"Year": 1922,
+		"StartingBid": 14960,
+		"NumberOfSeats": 7
+	},
+	{
+		"UniqueIdentifier": "41d8b7de-c732-4851-b692-0f7497cd5e2c",
+		"Type": "Suv",
+		"Manufacturer": "Toyota",
+		"Model": "X1",
+		"Year": 2012,
+		"StartingBid": 14202,
+		"NumberOfSeats": 2
+	},
+	{
+		"UniqueIdentifier": "202fcbe5-1126-4e21-866e-8e94c0fffe19",
+		"Type": "Suv",
+		"Manufacturer": "Toyota",
+		"Model": "X4",
+		"Year": 1932,
+		"StartingBid": 4397,
+		"NumberOfSeats": 9
+	},
+	{
+		"UniqueIdentifier": "acf4d5c5-0660-4d70-8177-733d42b9b78a",
+		"Type": "Suv",
+		"Manufacturer": "Toyota",
+		"Model": "X4",
+		"Year": 2009,
+		"StartingBid": 6190,
+		"NumberOfSeats": 7
+	},
+	{
+		"UniqueIdentifier": "b9973105-5e49-4577-ad57-3f514d3f076d",
+		"Type": "Suv",
+		"Manufacturer": "Ford",
+		"Model": "Rav4",
+		"Year": 1919,
+		"StartingBid": 11813,
+		"NumberOfSeats": 8
+	},
+	{
+		"UniqueIdentifier": "41c775a9-c3b1-4d41-b7e9-63662866f559",
+		"Type": "Suv",
+		"Manufacturer": "BMW",
+		"Model": "F150",
+		"Year": 1986,
+		"StartingBid": 13616,
+		"NumberOfSeats": 9
+	},
+	{
+		"UniqueIdentifier": "1749ad7f-807e-4fbc-8877-412d9dd1aeab",
+		"Type": "Suv",
+		"Manufacturer": "Ford",
+		"Model": "X1",
+		"Year": 1985,
+		"StartingBid": 12170,
+		"NumberOfSeats": 2
+	},
+	{
+		"UniqueIdentifier": "4c16e9ea-c94a-4557-a29a-e2a85d5f0407",
+		"Type": "Suv",
+		"Manufacturer": "Ford",
+		"Model": "X5",
+		"Year": 1996,
+		"StartingBid": 6273,
+		"NumberOfSeats": 8
+	}
+]

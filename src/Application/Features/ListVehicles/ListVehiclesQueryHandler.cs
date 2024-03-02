@@ -1,6 +1,7 @@
 ﻿using Application.Responses.VehicleResponses;
 using Domain.Errors;
 using Domain.FluentResults;
+using Domain.Models.Vehicle.ValueObjects;
 using Domain.Repositories;
 using FluentResults;
 using MediatR;
@@ -19,8 +20,10 @@ public class ListVehiclesQueryHandler : IRequestHandler<ListVehiclesQuery, Resul
     public async Task<Result<VehicleListResponse>> Handle(ListVehiclesQuery request,
         CancellationToken cancellationToken)
     {
+        var parseResult = Enum.TryParse<VehicleType>(request.Request.Type, out var vehicleType);
+        
         var result = await _repository.ListVehiclesAsync(
-            request.Request.Type,
+            parseResult? vehicleType : null,
             request.Request.Manufacturer,
             request.Request.Model,
             request.Request.Year);

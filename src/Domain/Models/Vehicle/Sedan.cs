@@ -4,6 +4,11 @@ namespace Domain.Models.Vehicle;
 
 public class Sedan : Vehicle
 {
+    public Sedan()
+    {
+        
+    }
+    
     public Sedan(
         Guid uniqueIdentifier,
         VehicleDefinition definition,
@@ -13,5 +18,5 @@ public class Sedan : Vehicle
         NumberOfDoors = numberOfDoors;
     }
 
-    public int NumberOfDoors { get; }
+    public int NumberOfDoors { get; set; }
 }

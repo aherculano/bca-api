@@ -37,7 +37,7 @@ public class CreateVehicleCommandHandler : IRequestHandler<CreateVehicleCommand,
 
         if (!validationResult.IsValid) return Result.Fail(new ValidationError(validationResult.Errors));
 
-        var createResult = await _repository.CreateVheicleAsync(domainVehicle);
+        var createResult = await _repository.CreateVehicleAsync(domainVehicle);
 
         createResult.ThrowExceptionIfHasFailedResult();
 

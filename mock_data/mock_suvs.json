@@ -1,0 +1,92 @@
+[
+	{
+		"UniqueIdentifier": "158af64c-62be-48ee-84d0-75496295075c",
+		"Type": "Sedan",
+		"Manufacturer": "Renault",
+		"Model": "E-Class",
+		"Year": 1908,
+		"StartingBid": 3798,
+		"NumberOfDoors": 3
+	},
+	{
+		"UniqueIdentifier": "412cbcc7-b8da-4090-9beb-6eb611b184aa",
+		"Type": "Sedan",
+		"Manufacturer": "Renault",
+		"Model": "A-Class",
+		"Year": 1906,
+		"StartingBid": 2860,
+		"NumberOfDoors": 5
+	},
+	{
+		"UniqueIdentifier": "3352100d-2081-4a51-a48b-092edc3c52bf",
+		"Type": "Sedan",
+		"Manufacturer": "Range Rover",
+		"Model": "A-Class",
+		"Year": 1985,
+		"StartingBid": 12118,
+		"NumberOfDoors": 3
+	},
+	{
+		"UniqueIdentifier": "22e812ac-d002-4060-a3f2-ae27833bd41e",
+		"Type": "Sedan",
+		"Manufacturer": "Mercedes",
+		"Model": "A-Class",
+		"Year": 1946,
+		"StartingBid": 10809,
+		"NumberOfDoors": 5
+	},
+	{
+		"UniqueIdentifier": "1db34777-ccae-4c3c-8e05-131c4c44af8c",
+		"Type": "Sedan",
+		"Manufacturer": "Honda",
+		"Model": "A-Class",
+		"Year": 2008,
+		"StartingBid": 2003,
+		"NumberOfDoors": 3
+	},
+	{
+		"UniqueIdentifier": "45880c3e-33a2-4e4d-9691-576c2a7b5b13",
+		"Type": "Sedan",
+		"Manufacturer": "Mercedes",
+		"Model": "S-Class",
+		"Year": 1958,
+		"StartingBid": 7332,
+		"NumberOfDoors": 5
+	},
+	{
+		"UniqueIdentifier": "7248b3f0-3afe-4e1b-9d36-3f131879b5e1",
+		"Type": "Sedan",
+		"Manufacturer": "Toyota",
+		"Model": "C-Class",
+		"Year": 2000,
+		"StartingBid": 13554,
+		"NumberOfDoors": 3
+	},
+	{
+		"UniqueIdentifier": "81dd31c8-6986-4888-a386-0b87bcbeb46e",
+		"Type": "Sedan",
+		"Manufacturer": "Mercedes",
+		"Model": "S-Class",
+		"Year": 1950,
+		"StartingBid": 6414,
+		"NumberOfDoors": 5
+	},
+	{
+		"UniqueIdentifier": "5ae2dfcf-62c5-410a-86b3-41281fb31d30",
+		"Type": "Sedan",
+		"Manufacturer": "Honda",
+		"Model": "E-Class",
+		"Year": 1906,
+		"StartingBid": 1242,
+		"NumberOfDoors": 5
+	},
+	{
+		"UniqueIdentifier": "8ec0b241-e9e8-4659-a503-ff19b29200e7",
+		"Type": "Sedan",
+		"Manufacturer": "Honda",
+		"Model": "E-Class",
+		"Year": 1969,
+		"StartingBid": 3562,
+		"NumberOfDoors": 5
+	}
+]

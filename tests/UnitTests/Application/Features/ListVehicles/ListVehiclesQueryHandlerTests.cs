@@ -30,7 +30,7 @@ public class ListVehiclesQueryHandlerTests : TestsBase
         //Arrange
         var query = Fixture.Create<ListVehiclesQuery>();
         _repository
-            .ListVehiclesAsync(Arg.Any<string?>(), Arg.Any<string?>(), Arg.Any<string?>(), Arg.Any<int?>())
+            .ListVehiclesAsync(Arg.Any<VehicleType?>(), Arg.Any<string?>(), Arg.Any<string?>(), Arg.Any<int?>())
             .Returns(Result.Fail(Fixture.Create<Error>()));
 
         //Act
@@ -40,7 +40,7 @@ public class ListVehiclesQueryHandlerTests : TestsBase
         //Assert
         await call.Should().ThrowAsync<Exception>();
         await _repository.Received(1)
-            .ListVehiclesAsync(Arg.Any<string?>(), Arg.Any<string?>(), Arg.Any<string?>(), Arg.Any<int?>());
+            .ListVehiclesAsync(Arg.Any<VehicleType?>(), Arg.Any<string?>(), Arg.Any<string?>(), Arg.Any<int?>());
     }
 
     [Fact]
@@ -48,7 +48,7 @@ public class ListVehiclesQueryHandlerTests : TestsBase
     {
         //Arrange
         var query = Fixture.Create<ListVehiclesQuery>();
-        _repository.ListVehiclesAsync(Arg.Any<string?>(), Arg.Any<string?>(), Arg.Any<string?>(), Arg.Any<int?>())
+        _repository.ListVehiclesAsync(Arg.Any<VehicleType?>(), Arg.Any<string?>(), Arg.Any<string?>(), Arg.Any<int?>())
             .Returns(Result.Ok(Fixture.CreateMany<Suv>(0) as IEnumerable<Vehicle>));
 
         //Act
@@ -58,7 +58,7 @@ public class ListVehiclesQueryHandlerTests : TestsBase
         result.IsFailed.Should().BeTrue();
         result.Errors.Any(x => x is NotFoundError);
         await _repository.Received(1)
-            .ListVehiclesAsync(Arg.Any<string?>(), Arg.Any<string?>(), Arg.Any<string?>(), Arg.Any<int?>());
+            .ListVehiclesAsync(Arg.Any<VehicleType?>(), Arg.Any<string?>(), Arg.Any<string?>(), Arg.Any<int?>());
     }
 
     [Fact]
@@ -75,7 +75,7 @@ public class ListVehiclesQueryHandlerTests : TestsBase
             .With(x => x.Definition, definition)
             .CreateMany(3);
 
-        _repository.ListVehiclesAsync(Arg.Any<string?>(), Arg.Any<string?>(), Arg.Any<string?>(), Arg.Any<int?>())
+        _repository.ListVehiclesAsync(Arg.Any<VehicleType?>(), Arg.Any<string?>(), Arg.Any<string?>(), Arg.Any<int?>())
             .Returns(Result.Ok(vehicles as IEnumerable<Vehicle>));
 
         //Act

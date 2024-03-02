@@ -1,5 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 using Application;
+using Infrastructure.Settings;
 using Microsoft.OpenApi.Models;
 
 namespace Api;
@@ -15,6 +16,7 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
+        ConfigureSettings(services);
         services.AddControllers()
             .AddJsonOptions(opt =>
             {
@@ -34,5 +36,12 @@ public class Startup
         app.UseSwaggerUI();
         app.UseRouting();
         app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+    }
+    
+    private void ConfigureSettings(IServiceCollection services)
+    {
+        var sqlSettings = new SqlSettings();
+        Configuration.GetSection(SqlSettings.SettingsSection).Bind(sqlSettings);
+        services.AddSingleton(sqlSettings);
     }
 }

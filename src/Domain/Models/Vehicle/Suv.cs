@@ -4,8 +4,10 @@ namespace Domain.Models.Vehicle;
 
 public class Suv : Vehicle
 {
-    public VehicleType Type = VehicleType.Suv;
-
+    public Suv()
+    {
+        
+    }
     public Suv(
         Guid uniqueIdentifier,
         VehicleDefinition definition,

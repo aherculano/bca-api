@@ -1,0 +1,26 @@
+services:
+  sqlserver:
+    image:
+      mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      SA_PASSWORD: "P4ssw0rd!"
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Express"
+    ports:
+      - "1433:1433"
+    restart: always
+    healthcheck:
+        test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P P4ssw0rd! -Q 'SELECT 1' || exit 1"]
+        interval: 10s
+        retries: 10
+        start_period: 10s
+        timeout: 3s  
+  bca-api:
+    build:
+      .
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Docker"
+    depends_on:
+      - sqlserver
+    ports:
+      - "5000:8080"

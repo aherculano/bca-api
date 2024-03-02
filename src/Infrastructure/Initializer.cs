@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using Domain.Repositories;
-using Infrastructure.Repositories;
+using Infrastructure.Data.EntityFramework;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure;
@@ -10,8 +9,7 @@ public static class Initializer
 {
     public static IServiceCollection ConfigureInfrastructure(this IServiceCollection services)
     {
-        services.AddSingleton<IVehicleRepository, VehicleInMemoryRepository>();
-        services.AddSingleton<IAuctionRepository, AuctionInMemoryRepository>();
+        services.ConfigureSql();
         return services;
     }
 }

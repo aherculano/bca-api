@@ -9,7 +9,7 @@ public class Bid : ValueObject
         BidValue = bidValue;
     }
 
-    public string BidderName { get; }
+    public string BidderName { get; protected set; }
 
-    public decimal BidValue { get; }
+    public decimal BidValue { get; protected set; }
 }

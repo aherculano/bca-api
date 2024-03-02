@@ -49,7 +49,7 @@ public class CreateVehicleCommandHandlerTests : TestsBase
         //Assert
         await call.Should().ThrowAsync<Exception>();
         await _repository.Received(1).GetVehicleByUniqueIdentifierAsync(command.Request.UniqueIdentifier);
-        await _repository.Received(0).CreateVheicleAsync(Arg.Any<Vehicle>());
+        await _repository.Received(0).CreateVehicleAsync(Arg.Any<Vehicle>());
     }
 
     [Fact]
@@ -71,7 +71,7 @@ public class CreateVehicleCommandHandlerTests : TestsBase
         result.IsFailed.Should().BeTrue();
         result.Errors.Any(x => x is AlreadyExistsError);
         await _repository.Received(1).GetVehicleByUniqueIdentifierAsync(command.Request.UniqueIdentifier);
-        await _repository.Received(0).CreateVheicleAsync(Arg.Any<Vehicle>());
+        await _repository.Received(0).CreateVehicleAsync(Arg.Any<Vehicle>());
     }
 
     [Fact]
@@ -83,7 +83,7 @@ public class CreateVehicleCommandHandlerTests : TestsBase
         _repository.GetVehicleByUniqueIdentifierAsync(command.Request.UniqueIdentifier)
             .Returns(Result.Ok(null as Vehicle));
 
-        _repository.CreateVheicleAsync(Arg.Any<Vehicle>())
+        _repository.CreateVehicleAsync(Arg.Any<Vehicle>())
             .Returns(Result.Fail(Fixture.Create<Error>()));
 
         _validator.ValidateVehicle(Arg.Any<Vehicle>()).Returns(_validValidationResult);
@@ -93,7 +93,7 @@ public class CreateVehicleCommandHandlerTests : TestsBase
         //Assert
         await call.Should().ThrowAsync<Exception>();
         await _repository.Received(1).GetVehicleByUniqueIdentifierAsync(command.Request.UniqueIdentifier);
-        await _repository.Received(1).CreateVheicleAsync(Arg.Any<Vehicle>());
+        await _repository.Received(1).CreateVehicleAsync(Arg.Any<Vehicle>());
     }
 
     [Fact]
@@ -107,7 +107,7 @@ public class CreateVehicleCommandHandlerTests : TestsBase
         _repository.GetVehicleByUniqueIdentifierAsync(command.Request.UniqueIdentifier)
             .Returns(Result.Ok(null as Vehicle));
 
-        _repository.CreateVheicleAsync(Arg.Any<Vehicle>())
+        _repository.CreateVehicleAsync(Arg.Any<Vehicle>())
             .Returns(Result.Ok(suv));
 
         _validator.ValidateVehicle(Arg.Any<Vehicle>()).Returns(_validValidationResult);
@@ -119,6 +119,6 @@ public class CreateVehicleCommandHandlerTests : TestsBase
         result.IsSuccess.Should().BeTrue();
         result.Value.Should().Be(suv.MapToResponse());
         await _repository.Received(1).GetVehicleByUniqueIdentifierAsync(command.Request.UniqueIdentifier);
-        await _repository.Received(1).CreateVheicleAsync(Arg.Any<Vehicle>());
+        await _repository.Received(1).CreateVehicleAsync(Arg.Any<Vehicle>());
     }
 }

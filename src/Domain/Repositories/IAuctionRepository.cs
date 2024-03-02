@@ -5,11 +5,11 @@ namespace Domain.Repositories;
 
 public interface IAuctionRepository
 {
-    Task<Result<Auction>> CreateAuction(Auction auction);
+    Task<Result<Auction>> CreateAuctionAsync(Auction auction);
 
-    Task<Result<bool>> UpdateAuction(Auction auction);
+    Task<Result<bool>> UpdateAuctionAsync(Auction auction);
 
-    Task<Result<IEnumerable<Auction>>> GetAuctionsByVehicleUniqueIdentifier(Guid vehicleUniqueIdentifer);
+    Task<Result<IEnumerable<Auction>>> GetAuctionsByVehicleUniqueIdentifierAsync(Guid vehicleUniqueIdentifer);
 
-    Task<Result<Auction>> GetAuctionByUniqueIdentifier(Guid uniqueIdentifier);
+    Task<Result<Auction>> GetAuctionByUniqueIdentifierAsync(Guid uniqueIdentifier);
 }

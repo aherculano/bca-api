@@ -21,7 +21,7 @@ public class
     public async Task<Result<AuctionResponse>> Handle(GetAuctionByUniqueIdentifierQuery request,
         CancellationToken cancellationToken)
     {
-        var auctionResult = await _auctionRepository.GetAuctionByUniqueIdentifier(request.UniqueIdentifier);
+        var auctionResult = await _auctionRepository.GetAuctionByUniqueIdentifierAsync(request.UniqueIdentifier);
 
         var auction = auctionResult.ThrowExceptionIfHasFailedResult().Value;
 

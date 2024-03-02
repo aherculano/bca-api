@@ -34,7 +34,7 @@ public class AuctionService : IAuctionService
 
         if (vehicle is null) return Result.Fail(new NotFoundError("Not Found", "The Vehicle Does Not Exist"));
 
-        var auctionsResult = await _auctionRepository.GetAuctionsByVehicleUniqueIdentifier(vehicle.UniqueIdentifier);
+        var auctionsResult = await _auctionRepository.GetAuctionsByVehicleUniqueIdentifierAsync(vehicle.UniqueIdentifier);
 
         var currentAuctions = auctionsResult.ThrowExceptionIfHasFailedResult().Value;
 
@@ -46,7 +46,7 @@ public class AuctionService : IAuctionService
         var validationResult = _auctionValidator.Validate(auction);
 
         if (!validationResult.IsValid) return Result.Fail(new ValidationError(validationResult.Errors));
-        var createResult = await _auctionRepository.CreateAuction(auction);
+        var createResult = await _auctionRepository.CreateAuctionAsync(auction);
 
         createResult.ThrowExceptionIfHasFailedResult();
 
@@ -59,7 +59,7 @@ public class AuctionService : IAuctionService
 
         if (!validationResult.IsValid) return Result.Fail(new ValidationError(validationResult.Errors));
 
-        var currentAuctionResult = await _auctionRepository.GetAuctionByUniqueIdentifier(auctionUniqueIdentifier);
+        var currentAuctionResult = await _auctionRepository.GetAuctionByUniqueIdentifierAsync(auctionUniqueIdentifier);
 
         var currentAuction = currentAuctionResult.ThrowExceptionIfHasFailedResult().Value;
 
@@ -74,7 +74,7 @@ public class AuctionService : IAuctionService
 
         currentAuction.Bids.Add(bid);
 
-        var updateResult = await _auctionRepository.UpdateAuction(currentAuction);
+        var updateResult = await _auctionRepository.UpdateAuctionAsync(currentAuction);
 
         updateResult.ThrowExceptionIfHasFailedResult();
 
@@ -83,7 +83,7 @@ public class AuctionService : IAuctionService
 
     public async Task<Result<AuctionStatus>> UpdateAuctionStatus(Guid auctionUniqueIdentifier, AuctionStatus status)
     {
-        var currentAuctionResult = await _auctionRepository.GetAuctionByUniqueIdentifier(auctionUniqueIdentifier);
+        var currentAuctionResult = await _auctionRepository.GetAuctionByUniqueIdentifierAsync(auctionUniqueIdentifier);
         var currentAuction = currentAuctionResult.ThrowExceptionIfHasFailedResult().Value;
 
         if (currentAuction is null) return Result.Fail(new NotFoundError("Not Found", "Auction Does Not Exist"));
@@ -98,7 +98,7 @@ public class AuctionService : IAuctionService
     {
         currentAuction.Status = AuctionStatus.Closed;
 
-        (await _auctionRepository.UpdateAuction(currentAuction)).ThrowExceptionIfHasFailedResult();
+        (await _auctionRepository.UpdateAuctionAsync(currentAuction)).ThrowExceptionIfHasFailedResult();
 
         return Result.Ok(AuctionStatus.Closed);
     }
@@ -106,7 +106,7 @@ public class AuctionService : IAuctionService
     private async Task<Result<AuctionStatus>> OpenAuction(Auction currentAuction)
     {
         var availableAuctionsResult =
-            await _auctionRepository.GetAuctionsByVehicleUniqueIdentifier(currentAuction.VehicleUniqueIdentifier);
+            await _auctionRepository.GetAuctionsByVehicleUniqueIdentifierAsync(currentAuction.VehicleUniqueIdentifier);
 
         var availableAuctions = availableAuctionsResult.ThrowExceptionIfHasFailedResult().Value;
 
@@ -115,7 +115,7 @@ public class AuctionService : IAuctionService
 
         currentAuction.Status = AuctionStatus.Open;
 
-        (await _auctionRepository.UpdateAuction(currentAuction)).ThrowExceptionIfHasFailedResult();
+        (await _auctionRepository.UpdateAuctionAsync(currentAuction)).ThrowExceptionIfHasFailedResult();
 
         return Result.Ok(AuctionStatus.Open);
     }
