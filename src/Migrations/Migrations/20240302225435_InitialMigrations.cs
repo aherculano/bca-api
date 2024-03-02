@@ -56,7 +56,8 @@ namespace Migrations.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     BidderName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BidValue = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    BidValue = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    BidDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
                 },
                 constraints: table =>
                 {

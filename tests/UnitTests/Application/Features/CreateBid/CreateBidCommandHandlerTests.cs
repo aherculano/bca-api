@@ -44,15 +44,16 @@ public class CreateBidCommandHandlerTests : TestsBase
     {
         //Arrange
         var command = Fixture.Create<CreateBidCommand>();
+        var expectedBid = command.Request.MapToDomain();
         _service.AddBid(Arg.Any<Guid>(), Arg.Any<Bid>())
-            .Returns(Result.Ok(command.Request.MapToDomain()));
+            .Returns(Result.Ok(expectedBid));
 
         //Act
         var result = await _handler.Handle(command, CancellationToken.None);
 
         //Assert
         result.IsSuccess.Should().BeTrue();
-        result.Value.Should().Be(command.Request.MapToDomain().MapToResponse());
+        result.Value.Should().Be(expectedBid.MapToResponse());
         await _service.Received(1).AddBid(command.UniqueIdentifier, Arg.Any<Bid>());
     }
 }

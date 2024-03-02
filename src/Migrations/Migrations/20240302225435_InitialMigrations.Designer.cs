@@ -12,7 +12,7 @@ using Migrations;
 namespace Migrations.Migrations
 {
     [DbContext(typeof(MigrationsDbContext))]
-    [Migration("20240302210844_InitialMigrations")]
+    [Migration("20240302225435_InitialMigrations")]
     partial class InitialMigrations
     {
         /// <inheritdoc />
@@ -121,6 +121,9 @@ namespace Migrations.Migrations
                                 .HasColumnType("int");
 
                             SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
+
+                            b1.Property<DateTimeOffset>("BidDate")
+                                .HasColumnType("datetimeoffset");
 
                             b1.Property<decimal>("BidValue")
                                 .HasColumnType("decimal(18,2)");

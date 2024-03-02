@@ -15,6 +15,6 @@ internal static class BidResponseMapper
     {
         if (source is null) return null;
 
-        return new BidResponse(source.BidderName, source.BidValue);
+        return new BidResponse(source.BidderName, source.BidValue, source.BidDate);
     }
 }

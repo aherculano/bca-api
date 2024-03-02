@@ -119,6 +119,9 @@ namespace Migrations.Migrations
 
                             SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
 
+                            b1.Property<DateTimeOffset>("BidDate")
+                                .HasColumnType("datetimeoffset");
+
                             b1.Property<decimal>("BidValue")
                                 .HasColumnType("decimal(18,2)");
 

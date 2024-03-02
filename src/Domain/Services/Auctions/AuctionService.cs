@@ -69,9 +69,12 @@ public class AuctionService : IAuctionService
             return Result.Fail(new ClosedAuctionError("Auction Closed",
                 "The Bid Was Not Placed Because The Auction Is Closed"));
 
-        if (currentAuction.Bids.Any(x => x.BidValue > bid.BidValue) || currentAuction.StartingBid > bid.BidValue)
-            return Result.Fail(new InvalidBidError("Bad Request", "Invalid Bid Value"));
+        if (currentAuction.Bids.Any(x => x.BidValue > bid.BidValue))
+            return Result.Fail(new InvalidBidError("Bad Request", "Bid is lower then highest bid"));
 
+        if (currentAuction.StartingBid > bid.BidValue)
+            return Result.Fail(new InvalidBidError("Bad Request", "Bid is lower then starting bid"));
+        
         currentAuction.Bids.Add(bid);
 
         var updateResult = await _auctionRepository.UpdateAuctionAsync(currentAuction);

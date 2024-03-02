@@ -1,3 +1,3 @@
 ﻿namespace Application.Responses.AuctionResponses;
 
-public record BidResponse(string BidderName, decimal BidValue);
+public record BidResponse(string BidderName, decimal BidValue, DateTimeOffset BidDate);
