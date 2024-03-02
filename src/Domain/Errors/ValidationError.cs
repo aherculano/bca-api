@@ -1,7 +1,7 @@
 ﻿using FluentResults;
 using FluentValidation.Results;
 
-namespace Application.Errors;
+namespace Domain.Errors;
 
 public class ValidationError : Error
 {

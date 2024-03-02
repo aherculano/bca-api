@@ -2,7 +2,7 @@
 
 namespace Application.Features.CreateBid;
 
-public class CreateBidCommandValidator: AbstractValidator<CreateBidCommand>
+public class CreateBidCommandValidator : AbstractValidator<CreateBidCommand>
 {
     public CreateBidCommandValidator()
     {
@@ -14,7 +14,7 @@ public class CreateBidCommandValidator: AbstractValidator<CreateBidCommand>
             .Must(x => x != Guid.Empty)
             .When(x => x is not null)
             .WithMessage("Invalid Auction Unique Identifier");
-        
+
         RuleFor(x => x.Request.BidValue)
             .GreaterThan(0)
             .When(x => x?.Request is not null)

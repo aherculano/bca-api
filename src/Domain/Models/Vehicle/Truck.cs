@@ -1,16 +1,14 @@
-﻿namespace Domain.Models.Vehicle;
+﻿using Domain.Models.Vehicle.ValueObjects;
+
+namespace Domain.Models.Vehicle;
 
 public class Truck : Vehicle
 {
-    public const string TruckType = "Truck";
-
     public Truck(
         Guid uniqueIdentifier,
-        string manufacturer,
-        string model,
-        int year,
+        VehicleDefinition definition,
         decimal startingBid,
-        decimal loadCapacity) : base(uniqueIdentifier, TruckType, manufacturer, model, year, startingBid)
+        decimal loadCapacity) : base(uniqueIdentifier, definition, startingBid)
     {
         LoadCapacity = loadCapacity;
     }

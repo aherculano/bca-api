@@ -1,6 +1,9 @@
 ﻿using Domain.Errors;
 using Domain.FluentResults;
 using Domain.Models.Auction;
+using Domain.Models.Auction.Validators;
+using Domain.Models.Auction.ValueObjects;
+using Domain.Models.Auction.ValueObjects.Validators;
 using Domain.Repositories;
 using FluentResults;
 
@@ -9,6 +12,8 @@ namespace Domain.Services.Auctions;
 public class AuctionService : IAuctionService
 {
     private readonly IAuctionRepository _auctionRepository;
+    private readonly AuctionValidator _auctionValidator;
+    private readonly BidValidator _bidValidator;
     private readonly IVehicleRepository _vehicleRepository;
 
     public AuctionService(IVehicleRepository vehicleRepository,
@@ -16,6 +21,8 @@ public class AuctionService : IAuctionService
     {
         _vehicleRepository = vehicleRepository;
         _auctionRepository = auctionRepository;
+        _bidValidator = new BidValidator();
+        _auctionValidator = new AuctionValidator();
     }
 
     public async Task<Result<Auction>> CreateAuction(Guid vehicleUniqueIdentifier)
@@ -36,6 +43,9 @@ public class AuctionService : IAuctionService
 
         var auction = new Auction(vehicle.UniqueIdentifier, vehicle.StartingBid);
 
+        var validationResult = _auctionValidator.Validate(auction);
+
+        if (!validationResult.IsValid) return Result.Fail(new ValidationError(validationResult.Errors));
         var createResult = await _auctionRepository.CreateAuction(auction);
 
         createResult.ThrowExceptionIfHasFailedResult();
@@ -45,32 +55,29 @@ public class AuctionService : IAuctionService
 
     public async Task<Result<Bid>> AddBid(Guid auctionUniqueIdentifier, Bid bid)
     {
+        var validationResult = _bidValidator.Validate(bid);
+
+        if (!validationResult.IsValid) return Result.Fail(new ValidationError(validationResult.Errors));
+
         var currentAuctionResult = await _auctionRepository.GetAuctionByUniqueIdentifier(auctionUniqueIdentifier);
 
         var currentAuction = currentAuctionResult.ThrowExceptionIfHasFailedResult().Value;
 
-        if (currentAuction is null)
-        {
-            return Result.Fail(new NotFoundError("Not Found", "Auction Was Not Found"));
-        }
+        if (currentAuction is null) return Result.Fail(new NotFoundError("Not Found", "Auction Was Not Found"));
 
         if (currentAuction.Status is AuctionStatus.Closed)
-        {
             return Result.Fail(new ClosedAuctionError("Auction Closed",
                 "The Bid Was Not Placed Because The Auction Is Closed"));
-        }
 
-        if (currentAuction.Bids.Any(x => x.BidValue > bid.BidValue) || currentAuction.StartBid > bid.BidValue)
-        {
+        if (currentAuction.Bids.Any(x => x.BidValue > bid.BidValue) || currentAuction.StartingBid > bid.BidValue)
             return Result.Fail(new InvalidBidError("Bad Request", "Invalid Bid Value"));
-        }
-        
+
         currentAuction.Bids.Add(bid);
-        
+
         var updateResult = await _auctionRepository.UpdateAuction(currentAuction);
 
         updateResult.ThrowExceptionIfHasFailedResult();
-        
+
         return Result.Ok(bid);
     }
 

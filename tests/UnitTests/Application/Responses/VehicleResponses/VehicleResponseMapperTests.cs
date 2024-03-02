@@ -21,9 +21,9 @@ public class VehicleResponseMapperTests : TestsBase
         //Assert
         (response is SuvResponse).Should().BeTrue();
         response.UniqueIdentifier.Should().Be(suv.UniqueIdentifier);
-        response.Manufacturer.Should().Be(suv.Manufacturer);
-        response.Model.Should().Be(suv.Model);
-        response.Year.Should().Be(suv.Year);
+        response.Manufacturer.Should().Be(suv.Definition.Manufacturer);
+        response.Model.Should().Be(suv.Definition.Model);
+        response.Year.Should().Be(suv.Definition.Year);
         response.StartingBid.Should().Be(suv.StartingBid);
         (response as SuvResponse).NumberOfSeats.Should().Be(suv.NumberOfSeats);
     }
@@ -40,9 +40,9 @@ public class VehicleResponseMapperTests : TestsBase
         //Assert
         (response is TruckResponse).Should().BeTrue();
         response.UniqueIdentifier.Should().Be(truck.UniqueIdentifier);
-        response.Manufacturer.Should().Be(truck.Manufacturer);
-        response.Model.Should().Be(truck.Model);
-        response.Year.Should().Be(truck.Year);
+        response.Manufacturer.Should().Be(truck.Definition.Manufacturer);
+        response.Model.Should().Be(truck.Definition.Model);
+        response.Year.Should().Be(truck.Definition.Year);
         response.StartingBid.Should().Be(truck.StartingBid);
         (response as TruckResponse).LoadCapacity.Should().Be(truck.LoadCapacity);
     }
@@ -59,9 +59,9 @@ public class VehicleResponseMapperTests : TestsBase
         //Assert
         (response is SedanResponse).Should().BeTrue();
         response.UniqueIdentifier.Should().Be(sedan.UniqueIdentifier);
-        response.Manufacturer.Should().Be(sedan.Manufacturer);
-        response.Model.Should().Be(sedan.Model);
-        response.Year.Should().Be(sedan.Year);
+        response.Manufacturer.Should().Be(sedan.Definition.Manufacturer);
+        response.Model.Should().Be(sedan.Definition.Model);
+        response.Year.Should().Be(sedan.Definition.Year);
         response.StartingBid.Should().Be(sedan.StartingBid);
         (response as SedanResponse).NumberOfDoors.Should().Be(sedan.NumberOfDoors);
     }

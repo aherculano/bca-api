@@ -39,7 +39,7 @@ public class CreateAuctionCommandHandlerTests : TestsBase
         result.IsSuccess.Should().BeTrue();
         result.Value.UniqueIdentifier.Should().Be(auction.UniqueIdentifier);
         result.Value.VehicleUniqueIdentifier.Should().Be(auction.VehicleUniqueIdentifier);
-        result.Value.StartingBid.Should().Be(auction.StartBid);
+        result.Value.StartingBid.Should().Be(auction.StartingBid);
         result.Value.Status.Should().Be(auction.Status.ToString());
     }
 

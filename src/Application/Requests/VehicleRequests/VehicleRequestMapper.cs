@@ -17,7 +17,7 @@ internal static class VehicleRequestMapper
 
     private static Suv CreateSuv(SuvRequest request)
     {
-        return new Suv(
+        return VehicleFactory.CreateSuv(
             request.UniqueIdentifier,
             request.Manufacturer,
             request.Model,
@@ -28,7 +28,7 @@ internal static class VehicleRequestMapper
 
     private static Sedan CreateSedan(SedanRequest request)
     {
-        return new Sedan(
+        return VehicleFactory.CreateSedan(
             request.UniqueIdentifier,
             request.Manufacturer,
             request.Model,
@@ -39,7 +39,7 @@ internal static class VehicleRequestMapper
 
     private static Truck CreateTruck(TruckRequest request)
     {
-        return new Truck(
+        return VehicleFactory.CreateTruck(
             request.UniqueIdentifier,
             request.Manufacturer,
             request.Model,

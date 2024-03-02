@@ -21,10 +21,11 @@ public class VehicleRequestMapperTests : TestsBase
         //Assert
         (domain is Truck).Should().BeTrue();
         domain.UniqueIdentifier.Should().Be(request.UniqueIdentifier);
-        domain.Manufacturer.Should().Be(request.Manufacturer);
-        domain.Model.Should().Be(request.Model);
-        domain.Year.Should().Be(request.Year);
+        domain.Definition.Manufacturer.Should().Be(request.Manufacturer);
+        domain.Definition.Model.Should().Be(request.Model);
+        domain.Definition.Year.Should().Be(request.Year);
         domain.StartingBid.Should().Be(request.StartingBid);
+        (domain is Truck).Should().BeTrue();
         var truck = domain as Truck;
         truck.LoadCapacity.Should().Be(request.LoadCapacity);
     }
@@ -41,10 +42,11 @@ public class VehicleRequestMapperTests : TestsBase
         //Assert
         (domain is Sedan).Should().BeTrue();
         domain.UniqueIdentifier.Should().Be(request.UniqueIdentifier);
-        domain.Manufacturer.Should().Be(request.Manufacturer);
-        domain.Model.Should().Be(request.Model);
-        domain.Year.Should().Be(request.Year);
+        domain.Definition.Manufacturer.Should().Be(request.Manufacturer);
+        domain.Definition.Model.Should().Be(request.Model);
+        domain.Definition.Year.Should().Be(request.Year);
         domain.StartingBid.Should().Be(request.StartingBid);
+        (domain is Sedan).Should().BeTrue();
         var sedan = domain as Sedan;
         sedan.NumberOfDoors.Should().Be(request.NumberOfDoors);
     }
@@ -61,10 +63,11 @@ public class VehicleRequestMapperTests : TestsBase
         //Assert
         (domain is Suv).Should().BeTrue();
         domain.UniqueIdentifier.Should().Be(request.UniqueIdentifier);
-        domain.Manufacturer.Should().Be(request.Manufacturer);
-        domain.Model.Should().Be(request.Model);
-        domain.Year.Should().Be(request.Year);
+        domain.Definition.Manufacturer.Should().Be(request.Manufacturer);
+        domain.Definition.Model.Should().Be(request.Model);
+        domain.Definition.Year.Should().Be(request.Year);
         domain.StartingBid.Should().Be(request.StartingBid);
+        (domain is Suv).Should().BeTrue();
         var suv = domain as Suv;
         suv.NumberOfSeats.Should().Be(request.NumberOfSeats);
     }

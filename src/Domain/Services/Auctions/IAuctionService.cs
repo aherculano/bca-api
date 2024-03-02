@@ -1,4 +1,5 @@
 ﻿using Domain.Models.Auction;
+using Domain.Models.Auction.ValueObjects;
 using FluentResults;
 
 namespace Domain.Services.Auctions;

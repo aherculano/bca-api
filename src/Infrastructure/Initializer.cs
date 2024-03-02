@@ -1,5 +1,4 @@
 ﻿using Domain.Repositories;
-using Domain.Services.Auctions;
 using Infrastructure.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,7 +10,6 @@ public static class Initializer
     {
         services.AddSingleton<IVehicleRepository, VehicleInMemoryRepository>();
         services.AddSingleton<IAuctionRepository, AuctionInMemoryRepository>();
-        services.AddTransient<IAuctionService, AuctionService>();
         return services;
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Application.Features.ListVehicles;
 using Application.Requests.ListVehicleRequests;
-using Domain.Models.Vehicle;
+using Domain.Models.Vehicle.ValueObjects;
 using FluentAssertions;
 
 namespace UnitTests.Application.Features.ListVehicles;
@@ -20,7 +20,7 @@ public class ListVehiclesQueryValidatorTests : TestsBase
     public void Validate_ValidParameters_ReturnsValid()
     {
         //Arrange
-        var request = new ListVehicleRequest(Suv.SuvType, "Toyota", "Corolla", 1995);
+        var request = new ListVehicleRequest(VehicleType.Suv.ToString(), "Toyota", "Corolla", 1995);
         var query = new ListVehiclesQuery(request);
 
         //Act

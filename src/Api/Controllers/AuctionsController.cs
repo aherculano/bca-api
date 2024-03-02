@@ -63,7 +63,7 @@ public class AuctionsController : ControllerBase
         var command = new CreateBidCommand(auctionUniqueIdentifier, request);
         var result = await _mediator.Send(command);
         return result.IsSuccess
-            ? Ok(result.Value)
+            ? Created()
             : result.ToFailedActionResult();
     }
 }

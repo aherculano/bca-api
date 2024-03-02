@@ -1,6 +1,6 @@
 ﻿using Application.Features.CreateVehicle;
 using Application.Requests.VehicleRequests;
-using Domain.Models.Vehicle;
+using Domain.Models.Vehicle.ValueObjects;
 
 namespace Api.Requests;
 
@@ -19,7 +19,7 @@ internal static class CreateVehicleToCommandMapper
 {
     public static CreateVehicleCommand MapToCommand(this CreateVehicleRequest request)
     {
-        if (request.Type.Equals(Suv.SuvType, StringComparison.InvariantCultureIgnoreCase))
+        if (request.Type.Equals(VehicleType.Suv.ToString(), StringComparison.InvariantCultureIgnoreCase))
             return new CreateVehicleCommand(new SuvRequest(
                 request.UniqueIdentifier,
                 request.Manufacturer,
@@ -28,7 +28,7 @@ internal static class CreateVehicleToCommandMapper
                 request.StartingBid,
                 request.NumberOfSeats.GetValueOrDefault()));
 
-        if (request.Type.Equals(Sedan.SedanType, StringComparison.InvariantCultureIgnoreCase))
+        if (request.Type.Equals(VehicleType.Sedan.ToString(), StringComparison.InvariantCultureIgnoreCase))
             return new CreateVehicleCommand(new SedanRequest(
                 request.UniqueIdentifier,
                 request.Manufacturer,
@@ -37,7 +37,7 @@ internal static class CreateVehicleToCommandMapper
                 request.StartingBid,
                 request.NumberOfDoors.GetValueOrDefault()));
 
-        if (request.Type.Equals(Truck.TruckType, StringComparison.InvariantCultureIgnoreCase))
+        if (request.Type.Equals(VehicleType.Truck.ToString(), StringComparison.InvariantCultureIgnoreCase))
             return new CreateVehicleCommand(new TruckRequest(
                 request.UniqueIdentifier,
                 request.Manufacturer,

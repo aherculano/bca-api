@@ -11,7 +11,7 @@ internal static class AuctionResponseMapper
         return new AuctionResponse(
             source.UniqueIdentifier,
             source.VehicleUniqueIdentifier,
-            source.StartBid,
+            source.StartingBid,
             source.Status.ToString(),
             source.Bids.MapToResponse());
     }

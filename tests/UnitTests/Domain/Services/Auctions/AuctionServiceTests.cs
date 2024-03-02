@@ -2,13 +2,13 @@
 using AutoFixture;
 using Domain.Errors;
 using Domain.Models.Auction;
+using Domain.Models.Auction.ValueObjects;
 using Domain.Models.Vehicle;
 using Domain.Repositories;
 using Domain.Services.Auctions;
 using FluentAssertions;
 using FluentResults;
 using NSubstitute;
-using NSubstitute.ReceivedExtensions;
 
 namespace UnitTests.Domain.Services.Auctions;
 
@@ -188,7 +188,7 @@ public class AuctionServiceTests : TestsBase
         result.Value.UniqueIdentifier.Should().Be(createdAuction.UniqueIdentifier);
         result.Value.VehicleUniqueIdentifier.Should().Be(suv.UniqueIdentifier);
         result.Value.Bids.Should().BeEmpty();
-        result.Value.StartBid.Should().Be(suv.StartingBid);
+        result.Value.StartingBid.Should().Be(suv.StartingBid);
         result.Value.Status.Should().Be(AuctionStatus.Closed);
         await _vehicleRepository.Received(1).GetVehicleByUniqueIdentifierAsync(vehicleUniqueIdentifier);
         await _auctionRepository.Received(1).GetAuctionsByVehicleUniqueIdentifier(vehicleUniqueIdentifier);
@@ -374,7 +374,7 @@ public class AuctionServiceTests : TestsBase
 
         _auctionRepository.GetAuctionByUniqueIdentifier(Arg.Any<Guid>())
             .Returns(Result.Ok(null as Auction));
-        
+
         //Act
         var result = await _auctionService.AddBid(auctionUniqueIdentifier, bid);
 
@@ -394,11 +394,11 @@ public class AuctionServiceTests : TestsBase
             .With(x => x.UniqueIdentifier)
             .With(x => x.Bids, new List<Bid>())
             .Create();
-        var bid = new Bid(Fixture.Create<string>(), auction.StartBid - 10);
-        
+        var bid = new Bid(Fixture.Create<string>(), auction.StartingBid - 10);
+
         _auctionRepository.GetAuctionByUniqueIdentifier(Arg.Any<Guid>())
             .Returns(Result.Ok(auction));
-        
+
         //Act
         var result = await _auctionService.AddBid(auctionUniqueIdentifier, bid);
 
@@ -418,12 +418,12 @@ public class AuctionServiceTests : TestsBase
             .With(x => x.Status, AuctionStatus.Closed)
             .With(x => x.UniqueIdentifier, auctionUniqueIdentifier)
             .Create();
-        
+
         var bid = Fixture.Create<Bid>();
 
         _auctionRepository.GetAuctionByUniqueIdentifier(Arg.Any<Guid>())
             .Returns(Result.Ok(auction));
-        
+
         //Act
         var result = await _auctionService.AddBid(auctionUniqueIdentifier, bid);
 
@@ -433,6 +433,7 @@ public class AuctionServiceTests : TestsBase
         await _auctionRepository.Received(1).GetAuctionByUniqueIdentifier(auctionUniqueIdentifier);
         await _auctionRepository.Received(0).UpdateAuction(Arg.Any<Auction>());
     }
+
     [Fact]
     public async void AddBid_BidIsValid_ReturnsOk()
     {
@@ -441,17 +442,17 @@ public class AuctionServiceTests : TestsBase
         var bid = Fixture.Create<Bid>();
         var auction = Fixture
             .Build<Auction>()
-            .With(x => x.StartBid, bid.BidValue - 100)
+            .With(x => x.StartingBid, bid.BidValue - 100)
             .With(x => x.UniqueIdentifier, auctionUniqueIdentifier)
             .With(x => x.Bids, new List<Bid>())
             .Create();
 
         _auctionRepository.GetAuctionByUniqueIdentifier(Arg.Any<Guid>())
             .Returns(Result.Ok(auction));
-        
+
         _auctionRepository.UpdateAuction(Arg.Any<Auction>())
             .Returns(Result.Ok());
-        
+
         //Act
         var result = await _auctionService.AddBid(auctionUniqueIdentifier, bid);
 

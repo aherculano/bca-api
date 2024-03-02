@@ -6,15 +6,15 @@ using MediatR;
 
 namespace Application.Features.CreateBid;
 
-public class CreateBidCommandHandler :IRequestHandler<CreateBidCommand, Result<BidResponse>>
+public class CreateBidCommandHandler : IRequestHandler<CreateBidCommand, Result<BidResponse>>
 {
     private readonly IAuctionService _auctionService;
-    
+
     public CreateBidCommandHandler(IAuctionService auctionService)
     {
         _auctionService = auctionService;
     }
-    
+
     public async Task<Result<BidResponse>> Handle(CreateBidCommand request, CancellationToken cancellationToken)
     {
         var bid = request.Request.MapToDomain();

@@ -1,32 +1,19 @@
-﻿namespace Domain.Models.Vehicle;
+﻿using Domain.Models.Vehicle.ValueObjects;
 
-public abstract class Vehicle
+namespace Domain.Models.Vehicle;
+
+public abstract class Vehicle : Entity
 {
     public Vehicle(
         Guid uniqueIdentifier,
-        string type,
-        string manufacturer,
-        string model,
-        int year,
+        VehicleDefinition definition,
         decimal startingBid)
     {
         UniqueIdentifier = uniqueIdentifier;
-        Manufacturer = manufacturer;
-        Model = model;
-        Year = year;
-        Type = type;
+        Definition = definition;
         StartingBid = startingBid;
     }
 
-    public Guid UniqueIdentifier { get; set; }
-
-    public string Type { get; set; }
-
-    public string Manufacturer { get; set; }
-
-    public string Model { get; set; }
-
-    public int Year { get; set; }
-
+    public VehicleDefinition Definition { get; set; }
     public decimal StartingBid { get; set; }
 }

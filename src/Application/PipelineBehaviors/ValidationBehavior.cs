@@ -1,4 +1,4 @@
-﻿using Application.Errors;
+﻿using Domain.Errors;
 using FluentResults;
 using FluentValidation;
 using MediatR;

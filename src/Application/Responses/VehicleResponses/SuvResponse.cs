@@ -1,4 +1,4 @@
-﻿using Domain.Models.Vehicle;
+﻿using Domain.Models.Vehicle.ValueObjects;
 
 namespace Application.Responses.VehicleResponses;
 
@@ -8,4 +8,5 @@ public record SuvResponse(
     string Model,
     int Year,
     decimal StartingBid,
-    int NumberOfSeats) : VehicleResponse(UniqueIdentifier, Suv.SuvType, Manufacturer, Model, Year, StartingBid);
+    int NumberOfSeats)
+    : VehicleResponse(UniqueIdentifier, VehicleType.Suv.ToString(), Manufacturer, Model, Year, StartingBid);

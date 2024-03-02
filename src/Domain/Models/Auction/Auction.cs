@@ -1,25 +1,25 @@
-﻿namespace Domain.Models.Auction;
+﻿using Domain.Models.Auction.ValueObjects;
 
-public class Auction
+namespace Domain.Models.Auction;
+
+public class Auction : Entity
 {
     public Auction(
         Guid vehicleUniqueIdentifier,
-        decimal startBid)
+        decimal startingBid)
     {
         UniqueIdentifier = Guid.NewGuid();
         VehicleUniqueIdentifier = vehicleUniqueIdentifier;
+        StartingBid = startingBid;
         Status = AuctionStatus.Closed;
-        StartBid = startBid;
         Bids = new List<Bid>();
     }
 
-    public Guid UniqueIdentifier { get; set; }
-
     public Guid VehicleUniqueIdentifier { get; set; }
 
-    public AuctionStatus Status { get; set; }
+    public decimal StartingBid { get; set; }
 
-    public decimal StartBid { get; set; }
+    public AuctionStatus Status { get; set; }
 
     public IList<Bid> Bids { get; set; }
 }

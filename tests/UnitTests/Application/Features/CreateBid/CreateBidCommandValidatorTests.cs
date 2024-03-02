@@ -19,10 +19,10 @@ public class CreateBidCommandValidatorTests : TestsBase
     {
         //Arrange
         var command = new CreateBidCommand(Guid.Empty, new BidRequest(string.Empty, 0));
-        
+
         //Act
         var validationResult = _validator.Validate(command);
-        
+
         //Assert
         validationResult.IsValid.Should().BeFalse();
         validationResult.Errors.Count.Should().Be(3);
@@ -33,10 +33,10 @@ public class CreateBidCommandValidatorTests : TestsBase
     {
         //Arrange
         var command = Fixture.Create<CreateBidCommand>();
-        
+
         //Act
         var validationResult = _validator.Validate(command);
-        
+
         //Assert
         validationResult.IsValid.Should().BeTrue();
     }

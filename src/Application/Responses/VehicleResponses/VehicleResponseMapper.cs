@@ -21,9 +21,9 @@ internal static class VehicleResponseMapper
     {
         return new SuvResponse(
             suv.UniqueIdentifier,
-            suv.Manufacturer,
-            suv.Model,
-            suv.Year,
+            suv.Definition.Manufacturer,
+            suv.Definition.Model,
+            suv.Definition.Year,
             suv.StartingBid,
             suv.NumberOfSeats);
     }
@@ -32,9 +32,9 @@ internal static class VehicleResponseMapper
     {
         return new TruckResponse(
             truck.UniqueIdentifier,
-            truck.Manufacturer,
-            truck.Model,
-            truck.Year,
+            truck.Definition.Manufacturer,
+            truck.Definition.Model,
+            truck.Definition.Year,
             truck.StartingBid,
             truck.LoadCapacity);
     }
@@ -43,9 +43,9 @@ internal static class VehicleResponseMapper
     {
         return new SedanResponse(
             sedan.UniqueIdentifier,
-            sedan.Manufacturer,
-            sedan.Model,
-            sedan.Year,
+            sedan.Definition.Manufacturer,
+            sedan.Definition.Model,
+            sedan.Definition.Year,
             sedan.StartingBid,
             sedan.NumberOfDoors);
     }

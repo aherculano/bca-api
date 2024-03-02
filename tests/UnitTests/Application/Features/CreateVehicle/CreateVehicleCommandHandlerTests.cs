@@ -6,8 +6,10 @@ using AutoFixture;
 using Domain.Errors;
 using Domain.Models.Vehicle;
 using Domain.Repositories;
+using Domain.Validators;
 using FluentAssertions;
 using FluentResults;
+using FluentValidation.Results;
 using NSubstitute;
 
 namespace UnitTests.Application.Features.CreateVehicle;
@@ -16,12 +18,21 @@ namespace UnitTests.Application.Features.CreateVehicle;
 public class CreateVehicleCommandHandlerTests : TestsBase
 {
     private readonly CreateVehicleCommandHandler _handler;
+    private readonly ValidationResult _invalidValidationResult;
     private readonly IVehicleRepository _repository;
+    private readonly IValidatorService _validator;
+    private readonly ValidationResult _validValidationResult;
 
     public CreateVehicleCommandHandlerTests()
     {
+        _validValidationResult = Fixture.Build<ValidationResult>()
+            .With(x => x.Errors, new List<ValidationFailure>())
+            .Create();
+        _invalidValidationResult = Fixture.Create<ValidationResult>();
+
         _repository = Fixture.Freeze<IVehicleRepository>();
-        _handler = new CreateVehicleCommandHandler(_repository);
+        _validator = Fixture.Freeze<IValidatorService>();
+        _handler = new CreateVehicleCommandHandler(_repository, _validator);
     }
 
     [Fact]
@@ -75,6 +86,7 @@ public class CreateVehicleCommandHandlerTests : TestsBase
         _repository.CreateVheicleAsync(Arg.Any<Vehicle>())
             .Returns(Result.Fail(Fixture.Create<Error>()));
 
+        _validator.ValidateVehicle(Arg.Any<Vehicle>()).Returns(_validValidationResult);
         //Act
         Func<Task<Result<VehicleResponse>>> call = async () => await _handler.Handle(command, CancellationToken.None);
 
@@ -97,6 +109,8 @@ public class CreateVehicleCommandHandlerTests : TestsBase
 
         _repository.CreateVheicleAsync(Arg.Any<Vehicle>())
             .Returns(Result.Ok(suv));
+
+        _validator.ValidateVehicle(Arg.Any<Vehicle>()).Returns(_validValidationResult);
 
         //Act
         var result = await _handler.Handle(command, CancellationToken.None);

@@ -1,4 +1,5 @@
 ﻿using Domain.Models.Vehicle;
+using Domain.Models.Vehicle.ValueObjects;
 using Domain.Repositories;
 using FluentResults;
 
@@ -31,16 +32,24 @@ public class VehicleInMemoryRepository : IVehicleRepository
     {
         var vehicles = _vehicles;
         if (type is not null)
-            vehicles = vehicles.Where(x => x.Type.Equals(type, StringComparison.InvariantCultureIgnoreCase)).ToList();
+        {
+            if (type.Equals(VehicleType.Suv.ToString())) vehicles = vehicles.Where(x => x is Suv).ToList();
+
+            if (type.Equals(VehicleType.Sedan.ToString())) vehicles = vehicles.Where(x => x is Sedan).ToList();
+
+            if (type.Equals(VehicleType.Truck.ToString())) vehicles = vehicles.Where(x => x is Truck).ToList();
+        }
 
         if (manufacturer is not null)
             vehicles = vehicles
-                .Where(x => x.Manufacturer.Equals(manufacturer, StringComparison.InvariantCultureIgnoreCase)).ToList();
+                .Where(x => x.Definition.Manufacturer.Equals(manufacturer, StringComparison.InvariantCultureIgnoreCase))
+                .ToList();
 
         if (model is not null)
-            vehicles = vehicles.Where(x => x.Model.Equals(model, StringComparison.InvariantCultureIgnoreCase)).ToList();
+            vehicles = vehicles
+                .Where(x => x.Definition.Model.Equals(model, StringComparison.InvariantCultureIgnoreCase)).ToList();
 
-        if (year is not null) vehicles = vehicles.Where(x => x.Year == year).ToList();
+        if (year is not null) vehicles = vehicles.Where(x => x.Definition.Year == year).ToList();
 
         return Result.Ok(vehicles.AsEnumerable());
     }

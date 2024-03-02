@@ -1,19 +1,17 @@
-﻿namespace Domain.Models.Vehicle;
+﻿using Domain.Models.Vehicle.ValueObjects;
+
+namespace Domain.Models.Vehicle;
 
 public class Sedan : Vehicle
 {
-    public const string SedanType = "Sedan";
-
     public Sedan(
         Guid uniqueIdentifier,
-        string manufacturer,
-        string model,
-        int year,
+        VehicleDefinition definition,
         decimal startingBid,
-        int numberOfDoors) : base(uniqueIdentifier, SedanType, manufacturer, model, year, startingBid)
+        int numberOfDoors) : base(uniqueIdentifier, definition, startingBid)
     {
         NumberOfDoors = numberOfDoors;
     }
 
-    public int NumberOfDoors { get; set; }
+    public int NumberOfDoors { get; }
 }

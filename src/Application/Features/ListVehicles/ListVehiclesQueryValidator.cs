@@ -1,4 +1,4 @@
-﻿using Domain.Models.Vehicle;
+﻿using Domain.Models.Vehicle.ValueObjects;
 using FluentValidation;
 
 namespace Application.Features.ListVehicles;
@@ -19,7 +19,7 @@ public class ListVehiclesQueryValidator : AbstractValidator<ListVehiclesQuery>
 
         RuleFor(x => x.Request.Model)
             .NotEmpty()
-            .When(x => x.Request.Type is not null)
+            .When(x => x.Request.Model is not null)
             .WithMessage("Invalid Vehicle Model");
 
         RuleFor(x => x.Request.Year)
@@ -32,9 +32,9 @@ public class ListVehiclesQueryValidator : AbstractValidator<ListVehiclesQuery>
     {
         switch (type)
         {
-            case var _ when type.Equals(Suv.SuvType, StringComparison.InvariantCultureIgnoreCase)
-                            || type.Equals(Truck.TruckType, StringComparison.InvariantCultureIgnoreCase)
-                            || type.Equals(Sedan.SedanType, StringComparison.InvariantCultureIgnoreCase):
+            case var _ when type.Equals(VehicleType.Suv.ToString(), StringComparison.InvariantCultureIgnoreCase)
+                            || type.Equals(VehicleType.Truck.ToString(), StringComparison.InvariantCultureIgnoreCase)
+                            || type.Equals(VehicleType.Sedan.ToString(), StringComparison.InvariantCultureIgnoreCase):
                 return true;
             default:
                 return false;

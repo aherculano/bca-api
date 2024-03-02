@@ -4,6 +4,7 @@ using Application.Responses.VehicleResponses;
 using AutoFixture;
 using Domain.Errors;
 using Domain.Models.Vehicle;
+using Domain.Models.Vehicle.ValueObjects;
 using Domain.Repositories;
 using FluentAssertions;
 using FluentResults;
@@ -65,11 +66,13 @@ public class ListVehiclesQueryHandlerTests : TestsBase
     {
         //Arrange
         var query = Fixture.Create<ListVehiclesQuery>();
+        var definition = new VehicleDefinition(
+            query.Request.Manufacturer,
+            query.Request.Model,
+            query.Request.Year.Value);
+
         var vehicles = Fixture.Build<Suv>()
-            .With(x => x.Manufacturer, query.Request.Manufacturer)
-            .With(x => x.Year, query.Request.Year)
-            .With(x => x.Model, query.Request.Model)
-            .With(x => x.Type, query.Request.Type)
+            .With(x => x.Definition, definition)
             .CreateMany(3);
 
         _repository.ListVehiclesAsync(Arg.Any<string?>(), Arg.Any<string?>(), Arg.Any<string?>(), Arg.Any<int?>())

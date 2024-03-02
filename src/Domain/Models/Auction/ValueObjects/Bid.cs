@@ -1,6 +1,6 @@
-﻿namespace Domain.Models.Auction;
+﻿namespace Domain.Models.Auction.ValueObjects;
 
-public class Bid
+public class Bid : ValueObject
 {
     public Bid(string bidderName,
         decimal bidValue)

@@ -1,4 +1,4 @@
-﻿using Domain.Models.Vehicle;
+﻿using Domain.Models.Vehicle.ValueObjects;
 
 namespace Application.Responses.VehicleResponses;
 
@@ -8,4 +8,5 @@ public record TruckResponse(
     string Model,
     int Year,
     decimal StartingBid,
-    decimal LoadCapacity) : VehicleResponse(UniqueIdentifier, Truck.TruckType, Manufacturer, Model, Year, StartingBid);
+    decimal LoadCapacity) : VehicleResponse(UniqueIdentifier, VehicleType.Truck.ToString(), Manufacturer, Model, Year,
+    StartingBid);
