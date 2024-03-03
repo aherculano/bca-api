@@ -20,6 +20,7 @@ public static class MediatrPipelineExtensions
     public static IServiceCollection ConfigurePipelineBehavior(this IServiceCollection services)
     {
         return services
+            .AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingPipelineBehavior<,>))
             .AddTransient<IPipelineBehavior<CreateVehicleCommand, Result<VehicleResponse>>,
                 ValidationBehavior<CreateVehicleCommand, VehicleResponse>>()
             .AddTransient<IPipelineBehavior<CreateAuctionCommand, Result<AuctionResponse>>,
