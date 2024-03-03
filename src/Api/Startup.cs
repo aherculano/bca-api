@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Serialization;
+using Api.Middlewares;
 using Application;
 using Infrastructure.Settings;
 using Microsoft.OpenApi.Models;
@@ -28,12 +29,14 @@ public class Startup
             c.SwaggerDoc("v1", new OpenApiInfo { Title = "BCA-Auction-API", Version = "v1" });
         });
         services.ConfigureApplication();
+        services.AddTransient<ErrorHandlingMiddleware>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
         app.UseSwagger();
         app.UseSwaggerUI();
+        app.UseMiddleware<ErrorHandlingMiddleware>();
         app.UseRouting();
         app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
     }
