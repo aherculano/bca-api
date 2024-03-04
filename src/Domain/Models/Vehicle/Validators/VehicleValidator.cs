@@ -14,11 +14,11 @@ public class VehicleValidator : AbstractValidator<Vehicle>
         RuleFor(x => x.UniqueIdentifier)
             .Must(x => x != Guid.Empty)
             .WithMessage("Vehicle Unique Identifier Cannot Be Empty");
-        
+
         RuleFor(x => x.Definition)
             .SetValidator(new VehicleDefinitionValidator())
             .When(x => x.Definition is not null);
-            
+
         RuleFor(x => x.StartingBid)
             .GreaterThan(0)
             .When(x => x is not null)

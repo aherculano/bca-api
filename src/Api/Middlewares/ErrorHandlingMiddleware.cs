@@ -4,7 +4,6 @@ using Api.Responses;
 
 namespace Api.Middlewares;
 
-
 public class ErrorHandlingMiddleware : IMiddleware
 {
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)
@@ -21,7 +20,7 @@ public class ErrorHandlingMiddleware : IMiddleware
                 "Internal Server Error",
                 HttpStatusCode.InternalServerError.ToString(),
                 e.Message);
-            string serialized = JsonSerializer.Serialize(error);
+            var serialized = JsonSerializer.Serialize(error);
             await context.Response.WriteAsync(serialized);
         }
     }

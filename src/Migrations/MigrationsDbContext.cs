@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Migrations;
 
-
 public class MigrationsDbContext : DbContext
 {
     public MigrationsDbContext(DbContextOptions<MigrationsDbContext> options) : base(options)
@@ -20,5 +19,4 @@ public class MigrationsDbContext : DbContext
         modelBuilder.ApplyConfiguration(new AuctionConfiguration());
         modelBuilder.ApplyConfiguration(new VehicleConfiguration());
     }
-    
 }

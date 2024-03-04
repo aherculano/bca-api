@@ -8,19 +8,20 @@ namespace Infrastructure.Data.EntityFramework.Repositories;
 public class AuctionRepository : IAuctionRepository
 {
     private readonly AuctionDbContext _dbContext;
-    
+
     public AuctionRepository(AuctionDbContext dbContext)
     {
         _dbContext = dbContext;
     }
+
     public async Task<Result<Auction>> CreateAuctionAsync(Auction auction)
     {
         try
         {
             await _dbContext.Database.BeginTransactionAsync();
-            
+
             await _dbContext.Auctions.AddAsync(auction);
-            
+
             await _dbContext.SaveChangesAsync();
             await _dbContext.Database.CommitTransactionAsync();
 
@@ -40,7 +41,7 @@ public class AuctionRepository : IAuctionRepository
             await _dbContext.Database.BeginTransactionAsync();
 
             _dbContext.Auctions.Entry(auction).State = EntityState.Modified;
-            
+
             await _dbContext.SaveChangesAsync();
             await _dbContext.Database.CommitTransactionAsync();
 
@@ -53,7 +54,8 @@ public class AuctionRepository : IAuctionRepository
         }
     }
 
-    public async Task<Result<IEnumerable<Auction>>> GetAuctionsByVehicleUniqueIdentifierAsync(Guid vehicleUniqueIdentifer)
+    public async Task<Result<IEnumerable<Auction>>> GetAuctionsByVehicleUniqueIdentifierAsync(
+        Guid vehicleUniqueIdentifer)
     {
         try
         {

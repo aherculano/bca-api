@@ -1,5 +1,4 @@
-﻿using System.Net;
-using Api.FluentResultExtensions;
+﻿using Api.FluentResultExtensions;
 using Api.Requests;
 using Api.Responses;
 using Application.Features.CreateAuction;

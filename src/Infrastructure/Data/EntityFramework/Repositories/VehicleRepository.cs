@@ -14,7 +14,7 @@ public class VehicleRepository : IVehicleRepository
     {
         _dbContext = dbContext;
     }
-    
+
     public async Task<Result<Vehicle>> CreateVehicleAsync(Vehicle vehicle)
     {
         try
@@ -22,10 +22,10 @@ public class VehicleRepository : IVehicleRepository
             await _dbContext.Database.BeginTransactionAsync();
 
             await _dbContext.Vehicles.AddAsync(vehicle);
-            
+
             await _dbContext.SaveChangesAsync();
             await _dbContext.Database.CommitTransactionAsync();
-            
+
             return Result.Ok(vehicle);
         }
         catch (Exception e)
@@ -50,14 +50,14 @@ public class VehicleRepository : IVehicleRepository
         }
     }
 
-    public async Task<Result<IEnumerable<Vehicle>>> ListVehiclesAsync(VehicleType? type, string? manufacturer, string? model, int? year)
+    public async Task<Result<IEnumerable<Vehicle>>> ListVehiclesAsync(VehicleType? type, string? manufacturer,
+        string? model, int? year)
     {
         try
         {
             IQueryable<Vehicle> vehiclesQuery = _dbContext.Vehicles;
 
             if (type.HasValue)
-            {
                 switch (type)
                 {
                     case VehicleType.Sedan:
@@ -69,25 +69,14 @@ public class VehicleRepository : IVehicleRepository
                     case VehicleType.Suv:
                         vehiclesQuery = vehiclesQuery.OfType<Suv>();
                         break;
-                    default:
-                        break;
                 }
-            }
 
             if (!string.IsNullOrEmpty(manufacturer))
-            {
                 vehiclesQuery = vehiclesQuery.Where(v => v.Definition.Manufacturer == manufacturer);
-            }
 
-            if (!string.IsNullOrEmpty(model))
-            {
-                vehiclesQuery = vehiclesQuery.Where(v => v.Definition.Model == model);
-            }
+            if (!string.IsNullOrEmpty(model)) vehiclesQuery = vehiclesQuery.Where(v => v.Definition.Model == model);
 
-            if (year.HasValue)
-            {
-                vehiclesQuery = vehiclesQuery.Where(v => v.Definition.Year == year);
-            }
+            if (year.HasValue) vehiclesQuery = vehiclesQuery.Where(v => v.Definition.Year == year);
 
             var result = await vehiclesQuery.ToListAsync();
             return Result.Ok(result.AsEnumerable());

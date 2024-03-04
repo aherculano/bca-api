@@ -3,7 +3,7 @@ using FluentResults;
 
 namespace Domain.Repositories;
 
-public interface IAuctionRepository
+public interface IAuctionRepository : IRepository
 {
     Task<Result<Auction>> CreateAuctionAsync(Auction auction);
 

@@ -1,6 +1,6 @@
 ﻿namespace Domain.Models.Vehicle.ValueObjects;
 
-public class VehicleDefinition
+public class VehicleDefinition : ValueObject
 {
     public VehicleDefinition(
         string manufacturer,

@@ -7,19 +7,20 @@ public class LoggingPipelineBehavior<TRequest, TResponse> : IPipelineBehavior<TR
 {
     private readonly ILogger<LoggingPipelineBehavior<TRequest, TResponse>> _logger;
 
-    public LoggingPipelineBehavior(ILogger<LoggingPipelineBehavior<TRequest,TResponse>> logger)
+    public LoggingPipelineBehavior(ILogger<LoggingPipelineBehavior<TRequest, TResponse>> logger)
     {
         _logger = logger;
     }
-    
-    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+
+    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next,
+        CancellationToken cancellationToken)
     {
         try
         {
             _logger.LogInformation($"Handling {typeof(TRequest).Name}");
-        
+
             var response = await next();
-        
+
             _logger.LogInformation($"Handled {typeof(TResponse).Name}");
 
             return response;

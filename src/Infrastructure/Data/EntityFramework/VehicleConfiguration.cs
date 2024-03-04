@@ -1,5 +1,4 @@
 ﻿using Domain.Models.Vehicle;
-using Domain.Models.Vehicle.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

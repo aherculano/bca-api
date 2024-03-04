@@ -15,8 +15,8 @@ public class TruckValidatorTests : TestsBase
     {
         _validator = new TruckValidator();
     }
-    
-    
+
+
     [Fact]
     public void Validate_InvalidTruck_IsInvalid()
     {
@@ -29,10 +29,10 @@ public class TruckValidatorTests : TestsBase
                 1800),
             0,
             0);
-        
+
         //Act
         var result = _validator.Validate(truck);
-        
+
         //Assert
         result.IsValid.Should().BeFalse();
         result.Errors.Count.Should().Be(6);

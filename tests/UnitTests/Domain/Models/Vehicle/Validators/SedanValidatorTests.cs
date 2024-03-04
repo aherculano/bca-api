@@ -15,7 +15,7 @@ public class SedanValidatorTests : TestsBase
     {
         _validator = new SedanValidator();
     }
-    
+
     [Fact]
     public void Validate_InvalidSedan_IsInvalid()
     {
@@ -28,10 +28,10 @@ public class SedanValidatorTests : TestsBase
                 1800),
             0,
             1);
-        
+
         //Act
         var result = _validator.Validate(sedan);
-        
+
         //Assert
         result.IsValid.Should().BeFalse();
         result.Errors.Count.Should().Be(6);

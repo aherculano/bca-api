@@ -142,10 +142,10 @@ public class AuctionServiceTests : TestsBase
         _auctionRepository
             .GetAuctionsByVehicleUniqueIdentifierAsync(vehicleUniqueIdentifier)
             .Returns(Result.Ok(auctions));
-        
+
         //Act
         var result = await _auctionService.CreateAuction(vehicleUniqueIdentifier);
-        
+
         //Assert
         result.IsFailed.Should().BeTrue();
         result.Errors.Any(x => x is ValidationError).Should().BeTrue();
@@ -153,7 +153,7 @@ public class AuctionServiceTests : TestsBase
         await _auctionRepository.Received(1).GetAuctionsByVehicleUniqueIdentifierAsync(vehicleUniqueIdentifier);
         await _auctionRepository.Received(0).CreateAuctionAsync(Arg.Any<Auction>());
     }
-    
+
     [Fact]
     public async void CreateAuction_CreateAuctionFails_ThrowsAsync()
     {
@@ -402,10 +402,10 @@ public class AuctionServiceTests : TestsBase
         //Arrange
         var invalidBid = new Bid("", 0);
         var auctionUniqueIdentifier = Fixture.Create<Guid>();
-        
+
         //Act
         var result = await _auctionService.AddBid(auctionUniqueIdentifier, invalidBid);
-        
+
         //Assert
         result.IsFailed.Should().BeTrue();
         result.Errors.Any(x => x is ValidationError).Should().BeTrue();
@@ -456,6 +456,7 @@ public class AuctionServiceTests : TestsBase
         await _auctionRepository.Received(1).GetAuctionByUniqueIdentifierAsync(auctionUniqueIdentifier);
         await _auctionRepository.Received(0).UpdateAuctionAsync(Arg.Any<Auction>());
     }
+
     [Fact]
     public async void AddBid_BidLowerThenHighestBid_ReturnsFail()
     {
@@ -466,9 +467,9 @@ public class AuctionServiceTests : TestsBase
         var auction = Fixture.Build<Auction>()
             .With(x => x.UniqueIdentifier)
             .With(x => x.StartingBid, startingBid)
-            .With(x => x.Bids, new List<Bid>(){ currentBid })
+            .With(x => x.Bids, new List<Bid> { currentBid })
             .Create();
-        
+
         var bid = new Bid(Fixture.Create<string>(), auction.StartingBid + 1);
 
         _auctionRepository.GetAuctionByUniqueIdentifierAsync(Arg.Any<Guid>())

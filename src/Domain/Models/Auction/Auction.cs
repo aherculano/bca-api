@@ -23,21 +23,18 @@ public class Auction : Entity
 
     public IList<Bid> Bids { get; set; }
 
-    public Bid HighestBid => Bids.OrderByDescending(x => x.BidValue).LastOrDefault();
+    public Bid HighestBid => Bids.MaxBy(x => x.BidValue);
 
     public bool AddBid(Bid bid)
     {
-        if (Status is AuctionStatus.Closed)
-        {
-            return false;
-        }
+        if (Status is AuctionStatus.Closed) return false;
 
         if (HighestBid is not null && bid.BidValue > HighestBid.BidValue)
         {
             Bids.Add(bid);
             return true;
         }
-        
+
         if (HighestBid is null && bid.BidValue > StartingBid)
         {
             Bids.Add(bid);

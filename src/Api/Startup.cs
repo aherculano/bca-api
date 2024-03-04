@@ -40,7 +40,7 @@ public class Startup
         app.UseRouting();
         app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
     }
-    
+
     private void ConfigureSettings(IServiceCollection services)
     {
         var sqlSettings = new SqlSettings();

@@ -23,9 +23,9 @@ public class VehiclesController : ControllerBase
 
     [HttpGet]
     [Route("{vehicleUniqueIdentifier}")]
-    [ProducesResponseType(typeof(VehicleResponse),200)]
-    [ProducesResponseType(typeof(ErrorResponse),400)]
-    [ProducesResponseType(typeof(ErrorResponse),404)]
+    [ProducesResponseType(typeof(VehicleResponse), 200)]
+    [ProducesResponseType(typeof(ErrorResponse), 400)]
+    [ProducesResponseType(typeof(ErrorResponse), 404)]
     public async Task<IActionResult> GetVehicleByVehicleIdAsync(Guid vehicleUniqueIdentifier)
     {
         var query = new GetVehicleByUniqueIdentifierQuery(vehicleUniqueIdentifier);
@@ -37,8 +37,8 @@ public class VehiclesController : ControllerBase
 
     [HttpGet]
     [ProducesResponseType(typeof(IEnumerable<VehicleApiResponse>), 200)]
-    [ProducesResponseType(typeof(ErrorResponse),404)]
-    [ProducesResponseType(typeof(ErrorResponse),409)]
+    [ProducesResponseType(typeof(ErrorResponse), 404)]
+    [ProducesResponseType(typeof(ErrorResponse), 409)]
     public async Task<IActionResult> ListVehiclesAsync([FromQuery] ListVehicleRequest request)
     {
         var query = new ListVehiclesQuery(request);

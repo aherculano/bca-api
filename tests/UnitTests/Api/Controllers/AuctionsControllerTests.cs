@@ -18,9 +18,9 @@ namespace UnitTests.Api.Controllers;
 [ExcludeFromCodeCoverage]
 public class AuctionsControllerTests : TestsBase
 {
-    private readonly IMediator _mediator;
     private readonly AuctionsController _controller;
-    
+    private readonly IMediator _mediator;
+
     public AuctionsControllerTests()
     {
         _mediator = Fixture.Freeze<IMediator>();
@@ -34,17 +34,18 @@ public class AuctionsControllerTests : TestsBase
         var auctionRequest = Fixture.Create<CreateAuctionRequest>();
         var response = Fixture.Create<AuctionResponse>();
         _mediator.Send(Arg.Any<CreateAuctionCommand>()).Returns(response);
-        
+
         //Act
         var result = await _controller.CreateAuctionAsync(auctionRequest);
-        
+
         //Assert
         result.Should().BeOfType<CreatedAtActionResult>();
         var createdResult = result as CreatedAtActionResult;
         createdResult.Value.Should().BeEquivalentTo(response);
         createdResult.ActionName.Should().Be("GetAuctionByAuctionId");
         createdResult.RouteValues.Keys.Any(x => x == "auctionUniqueIdentifier").Should().BeTrue();
-        createdResult.RouteValues.GetValueOrDefault("auctionUniqueIdentifier").Should().BeEquivalentTo(response.UniqueIdentifier);
+        createdResult.RouteValues.GetValueOrDefault("auctionUniqueIdentifier").Should()
+            .BeEquivalentTo(response.UniqueIdentifier);
     }
 
     [Fact]
@@ -54,7 +55,7 @@ public class AuctionsControllerTests : TestsBase
         var auctionId = Fixture.Create<Guid>();
         var auctionResponse = Fixture.Create<AuctionResponse>();
         _mediator.Send(Arg.Any<GetAuctionByUniqueIdentifierQuery>()).Returns(auctionResponse);
-        
+
         //Act
         var result = await _controller.GetAuctionByAuctionIdAsync(auctionId);
 
@@ -72,7 +73,7 @@ public class AuctionsControllerTests : TestsBase
         var updateAuctionRequest = Fixture.Create<UpdateAuctionStatusRequest>();
         var updateAuctionResponse = Fixture.Create<AuctionStatusResponse>();
         _mediator.Send(Arg.Any<UpdateAuctionStatusCommand>()).Returns(updateAuctionResponse.AuctionStatus);
-        
+
         //Act
         var result = await _controller.UpdateAuctionStatusAsync(auctionId, updateAuctionRequest);
 
@@ -90,7 +91,7 @@ public class AuctionsControllerTests : TestsBase
         var bidRequest = Fixture.Create<BidRequest>();
         var bidResponse = Fixture.Create<BidResponse>();
         _mediator.Send(Arg.Any<CreateBidCommand>()).Returns(bidResponse);
-        
+
         //Act
         var result = await _controller.CreateBidAsync(auctionId, bidRequest);
 

@@ -28,10 +28,10 @@ public class VehicleValidatorTests : TestsBase
                 1800),
             0,
             3);
-        
+
         //Act
         var result = _vehicleValidatorTests.Validate(suv);
-        
+
         //Assert
         result.IsValid.Should().BeFalse();
         result.Errors.Count.Should().Be(5);

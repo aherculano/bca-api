@@ -15,8 +15,8 @@ public class SuvValidatorTests : TestsBase
     {
         _validator = new SuvValidator();
     }
-    
-    
+
+
     [Fact]
     public void Validate_InvalidSuv_IsInvalid()
     {
@@ -29,10 +29,10 @@ public class SuvValidatorTests : TestsBase
                 1800),
             0,
             1);
-        
+
         //Act
         var result = _validator.Validate(suv);
-        
+
         //Assert
         result.IsValid.Should().BeFalse();
         result.Errors.Count.Should().Be(6);

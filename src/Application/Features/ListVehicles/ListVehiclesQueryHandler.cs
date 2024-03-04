@@ -21,9 +21,9 @@ public class ListVehiclesQueryHandler : IRequestHandler<ListVehiclesQuery, Resul
         CancellationToken cancellationToken)
     {
         var parseResult = Enum.TryParse<VehicleType>(request.Request.Type, out var vehicleType);
-        
+
         var result = await _repository.ListVehiclesAsync(
-            parseResult? vehicleType : null,
+            parseResult ? vehicleType : null,
             request.Request.Manufacturer,
             request.Request.Model,
             request.Request.Year);

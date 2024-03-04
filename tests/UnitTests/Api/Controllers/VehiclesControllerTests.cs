@@ -6,11 +6,9 @@ using Application.Features.CreateVehicle;
 using Application.Features.GetVehicleByUniqueIdentifier;
 using Application.Features.ListVehicles;
 using Application.Requests.ListVehicleRequests;
-using Application.Requests.VehicleRequests;
 using Application.Responses.VehicleResponses;
 using AutoFixture;
 using FluentAssertions;
-using FluentResults;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
@@ -20,8 +18,9 @@ namespace UnitTests.Api.Controllers;
 [ExcludeFromCodeCoverage]
 public class VehiclesControllerTests : TestsBase
 {
-    private readonly IMediator _mediator;
     private readonly VehiclesController _controller;
+    private readonly IMediator _mediator;
+
     public VehiclesControllerTests()
     {
         _mediator = Fixture.Freeze<IMediator>();
@@ -35,10 +34,10 @@ public class VehiclesControllerTests : TestsBase
         var request = Fixture.Create<CreateVehicleRequest>();
         var response = Fixture.Create<SuvResponse>();
         _mediator.Send(Arg.Any<CreateVehicleCommand>()).Returns(response);
-        
+
         //Act
         var result = await _controller.CreateVehicleAsync(request);
-        
+
         //Assert
         result.Should().BeOfType<CreatedAtActionResult>();
         var actionResult = result as CreatedAtActionResult;
@@ -55,16 +54,16 @@ public class VehiclesControllerTests : TestsBase
         var vehicleUniqueIdentifier = Fixture.Create<Guid>();
         var response = Fixture.Create<TruckResponse>();
         _mediator.Send(Arg.Any<GetVehicleByUniqueIdentifierQuery>()).Returns(response);
-        
+
         //Act
         var result = await _controller.GetVehicleByVehicleIdAsync(vehicleUniqueIdentifier);
-        
+
         //Assert
         result.Should().BeOfType<OkObjectResult>();
         var okResult = result as OkObjectResult;
         okResult.Value.Should().BeEquivalentTo(response);
     }
-    
+
     [Fact]
     public async void ListVehicles_ReturnsOk_ReturnsOk()
     {
@@ -72,10 +71,10 @@ public class VehiclesControllerTests : TestsBase
         var request = Fixture.Create<ListVehicleRequest>();
         var response = Fixture.Create<VehicleListResponse>();
         _mediator.Send(Arg.Any<ListVehiclesQuery>()).Returns(response);
-        
+
         //Act
         var result = await _controller.ListVehiclesAsync(request);
-        
+
         //Assert
         result.Should().BeOfType<OkObjectResult>();
         var okResult = result as OkObjectResult;

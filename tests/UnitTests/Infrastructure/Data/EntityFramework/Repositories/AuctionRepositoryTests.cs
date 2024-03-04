@@ -22,10 +22,10 @@ public class AuctionRepositoryTests : RepositoryTestsBase
     {
         //Arrange
         var auction = Fixture.Create<Auction>();
-        
+
         //Act
         var result = await _repository.CreateAuctionAsync(auction);
-        
+
         //Assert
         result.IsSuccess.Should().BeTrue();
         AuctionDbContext.Auctions
@@ -55,7 +55,8 @@ public class AuctionRepositoryTests : RepositoryTestsBase
         var expectedAuctions = AuctionDbContext.Auctions.First();
 
         // Act
-        var result = await _repository.GetAuctionsByVehicleUniqueIdentifierAsync(expectedAuctions.VehicleUniqueIdentifier);
+        var result =
+            await _repository.GetAuctionsByVehicleUniqueIdentifierAsync(expectedAuctions.VehicleUniqueIdentifier);
 
         // Assert
         result.IsSuccess.Should().BeTrue();

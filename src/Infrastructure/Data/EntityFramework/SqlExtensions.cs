@@ -7,7 +7,6 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure.Data.EntityFramework;
 
-
 [ExcludeFromCodeCoverage]
 public static class SqlExtensions
 {

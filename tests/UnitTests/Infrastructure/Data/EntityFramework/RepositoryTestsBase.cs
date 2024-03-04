@@ -11,8 +11,6 @@ namespace UnitTests.Infrastructure.Data.EntityFramework;
 [ExcludeFromCodeCoverage]
 public class RepositoryTestsBase : TestsBase, IDisposable
 {
-    public AuctionDbContext AuctionDbContext { get; private set; }
-
     public RepositoryTestsBase()
     {
         var options = new DbContextOptionsBuilder<AuctionDbContext>()
@@ -21,12 +19,19 @@ public class RepositoryTestsBase : TestsBase, IDisposable
                 warnings.Ignore(InMemoryEventId.TransactionIgnoredWarning);
                 warnings.Ignore(InMemoryEventId.ChangesSaved);
             })
-            .UseInMemoryDatabase(databaseName: "Auctions")
+            .UseInMemoryDatabase("Auctions")
             .Options;
         AuctionDbContext = new AuctionDbContext(options);
-        
+
         SeedVehicles();
         SeedAuctions();
+    }
+
+    public AuctionDbContext AuctionDbContext { get; }
+
+    public void Dispose()
+    {
+        AuctionDbContext.Dispose();
     }
 
     private void SeedVehicles()
@@ -39,16 +44,11 @@ public class RepositoryTestsBase : TestsBase, IDisposable
         AuctionDbContext.Vehicles.AddRange(trucks);
         AuctionDbContext.SaveChanges();
     }
-    
+
     private void SeedAuctions()
     {
         var auctions = Fixture.Build<Auction>().Without(x => x.Id).CreateMany(3);
         AuctionDbContext.Auctions.AddRange(auctions);
         AuctionDbContext.SaveChanges();
-    }
-    
-    public void Dispose()
-    {
-        AuctionDbContext.Dispose();
     }
 }

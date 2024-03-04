@@ -6,8 +6,8 @@ public class Suv : Vehicle
 {
     public Suv()
     {
-        
     }
+
     public Suv(
         Guid uniqueIdentifier,
         VehicleDefinition definition,

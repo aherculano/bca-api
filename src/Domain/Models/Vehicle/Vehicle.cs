@@ -6,8 +6,8 @@ public abstract class Vehicle : Entity
 {
     public Vehicle()
     {
-        
     }
+
     public Vehicle(
         Guid uniqueIdentifier,
         VehicleDefinition definition,

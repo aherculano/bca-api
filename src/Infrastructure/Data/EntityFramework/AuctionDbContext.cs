@@ -6,12 +6,12 @@ namespace Infrastructure.Data.EntityFramework;
 
 public class AuctionDbContext : DbContext
 {
-    public DbSet<Vehicle> Vehicles { get; set; }
-    public DbSet<Auction> Auctions { get; set; }
-    
     public AuctionDbContext(DbContextOptions<AuctionDbContext> options) : base(options)
     {
     }
+
+    public DbSet<Vehicle> Vehicles { get; set; }
+    public DbSet<Auction> Auctions { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

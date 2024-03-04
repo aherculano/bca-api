@@ -12,9 +12,9 @@ namespace Domain.Services.Auctions;
 public class AuctionService : IAuctionService
 {
     private readonly IAuctionRepository _auctionRepository;
+    private readonly IVehicleRepository _vehicleRepository;
     private readonly AuctionValidator _auctionValidator;
     private readonly BidValidator _bidValidator;
-    private readonly IVehicleRepository _vehicleRepository;
 
     public AuctionService(IVehicleRepository vehicleRepository,
         IAuctionRepository auctionRepository)
@@ -34,7 +34,8 @@ public class AuctionService : IAuctionService
 
         if (vehicle is null) return Result.Fail(new NotFoundError("Not Found", "The Vehicle Does Not Exist"));
 
-        var auctionsResult = await _auctionRepository.GetAuctionsByVehicleUniqueIdentifierAsync(vehicle.UniqueIdentifier);
+        var auctionsResult =
+            await _auctionRepository.GetAuctionsByVehicleUniqueIdentifierAsync(vehicle.UniqueIdentifier);
 
         var currentAuctions = auctionsResult.ThrowExceptionIfHasFailedResult().Value;
 
@@ -64,20 +65,30 @@ public class AuctionService : IAuctionService
         var currentAuction = currentAuctionResult.ThrowExceptionIfHasFailedResult().Value;
 
         if (currentAuction is null) return Result.Fail(new NotFoundError("Not Found", "Auction Was Not Found"));
-        
+
         var wasBidAdded = currentAuction.AddBid(bid);
 
-        if (!wasBidAdded)
-        {
-            return GetBidErrorResult(bid, currentAuction);
-        }
-        
+        if (!wasBidAdded) return GetBidErrorResult(bid, currentAuction);
+
 
         var updateResult = await _auctionRepository.UpdateAuctionAsync(currentAuction);
 
         updateResult.ThrowExceptionIfHasFailedResult();
 
         return Result.Ok(bid);
+    }
+
+    public async Task<Result<AuctionStatus>> UpdateAuctionStatus(Guid auctionUniqueIdentifier, AuctionStatus status)
+    {
+        var currentAuctionResult = await _auctionRepository.GetAuctionByUniqueIdentifierAsync(auctionUniqueIdentifier);
+        var currentAuction = currentAuctionResult.ThrowExceptionIfHasFailedResult().Value;
+
+        if (currentAuction is null) return Result.Fail(new NotFoundError("Not Found", "Auction Does Not Exist"));
+
+        if (currentAuction.Status == status)
+            return Result.Fail(new ConflictAuctionError("Conflict", "Auction Is Already With The Specified Status"));
+
+        return status == AuctionStatus.Closed ? await CloseAuction(currentAuction) : await OpenAuction(currentAuction);
     }
 
     private static Result<Bid> GetBidErrorResult(Bid bid, Auction currentAuction)
@@ -92,19 +103,6 @@ public class AuctionService : IAuctionService
         if (currentAuction.StartingBid > bid.BidValue)
             return Result.Fail(new InvalidBidError("Bad Request", "Bid is lower then starting bid"));
         return null;
-    }
-
-    public async Task<Result<AuctionStatus>> UpdateAuctionStatus(Guid auctionUniqueIdentifier, AuctionStatus status)
-    {
-        var currentAuctionResult = await _auctionRepository.GetAuctionByUniqueIdentifierAsync(auctionUniqueIdentifier);
-        var currentAuction = currentAuctionResult.ThrowExceptionIfHasFailedResult().Value;
-
-        if (currentAuction is null) return Result.Fail(new NotFoundError("Not Found", "Auction Does Not Exist"));
-
-        if (currentAuction.Status == status)
-            return Result.Fail(new ConflictAuctionError("Conflict", "Auction Is Already With The Specified Status"));
-
-        return status == AuctionStatus.Closed ? await CloseAuction(currentAuction) : await OpenAuction(currentAuction);
     }
 
     private async Task<Result<AuctionStatus>> CloseAuction(Auction currentAuction)
@@ -127,12 +125,9 @@ public class AuctionService : IAuctionService
             return Result.Fail(new ConflictAuctionError("Conflict", "There Is An Ongoing Auction For The Vehicle"));
 
         var isOpen = currentAuction.OpenAuction();
-        
-        if (!isOpen)
-        {
-            return Result.Fail(new ClosedAuctionError("Bad Request", "Vehicle Was Already Sold"));
-        }
-        
+
+        if (!isOpen) return Result.Fail(new ClosedAuctionError("Bad Request", "Vehicle Was Already Sold"));
+
         (await _auctionRepository.UpdateAuctionAsync(currentAuction)).ThrowExceptionIfHasFailedResult();
 
         return Result.Ok(AuctionStatus.Open);

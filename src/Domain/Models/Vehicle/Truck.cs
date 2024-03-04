@@ -6,9 +6,8 @@ public class Truck : Vehicle
 {
     public Truck()
     {
-        
     }
-    
+
     public Truck(
         Guid uniqueIdentifier,
         VehicleDefinition definition,

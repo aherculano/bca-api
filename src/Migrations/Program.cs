@@ -12,7 +12,7 @@ public class Program
                 new Startup(hostContext.Configuration).ConfigureServices(services);
             })
             .Build();
-        
+
         host.Run();
-    }      
+    }
 }

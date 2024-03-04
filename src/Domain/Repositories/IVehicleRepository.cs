@@ -4,7 +4,7 @@ using FluentResults;
 
 namespace Domain.Repositories;
 
-public interface IVehicleRepository
+public interface IVehicleRepository : IRepository
 {
     Task<Result<Vehicle>> CreateVehicleAsync(Vehicle vehicle);
 

@@ -6,9 +6,8 @@ public class Sedan : Vehicle
 {
     public Sedan()
     {
-        
     }
-    
+
     public Sedan(
         Guid uniqueIdentifier,
         VehicleDefinition definition,
