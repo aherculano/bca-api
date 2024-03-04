@@ -1,4 +1,5 @@
-﻿using Api.FluentResultExtensions;
+﻿using System.Net;
+using Api.FluentResultExtensions;
 using Api.Requests;
 using Api.Responses;
 using Application.Features.CreateAuction;
@@ -6,8 +7,10 @@ using Application.Features.CreateBid;
 using Application.Features.GetAuctionByUniqueIdentifier;
 using Application.Features.UpdateAuctionStatus;
 using Application.Requests.BidRequests;
+using Application.Responses.AuctionResponses;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using AuctionStatusResponse = Api.Responses.AuctionStatusResponse;
 
 namespace Api.Controllers;
 
@@ -23,6 +26,9 @@ public class AuctionsController : ControllerBase
     }
 
     [HttpPost]
+    [ProducesResponseType(typeof(AuctionResponse), 201)]
+    [ProducesResponseType(typeof(ErrorResponse), 400)]
+    [ProducesResponseType(typeof(ErrorResponse), 409)]
     public async Task<IActionResult> CreateAuctionAsync([FromBody] CreateAuctionRequest request)
     {
         var command = new CreateAuctionCommand(request.VehicleUniqueIdentifier);
@@ -34,6 +40,8 @@ public class AuctionsController : ControllerBase
     }
 
     [HttpGet("{auctionUniqueIdentifier}")]
+    [ProducesResponseType(typeof(AuctionResponse), 200)]
+    [ProducesResponseType(typeof(ErrorResponse), 404)]
     public async Task<IActionResult> GetAuctionByAuctionIdAsync([FromRoute] Guid auctionUniqueIdentifier)
     {
         var query = new GetAuctionByUniqueIdentifierQuery(auctionUniqueIdentifier);
@@ -44,6 +52,9 @@ public class AuctionsController : ControllerBase
     }
 
     [HttpPut]
+    [ProducesResponseType(typeof(AuctionStatusResponse), 200)]
+    [ProducesResponseType(typeof(ErrorResponse), 400)]
+    [ProducesResponseType(typeof(ErrorResponse), 409)]
     [Route("{auctionUniqueIdentifier}/status")]
     public async Task<IActionResult> UpdateAuctionStatusAsync([FromRoute] Guid auctionUniqueIdentifier,
         [FromBody] UpdateAuctionStatusRequest request)
@@ -56,6 +67,9 @@ public class AuctionsController : ControllerBase
     }
 
     [HttpPost]
+    [ProducesResponseType(typeof(BidResponse), 201)]
+    [ProducesResponseType(typeof(ErrorResponse), 400)]
+    [ProducesResponseType(typeof(ErrorResponse), 409)]
     [Route("{auctionUniqueIdentifier}/bids")]
     public async Task<IActionResult> CreateBidAsync([FromRoute] Guid auctionUniqueIdentifier,
         [FromBody] BidRequest request)

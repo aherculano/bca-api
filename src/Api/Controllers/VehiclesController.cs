@@ -4,6 +4,7 @@ using Api.Responses;
 using Application.Features.GetVehicleByUniqueIdentifier;
 using Application.Features.ListVehicles;
 using Application.Requests.ListVehicleRequests;
+using Application.Responses.VehicleResponses;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,9 +23,9 @@ public class VehiclesController : ControllerBase
 
     [HttpGet]
     [Route("{vehicleUniqueIdentifier}")]
-    [ProducesResponseType(200)]
-    [ProducesResponseType(400)]
-    [ProducesResponseType(404)]
+    [ProducesResponseType(typeof(VehicleResponse),200)]
+    [ProducesResponseType(typeof(ErrorResponse),400)]
+    [ProducesResponseType(typeof(ErrorResponse),404)]
     public async Task<IActionResult> GetVehicleByVehicleIdAsync(Guid vehicleUniqueIdentifier)
     {
         var query = new GetVehicleByUniqueIdentifierQuery(vehicleUniqueIdentifier);
@@ -35,9 +36,9 @@ public class VehiclesController : ControllerBase
     }
 
     [HttpGet]
-    [ProducesResponseType(200)]
-    [ProducesResponseType(404)]
-    [ProducesResponseType(409)]
+    [ProducesResponseType(typeof(IEnumerable<VehicleApiResponse>), 200)]
+    [ProducesResponseType(typeof(ErrorResponse),404)]
+    [ProducesResponseType(typeof(ErrorResponse),409)]
     public async Task<IActionResult> ListVehiclesAsync([FromQuery] ListVehicleRequest request)
     {
         var query = new ListVehiclesQuery(request);
@@ -48,7 +49,7 @@ public class VehiclesController : ControllerBase
     }
 
     [HttpPost]
-    [ProducesResponseType(201)]
+    [ProducesResponseType(typeof(VehicleResponse), 201)]
     [ProducesResponseType(400)]
     [ProducesResponseType(409)]
     public async Task<IActionResult> CreateVehicleAsync([FromBody] CreateVehicleRequest request)
