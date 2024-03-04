@@ -5,7 +5,7 @@ Allows for creating, starting, bidding and closing auctions.
 
 ## API Documentation
 
-Although after launching the application, Swagger UI documentation can be found at 'http://localhost:8080/swagger', the complete OpenApi spec can be found [HERE](Specs/api.yaml)
+Although after launching the application, Swagger UI documentation can be found at 'http://localhost:5000/swagger', the complete OpenApi spec can be found [HERE](Specs/api.yaml)
 
 ## Decisions and Assumptions
 
@@ -16,7 +16,7 @@ Although after launching the application, Swagger UI documentation can be found 
 
 #### Vehicle
 
-The vheicle class is simple, it is defined as an abstract class with the common properties and Suv, Sedan and Truck classes implement the specific properties, inheriting all from vehicle.
+The vehicle class is simple, it is defined as an abstract class with the common properties and Suv, Sedan and Truck classes implement the specific properties, inheriting all from vehicle.
 Forcefully, all the vheicles have a UniqueIdentifier, Manufacturer, Model, Year and StartingBid.
 
 #### Auction
