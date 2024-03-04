@@ -34,6 +34,8 @@ internal static class FluentResultExtensions
                 return new ConflictObjectResult((errors.FirstOrDefault() as ApplicationError)?.MapToErrorResponse());
             case var _ when errors.Any(x => x is ConflictAuctionError):
                 return new ConflictObjectResult((errors.FirstOrDefault() as ApplicationError)?.MapToErrorResponse());
+            case var _ when errors.Any(x => x is ApplicationError):
+                return new BadRequestObjectResult((errors.FirstOrDefault() as ApplicationError)?.MapToErrorResponse());
             default:
                 return new BadRequestObjectResult(new ErrorResponse("Bad Request", HttpStatusCode.BadRequest.ToString(),
                     "Bad Request"));

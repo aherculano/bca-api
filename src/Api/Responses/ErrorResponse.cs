@@ -16,7 +16,7 @@ internal static class ErrorResponseExtensions
             case var _ when error is AlreadyExistsError:
                 return new ErrorResponse(error.Title, HttpStatusCode.Conflict.ToString(), error.Details);
             default:
-                return null;
+                return new ErrorResponse(error.Title, HttpStatusCode.BadRequest.ToString(), error.Details);
         }
     }
 }
