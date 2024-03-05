@@ -42,6 +42,9 @@ public class AuctionService : IAuctionService
         if (currentAuctions?.Any(x => x.Status is AuctionStatus.Open) is true)
             return Result.Fail(new AlreadyExistsError("Conflict", "There Is An Ongoing Auction For The Vehicle"));
 
+        if (currentAuctions?.Any(x => x.Status == AuctionStatus.Closed && x.Bids.Any()) is true)
+            return Result.Fail(new ConflictAuctionError("Conflict", "The Vehicle Was Already Sold"));
+        
         var auction = new Auction(vehicle.UniqueIdentifier, vehicle.StartingBid);
 
         var validationResult = _auctionValidator.Validate(auction);
@@ -97,7 +100,7 @@ public class AuctionService : IAuctionService
             return Result.Fail(new ClosedAuctionError("Auction Closed",
                 "The Bid Was Not Placed Because The Auction Is Closed"));
 
-        if (currentAuction.HighestBid.BidValue >= bid.BidValue)
+        if (currentAuction.HighestBid?.BidValue >= bid.BidValue)
             return Result.Fail(new InvalidBidError("Bad Request", "Bid is lower then highest bid"));
 
         if (currentAuction.StartingBid > bid.BidValue)
